@@ -14,7 +14,7 @@ const ProductTypeComponent = ({
     hover: { width: "200%", borderWidth: "0px" },
   };
   useEffect(() => {
-    console.log("index: ", index);
+    // console.log("index: ", index);
   }, [index]);
   return (
     <motion.div
