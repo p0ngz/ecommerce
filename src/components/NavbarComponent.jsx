@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -7,6 +7,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import ShoppingBag from "@mui/icons-material/ShoppingBag";
+import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 
 // sidebar
 import SidebarComponent from "./SidebarComponent";
@@ -15,88 +16,177 @@ const NavbarComponent = () => {
   const [onHoverFavorite, setOnHoverFavorite] = useState(false);
   const [onHoverProfile, setOnHoverProfile] = useState(false);
   const [onHoverShopping, setOnHoverShopping] = useState(false);
+  const [activeSidebar, setActiveSidebar] = useState(false);
+  const toggleSidebarHandler = () => {
+    setActiveSidebar(!activeSidebar);
+  };
+  const receiveStatusSidebar = (status) => {
+    setActiveSidebar(status)
+  }
+  useEffect(() => {
+    console.log("activeSidebar changed: ", activeSidebar);
+  }, [activeSidebar])
   return (
     <div
       id="navbar"
-      className="h-25 w-full px-6 py-8 bg-gray-100 fixed flex justify-between items-center z-99"
+      className="sm:fixed md:fixed xl:fixed top-0 left-0 w-full h-25  px-6 py-8 bg-gray-100  flex justify-between items-center z-99 relative"
     >
       <div id="left" className="">
-        <img
-          src="https://wpbingo-adena.myshopify.com/cdn/shop/files/logo.png?crop=center&height=129&v=1729503852&width=399"
-          alt="logo"
-          className="w-[5.5rem] h-[1.5rem]"
-        />
-      </div>
-      <div id="center" className="flex items-center gap-4">
-        <div className="">
-          <p>
-            Home
-            <KeyboardArrowDownIcon fontSize="small" className="text-gray-400" />
-          </p>
+        {/* md screen */}
+        <div
+          id="left-md-screen"
+          className="w-full h-full md:flex md:justify-center md:items-center md:gap-2 xl:hidden"
+        >
+          <DensityMediumIcon onClick={() => toggleSidebarHandler()}  className="hover:cursor-pointer"/>
+          <SearchIcon className="hover:cursor-pointer hover:text-emerald-800" />
         </div>
-        <div className="flex">
-          <p>
-            Shop
-            <KeyboardArrowDownIcon fontSize="small" className="text-gray-400" />
-          </p>
-        </div>
-        <div className="flex">
-          <p>
-            Product
-            <KeyboardArrowDownIcon fontSize="small" className="text-gray-400" />
-          </p>
-        </div>
-        <div className="flex">
-          <p>
-            Blog
-            <KeyboardArrowDownIcon fontSize="small" className="text-gray-400" />
-          </p>
-        </div>
-        <div className="flex">
-          <p>
-            Featured
-            <KeyboardArrowDownIcon fontSize="small" className="text-gray-400" />
-          </p>
+
+        {/* xl screen */}
+        <div id="left-xl-screen" className="w-full h-full md:hidden xl:block">
+          <img
+            src="https://wpbingo-adena.myshopify.com/cdn/shop/files/logo.png?crop=center&height=129&v=1729503852&width=399"
+            alt="logo"
+            className="w-[5.5rem] h-[1.5rem] hover:cursor-pointer"
+          />
         </div>
       </div>
-      <div id="right" className="flex items-center gap-3">
-        <SearchIcon className="hover:cursor-pointer hover:text-emerald-800" />
-        {onHoverProfile ? (
-          <PersonIcon
-            className="text-teal-500 hover:cursor-pointer"
-            onMouseLeave={() => setOnHoverProfile(false)}
+      <div id="center">
+        {/* md screen */}
+        <div
+          id="center-md-screen"
+          className="w-full h-full hidden md:block xl:hidden"
+        >
+          <img
+            src="https://wpbingo-adena.myshopify.com/cdn/shop/files/logo.png?crop=center&height=129&v=1729503852&width=399"
+            alt="logo"
+            className="w-[5.5rem] h-[1.5rem] hover:cursor-pointer"
           />
-        ) : (
-          <PersonOutlineIcon
-            className="hover:cursor-pointer"
-            onMouseEnter={() => setOnHoverProfile(true)}
-          />
-        )}
-        {onHoverFavorite ? (
-          <FavoriteIcon
-            className="text-red-400 hover:cursor-pointer"
-            onMouseLeave={() => setOnHoverFavorite(false)}
-          />
-        ) : (
-          <FavoriteBorderIcon
-            className="hover:cursor-pointer"
-            onMouseEnter={() => setOnHoverFavorite(true)}
-          />
-        )}
-        {onHoverShopping ? (
-          <ShoppingBag
-            className="text-fuchsia-600 hover:cursor-pointer"
-            onMouseLeave={() => setOnHoverShopping(false)}
-          />
-        ) : (
-          <ShoppingBagOutlinedIcon
-            className="hover:cursor-pointer"
-            onMouseEnter={() => setOnHoverShopping(true)}
-          />
-        )}
+        </div>
+
+        {/* xl screen */}
+        <div
+          id="center-xl-screen"
+          className="w-full xl:flex xl:items-center gap-4 hidden "
+        >
+          <div id="home-btn" className="hover:cursor-pointer">
+            <p>
+              Home
+              <KeyboardArrowDownIcon
+                fontSize="small"
+                className="text-gray-400"
+              />
+            </p>
+          </div>
+          <div id="shop-btn" className="hover:cursor-pointer">
+            <p>
+              Shop
+              <KeyboardArrowDownIcon
+                fontSize="small"
+                className="text-gray-400"
+              />
+            </p>
+          </div>
+          <div id="product-btn" className="hover:cursor-pointer">
+            <p>
+              Product
+              <KeyboardArrowDownIcon
+                fontSize="small"
+                className="text-gray-400"
+              />
+            </p>
+          </div>
+          <div id="blog-btn" className="hover:cursor-pointer">
+            <p>
+              Blog
+              <KeyboardArrowDownIcon
+                fontSize="small"
+                className="text-gray-400"
+              />
+            </p>
+          </div>
+          <div id="featured-btn" className="hover:cursor-pointer">
+            <p>
+              Featured
+              <KeyboardArrowDownIcon
+                fontSize="small"
+                className="text-gray-400"
+              />
+            </p>
+          </div>
+        </div>
       </div>
-      {/* create one navbar and responsive it this case is just full and md screen */}
-      <SidebarComponent />
+      <div id="right">
+        {/* md-screen */}
+        <div
+          id="right-md-screen"
+          className="hidden md:flex md:items-center md:gap-3 xl:hidden"
+        >
+          {onHoverFavorite ? (
+            <FavoriteIcon
+              className="text-red-400 hover:cursor-pointer"
+              onMouseLeave={() => setOnHoverFavorite(false)}
+            />
+          ) : (
+            <FavoriteBorderIcon
+              className="hover:cursor-pointer"
+              onMouseEnter={() => setOnHoverFavorite(true)}
+            />
+          )}
+          {onHoverShopping ? (
+            <ShoppingBag
+              className="text-fuchsia-600 hover:cursor-pointer"
+              onMouseLeave={() => setOnHoverShopping(false)}
+            />
+          ) : (
+            <ShoppingBagOutlinedIcon
+              className="hover:cursor-pointer"
+              onMouseEnter={() => setOnHoverShopping(true)}
+            />
+          )}
+        </div>
+
+        {/* xl screen */}
+        <div
+          id="right-xl-screen"
+          className="hidden md:hidden xl:flex xl:items-center xl:gap-3"
+        >
+          <SearchIcon className="hover:cursor-pointer hover:text-emerald-800" />
+          {onHoverProfile ? (
+            <PersonIcon
+              className="text-teal-500 hover:cursor-pointer"
+              onMouseLeave={() => setOnHoverProfile(false)}
+            />
+          ) : (
+            <PersonOutlineIcon
+              className="hover:cursor-pointer"
+              onMouseEnter={() => setOnHoverProfile(true)}
+            />
+          )}
+          {onHoverFavorite ? (
+            <FavoriteIcon
+              className="text-red-400 hover:cursor-pointer"
+              onMouseLeave={() => setOnHoverFavorite(false)}
+            />
+          ) : (
+            <FavoriteBorderIcon
+              className="hover:cursor-pointer"
+              onMouseEnter={() => setOnHoverFavorite(true)}
+            />
+          )}
+          {onHoverShopping ? (
+            <ShoppingBag
+              className="text-fuchsia-600 hover:cursor-pointer"
+              onMouseLeave={() => setOnHoverShopping(false)}
+            />
+          ) : (
+            <ShoppingBagOutlinedIcon
+              className="hover:cursor-pointer"
+              onMouseEnter={() => setOnHoverShopping(true)}
+            />
+          )}
+        </div>
+      </div>
+      <SidebarComponent toggleSidebar={activeSidebar} sendStatusToParent={receiveStatusSidebar} />
     </div>
   );
 };

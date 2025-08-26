@@ -3,9 +3,9 @@ import NavbarComponent from "../components/NavbarComponent";
 import { Outlet } from "react-router-dom";
 const MainLayout = () => {
   return (
-    <div className="relative">
-      <NavbarComponent />
-      <main className="pt-20">
+    <div className="">
+      <NavbarComponent/>
+      <main>
         <Outlet />
       </main>
     </div>
