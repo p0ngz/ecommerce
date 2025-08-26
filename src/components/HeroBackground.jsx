@@ -44,7 +44,7 @@ const HeroBackground = ({
             initial: { x: -300, opacity: 0 },
             animate: { x: 30, opacity: 1 },
             exit: { opacity: 0 },
-            transition: { duration: 0.8 },
+            transition: { duration: 0.8, ease: "easeOut" },
           }}
         >
           <h2 className="mb-5 text-4xl font-normal leading-tight">
