@@ -11,7 +11,7 @@ import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 
 // component
 import SidebarComponent from "./SidebarComponent";
-import SearchComponent from "./SearchComponent";
+import SearchModalComponent from "./SearchModalComponent";
 const NavbarComponent = () => {
   // onMouseOver, onMouseOut
   const [onHoverFavorite, setOnHoverFavorite] = useState(false);
@@ -208,7 +208,7 @@ const NavbarComponent = () => {
         toggleSidebar={activeSidebar}
         sendStatusToParent={receiveStatusSidebar}
       />
-      <SearchComponent searchModalState={activeSearchModal} sendStateToParent={receiveSearchState}/>
+      <SearchModalComponent searchModalState={activeSearchModal} sendStateToParent={receiveSearchState}/>
     </div>
   );
 };

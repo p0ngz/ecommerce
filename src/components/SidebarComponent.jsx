@@ -26,7 +26,7 @@ const SidebarComponent = ({ toggleSidebar, sendStatusToParent }) => {
       <div id="sidebar-action" className="px-3 py-5 w-full flex justify-end">
         <motion.button
           ref={toggleButtonRef}
-          className="p-2 w-8 h-8 border border-gray-300 flex items-center justify-center rounded hover:bg-gray-200 transition hover:cursor-pointer"
+          className="p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-200 hover:text-gray-600  transition hover:cursor-pointer"
           aria-label="Close sidebar"
           whileHover="hover"
           onClick={toggleDrawer(false)}

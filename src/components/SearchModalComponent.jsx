@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 import CardProduct from "./CardProduct";
 const exampleResult = [
@@ -38,13 +40,18 @@ const exampleResult = [
     price: 80,
   },
 ];
-const SearchComponent = ({ searchModalState = false, sendStateToParent }) => {
+const SearchModalComponent = ({
+  searchModalState = false,
+  sendStateToParent,
+}) => {
   const [searchText, setSearchText] = useState("");
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [resultProductList, setResultProductList] = useState([]);
   //   function
-  const openSearchModalHandler = () => setOpenSearchModal(true);
-  const closeSearchModalHandler = () => setOpenSearchModal(false);
+  const closeSearchModalHandler = () => {
+    setOpenSearchModal(false)
+    setSearchText("")
+  };
   const searchTextHandler = (val) => {
     setSearchText(val);
   };
@@ -52,14 +59,14 @@ const SearchComponent = ({ searchModalState = false, sendStateToParent }) => {
   useEffect(() => {
     const filterResult = exampleResult.filter((product) => {
       if (searchText === "") {
-        return false; 
+        return false;
       }
       return product.titleProduct
         .toLowerCase()
         .includes(searchText.toLowerCase());
     });
-    if(filterResult) {
-        setResultProductList(filterResult)
+    if (filterResult) {
+      setResultProductList(filterResult);
     }
   }, [searchText]);
   useEffect(() => {
@@ -80,8 +87,38 @@ const SearchComponent = ({ searchModalState = false, sendStateToParent }) => {
       >
         <div
           id="modal-search-container"
-          className="absolute top-10 left-1/2 -translate-x-1/2 w-[90%] max-h-[90vh] size-auto px-10 py-10 bg-white rounded-md overflow-y-scroll"
+          className="absolute top-10 left-1/2 -translate-x-1/2 w-[90%] max-h-[90vh] size-auto px-10 py-3 bg-white rounded-md overflow-y-scroll"
         >
+          <div
+            id="search-modal-action"
+            className="w-full flex justify-end"
+          >
+            <motion.button
+              className="mb-3 p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-200 hover:text-gray-600 transition hover:cursor-pointer"
+              aria-label="Close searchModal"
+              whileHover="hover"
+              onClick={() => closeSearchModalHandler()}
+            >
+              <motion.span className="block w-3 h-3 relative ">
+                <motion.span
+                  className="absolute left-1/2 top-1/2 w-4 h-0.5 bg-gray-400 rotate-45 -translate-x-1/2 -translate-y-1/2"
+                  variants={{
+                    initial: { rotate: 45 },
+                    hover: { rotate: -45 },
+                  }}
+                  transition={{ duration: 0.3 }}
+                ></motion.span>
+                <motion.span
+                  className="absolute left-1/2 top-1/2 w-4 h-0.5 bg-gray-400  -rotate-45 -translate-x-1/2 -translate-y-1/2"
+                  variants={{
+                    initial: { rotate: -45 },
+                    hover: { rotate: 45 },
+                  }}
+                  transition={{ duration: 0.3 }}
+                ></motion.span>
+              </motion.span>
+            </motion.button>
+          </div>
           <div id="search-container" className="mb-10">
             <TextField
               id="outlined-basic"
@@ -104,7 +141,8 @@ const SearchComponent = ({ searchModalState = false, sendStateToParent }) => {
               </p>
             ) : (
               <p>
-                <span className="number">{resultProductList.length}</span> results
+                <span className="number">{resultProductList.length}</span>{" "}
+                results
               </p>
             )}
             <button
@@ -138,4 +176,4 @@ const SearchComponent = ({ searchModalState = false, sendStateToParent }) => {
   );
 };
 
-export default SearchComponent;
+export default SearchModalComponent;
