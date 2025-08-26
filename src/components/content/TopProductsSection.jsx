@@ -60,6 +60,7 @@ const TopProductsSection = () => {
               discount={product.discount}
               titleProduct={product.titleProduct}
               price={product.price}
+              viewState={true}
               sendDataToModal={receiveData}
             />
           );

@@ -9,27 +9,39 @@ import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import ShoppingBag from "@mui/icons-material/ShoppingBag";
 import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 
-// sidebar
+// component
 import SidebarComponent from "./SidebarComponent";
+import SearchComponent from "./SearchComponent";
 const NavbarComponent = () => {
   // onMouseOver, onMouseOut
   const [onHoverFavorite, setOnHoverFavorite] = useState(false);
   const [onHoverProfile, setOnHoverProfile] = useState(false);
   const [onHoverShopping, setOnHoverShopping] = useState(false);
   const [activeSidebar, setActiveSidebar] = useState(false);
+  const [activeSearchModal, setActiveSearchModal] = useState(false);
   const toggleSidebarHandler = () => {
     setActiveSidebar(!activeSidebar);
   };
   const receiveStatusSidebar = (status) => {
-    setActiveSidebar(status)
+    setActiveSidebar(status);
+  };
+  const activeSearchModalHandler = () => {
+    setActiveSearchModal(!activeSearchModal);
+  };
+  const receiveSearchState = (state) => {
+    setActiveSearchModal(state);
+
   }
-  useEffect(() => {
-    console.log("activeSidebar changed: ", activeSidebar);
-  }, [activeSidebar])
+  // useEffect(() => {
+  //   console.log("activeSidebar changed: ", activeSidebar);
+  // }, [activeSidebar]);
+  // useEffect(() => {
+  //   console.log("activeSearchModal: ", activeSearchModal);
+  // }, [activeSearchModal]);
   return (
     <div
       id="navbar"
-      className="sm:fixed md:fixed xl:fixed top-0 left-0 w-full h-25  px-6 py-8 bg-gray-100  flex justify-between items-center z-99 relative"
+      className="sm:fixed md:fixed xl:fixed top-0 left-0 w-full md:h-15 xl:h-25  px-6 py-8 bg-gray-100  flex justify-between items-center z-99 relative"
     >
       <div id="left" className="">
         {/* md screen */}
@@ -37,8 +49,14 @@ const NavbarComponent = () => {
           id="left-md-screen"
           className="w-full h-full md:flex md:justify-center md:items-center md:gap-2 xl:hidden"
         >
-          <DensityMediumIcon onClick={() => toggleSidebarHandler()}  className="hover:cursor-pointer"/>
-          <SearchIcon className="hover:cursor-pointer hover:text-emerald-800" />
+          <DensityMediumIcon
+            onClick={() => toggleSidebarHandler()}
+            className="hover:cursor-pointer md:scale-80  hover:scale-100"
+          />
+          <SearchIcon
+            className="hover:cursor-pointer hover:text-emerald-800"
+            onClick={() => activeSearchModalHandler()}
+          />
         </div>
 
         {/* xl screen */}
@@ -186,7 +204,11 @@ const NavbarComponent = () => {
           )}
         </div>
       </div>
-      <SidebarComponent toggleSidebar={activeSidebar} sendStatusToParent={receiveStatusSidebar} />
+      <SidebarComponent
+        toggleSidebar={activeSidebar}
+        sendStatusToParent={receiveStatusSidebar}
+      />
+      <SearchComponent searchModalState={activeSearchModal} sendStateToParent={receiveSearchState}/>
     </div>
   );
 };

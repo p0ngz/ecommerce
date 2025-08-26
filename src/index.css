@@ -45,7 +45,7 @@ span,
 .description {
   font-family: "CanelaText-Light", serif;
 }
-.sub-header-text {
+.sub-header-text, .number {
   font-family: "sans-serif", serif;
 
 }

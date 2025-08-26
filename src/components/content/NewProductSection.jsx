@@ -67,6 +67,7 @@ const NewProductSection = () => {
               rating={product.rating}
               titleProduct={product.titleProduct}
               price={product.price}
+              viewState={true}
               sendDataToModal={receiveData}
             />
           );

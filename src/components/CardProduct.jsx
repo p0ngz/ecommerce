@@ -13,6 +13,7 @@ const CardNewProduct = ({
   rating,
   titleProduct,
   price,
+  viewState = false,
   sendDataToModal,
 }) => {
   const [cardHover, setCardHover] = useState(false);
@@ -30,21 +31,25 @@ const CardNewProduct = ({
       discount: discount,
       rating: rating,
     });
-
   };
+  const goToProduct = () => {
+    console.log('go to product page')
+  }
   useEffect(() => {
-    if (openModal) {
+    if (openModal && viewState) {
       setOpenModalHandler();
-    sendDataToModal({ data: dataToModal, open: openModal });
-
+      sendDataToModal({ data: dataToModal, open: openModal });
     }
   }, [openModal]);
   return (
     <div
       id="card-new-product"
-      className="border border-gray-300 rounded-xl  overflow-hidden group"
-      onMouseEnter={() => cardHoverHandler(true)}
-      onMouseLeave={() => cardHoverHandler(false)}
+      className={`border border-gray-300 rounded-xl  overflow-hidden group ${
+        viewState ? "" : "hover:cursor-pointer"
+      }`}
+      onMouseEnter={viewState ? () => cardHoverHandler(true) : null}
+      onMouseLeave={viewState ? () => cardHoverHandler(false) : null}
+      onClick={viewState ? null : () => goToProduct()}
     >
       <div
         id="img-card-product"
@@ -64,13 +69,14 @@ const CardNewProduct = ({
           </div>
         )}
         <div
-          className="
+          className={`
           absolute left-0 right-0 bottom-0 
           bg-zinc-950 text-white p-4 
           text-center
           translate-y-full group-hover:translate-y-0
           transition-transform duration-500 ease-in-out
-        "
+          ${viewState ? "" : "hidden"}
+        `}
           onClick={() => setOpenModalHandler()}
         >
           <p className="text-sm uppercase hover:cursor-pointer">Quick View</p>
@@ -78,7 +84,9 @@ const CardNewProduct = ({
         <AnimatePresence>
           {cardHover && (
             <motion.div
-              className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex justify-center gap-3"
+              className={`absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex justify-center gap-3 ${
+                viewState ? "" : "hidden"
+              }`}
               // animate={{ opacity: 1, scale: 1 }}
               whileHover={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
@@ -107,24 +115,28 @@ const CardNewProduct = ({
         className="py-10 flex flex-col justify-center items-center"
       >
         <div id="rating-container" className="mb-2 flex">
-          { rating && [1, 2, 3, 4, 5].map((val) => {
-            return rating - val > 0.5 ? (
-              <StarIcon key={val} className="text-orange-400" />
-            ) : val <= rating ? (
-              <StarHalfIcon key={val} className="text-orange-400" />
-            ) : (
-              <StarOutlineIcon key={val} />
-            );
-          })}
+          {rating &&
+            [1, 2, 3, 4, 5].map((val) => {
+              return rating - val > 0.5 ? (
+                <StarIcon key={val} className="text-orange-400" />
+              ) : val <= rating ? (
+                <StarHalfIcon key={val} className="text-orange-400" />
+              ) : (
+                <StarOutlineIcon key={val} />
+              );
+            })}
         </div>
-        <div id="title-card-product" className="mb-2 title-product uppercase text-center">
+        <div
+          id="title-card-product"
+          className="mb-2 title-product uppercase text-center"
+        >
           {titleProduct}
         </div>
         <div id="price-product" className="mb-2 text-xl flex gap-3">
           {discount > 0 ? (
             <>
               <div className="text-red-400 line-through">${price}</div>
-              <div>${(price - (price * discount) / 100)}</div>
+              <div>${price - (price * discount) / 100}</div>
             </>
           ) : (
             <div>${price}</div>
