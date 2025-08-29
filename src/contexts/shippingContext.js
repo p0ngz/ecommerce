@@ -63,9 +63,17 @@ export const ShippingContext = createContext();
 
 export const ShippingProvider = ({ children }) => {
   const [shippingData, setShippingData] = useState(initialShippingData);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cash");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [couponCode, setCouponCode] = useState(null);
   const [isMatchCoupon, setIsMatchCoupon] = useState(false);
+  const [formDataOrder, setFormDataOrder] = useState({
+    shippingData: {},
+    paymentMethod: "",
+    couponCode: "",
+    beforeDiscountTotal: 0,
+    total: 0,
+  });
+  const [isDisabledConfirm, setIsDisabledConfirm] = useState(true);
   // Increase quantity
   const increaseQuantity = (id) => {
     setShippingData((prev) =>
@@ -129,7 +137,6 @@ export const ShippingProvider = ({ children }) => {
   const removeItem = (id) => {
     setShippingData((prev) => prev.filter((item) => item.id !== id));
   };
-  // NEA-7KQ4
   //   Match Coupon Code
   const matchCouponCode = (couponCode) => {
     return couponList.filter((code) => {
@@ -141,10 +148,13 @@ export const ShippingProvider = ({ children }) => {
     ShippingContext.Provider,
     {
       value: {
+        // state
         shippingData,
         selectedPaymentMethod,
         couponCode,
         isMatchCoupon,
+        formDataOrder,
+        // function
         setShippingData,
         increaseQuantity,
         decreaseQuantity,
@@ -156,7 +166,10 @@ export const ShippingProvider = ({ children }) => {
         matchCouponCode,
         getTotalSummary,
         setIsMatchCoupon,
-        beforeDiscountCouponTotal
+        beforeDiscountCouponTotal,
+  setFormDataOrder,
+  isDisabledConfirm,
+  setIsDisabledConfirm
       },
     },
     children

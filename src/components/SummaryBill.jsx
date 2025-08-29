@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -14,7 +15,15 @@ import { useShipping } from "../contexts/shippingContext";
 import LoadingSpinner from "../utility/LoadingSpinner";
 
 // for real if use couponCode need user click APPLY first then go check no auto check like this => w8 to refactor
-const SummaryBill = () => {
+const SummaryBill = ({confirmHandler}) => {
+  const [discountPercentage, setDiscountPercentage] = useState(null);
+  const [discountTotal, setDiscountTotal] = useState(0);
+  // Spinner and displayed total logic
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [displayedTotal, setDisplayedTotal] = useState(0);
+  const navigate = useNavigate();
+
+  // Get all needed values from context in one call
   const {
     selectedPaymentMethod,
     setSelectedPaymentMethod,
@@ -24,33 +33,44 @@ const SummaryBill = () => {
     isMatchCoupon,
     setIsMatchCoupon,
     getTotal,
-    shippingData,
     getTotalSummary,
     beforeDiscountCouponTotal,
+    shippingData,
+    setFormDataOrder,
+    isDisabledConfirm,
+    setIsDisabledConfirm,
   } = useShipping();
-  const [discountPercentage, setDiscountPercentage] = useState(null);
-  const [discountTotal, setDiscountTotal] = useState(0);
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [lastTotal, setLastTotal] = useState(getTotalSummary());
 
+  // Payment method labels
   const cashLabel = (
     <span className="flex items-center gap-1">
-      <MonetizationOnIcon fontSize="small" />
-      cash
+      <MonetizationOnIcon sx={{ fontSize: 18 }} /> Cash
     </span>
   );
   const qrLabel = (
     <span className="flex items-center gap-1">
-      <QrCode2Icon fontSize="small" />
-      QR PromptPay
+      <QrCode2Icon sx={{ fontSize: 18 }} /> QR Code
     </span>
   );
-  const paymentMethodHandler = (val) => {
-    setSelectedPaymentMethod(val);
+
+  // Coupon code handler
+  const setCouponCodeHandler = (value) => {
+    setCouponCode(value);
   };
-  const setCouponCodeHandler = (val) => {
-    setCouponCode(val);
+
+  // Payment method handler
+  const paymentMethodHandler = (value) => {
+    setSelectedPaymentMethod(value);
+    setIsDisabledConfirm(false);
   };
+
+  // Confirm order handler
+  const confirmShippingOrder = () => {
+    confirmHandler(true, selectedPaymentMethod)
+    
+  };
+
+  // Coupon matching and discount percentage calculation
   useEffect(() => {
     if (couponCode && couponCode !== "") {
       const match = matchCouponCode(couponCode);
@@ -67,29 +87,62 @@ const SummaryBill = () => {
       setIsMatchCoupon(false);
       setDiscountPercentage(null);
     }
-  }, [couponCode]);
+  }, [couponCode, matchCouponCode, setIsMatchCoupon]);
+
+  // Memoized total calculations
+  const beforeDiscountTotal = useMemo(
+    () => {
+      return beforeDiscountCouponTotal()
+    },
+    [beforeDiscountCouponTotal, shippingData]
+  );
+  const finalTotal = useMemo(
+    () => (isMatchCoupon ? getTotalSummary() : beforeDiscountTotal),
+    [isMatchCoupon, getTotalSummary, beforeDiscountTotal]
+  );
+
   useEffect(() => {
-    setDiscountTotal((getTotalSummary() * discountPercentage) / 100);
-  }, [discountPercentage]);
-  //   useEffect(() => {
-  //     setIsCalculating(true);
-  //     const timer = setTimeout(() => setIsCalculating(false), 300); // adjust as needed
-  //     return () => clearTimeout(timer);
-  //   }, [isMatchCoupon, shippingData, couponCode]);
+    if (isMatchCoupon && discountPercentage) {
+      setDiscountTotal((getTotalSummary() * discountPercentage) / 100);
+    } else {
+      setDiscountTotal(0);
+    }
+  }, [isMatchCoupon, discountPercentage, getTotalSummary, shippingData]);
+
+  // Spinner logic: only spin when finalTotal changes, then update displayedTotal
   useEffect(() => {
     setIsCalculating(true);
-    const newTotal = getTotalSummary();
-    if (newTotal !== lastTotal) {
-      setTimeout(() => {
-        setLastTotal(newTotal);
-        setIsCalculating(false);
-      }, 500);
-    } else {
+    const timeout = setTimeout(() => {
+      setDisplayedTotal(finalTotal);
       setIsCalculating(false);
-    }
-    // eslint-disable-next-line
-  }, [getTotalSummary, isMatchCoupon, shippingData, couponCode]);
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [finalTotal]);
 
+  // Loading spinner logic: show spinner when total changes
+  useEffect(() => {}, [finalTotal]);
+
+  // Update order info when relevant data changes
+  useEffect(() => {
+    const orderInfo = {
+      shippingData,
+      paymentMethod: selectedPaymentMethod,
+      couponCode: isMatchCoupon ? couponCode : null,
+      beforeDiscountTotal: beforeDiscountCouponTotal() ? beforeDiscountCouponTotal() : null,
+      total: displayedTotal,
+    };
+    setFormDataOrder(orderInfo);
+  }, [
+    shippingData,
+    selectedPaymentMethod,
+    couponCode,
+    finalTotal,
+    setFormDataOrder,
+  ]);
+  useEffect(() => {
+    if (selectedPaymentMethod) setIsDisabledConfirm(false);
+  }, [selectedPaymentMethod]);
+  // All hooks and logic go here
   return (
     <div id="action-shipping" className="p-10 w-full h-auto  bg-[#f6f6f6] ">
       <div id="payment-method">
@@ -188,7 +241,7 @@ const SummaryBill = () => {
             <p className="text-sm font-semibold">
               {isMatchCoupon && discountPercentage ? (
                 <span className="number text-red-400">
-                  (-{discountPercentage}%) ${discountTotal}
+                  (-{discountPercentage}%) ${discountTotal.toFixed(2)}
                 </span>
               ) : (
                 <span className="number ">-</span>
@@ -200,15 +253,32 @@ const SummaryBill = () => {
             <p className="number font-semibold text-lg">
               {isCalculating ? (
                 <LoadingSpinner />
-              ) : isMatchCoupon ? (
-                <>$ {getTotalSummary().toFixed(2)}</>
+              ) : Number.isFinite(displayedTotal) ? (
+                <>$ {displayedTotal.toFixed(2)}</>
               ) : (
-                <>$ {beforeDiscountCouponTotal().toFixed(2)}</>
+                "-"
               )}
             </p>
           </div>
         </div>
       </div>
+      <Button
+        variant="outlined"
+        sx={{
+          width: "100%",
+          height: 56,
+          my: 3,
+          backgroundColor: isDisabledConfirm ? "white" : "black",
+          color: isDisabledConfirm ? "black" : "white",
+          "&:hover": {
+            backgroundColor: "gray",
+          },
+        }}
+        onClick={() => confirmShippingOrder()}
+        disabled={isDisabledConfirm ? true : false}
+      >
+        Confirm
+      </Button>
     </div>
   );
 };
