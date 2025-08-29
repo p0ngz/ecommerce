@@ -78,7 +78,7 @@ const SearchModalComponent = ({
     }
   }, [openSearchModal]);
   return (
-    <div id="modal-search">
+    <div id="modal-search" className="absolute">
       <Modal
         open={openSearchModal}
         onClose={closeSearchModalHandler}

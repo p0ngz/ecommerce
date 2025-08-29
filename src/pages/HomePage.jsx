@@ -5,19 +5,17 @@ import ProductsSection from "../components/content/ProductsSection";
 import DescriptionSection from "../components/content/DescriptionSection";
 import TopProductsSection from "../components/content/TopProductsSection";
 import PromoteSection from "../components/content/PromoteSection";
-import FooterSection from "../components/footer/FooterSection";
 
 const HomePage = () => {
   return (
-    <>
+    <div className="w-full">
       <HeroSection />
       <NewProductSection />
       <ProductsSection />
       <DescriptionSection />
       <TopProductsSection />
       <PromoteSection />
-      <FooterSection />
-    </>
+    </div>
   );
 };
 

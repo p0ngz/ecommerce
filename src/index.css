@@ -45,9 +45,9 @@ span,
 .description {
   font-family: "CanelaText-Light", serif;
 }
-.sub-header-text, .number {
+.sub-header-text,
+.number {
   font-family: "sans-serif", serif;
-
 }
 body {
   font-family: "sans-serif", serif;
@@ -194,5 +194,7 @@ body {
     background: var(--sidebar-ring);
     border-radius: 9999px;
   }
-  
+  .center-screen {
+    @apply flex justify-center items-center w-full h-full;
+  }
 }

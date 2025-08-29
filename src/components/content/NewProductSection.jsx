@@ -55,7 +55,7 @@ const NewProductSection = () => {
 
       <div
         id="card-new-product-container"
-        className="px-50 grid grid-cols-1 md:grid-cols-2  xl:grid-cols-4 gap-5 px-5 py-10"
+        className="px-10 sm:px-50 flex flex-col justify-center items-center sm:grid sm:grid-cols-1 md:grid-cols-2  xl:grid-cols-4 gap-5 px-5 py-10"
       >
         {/* we import CardComponent Here */}
         {productData.map((product, index) => {

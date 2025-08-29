@@ -44,7 +44,7 @@ const CardNewProduct = ({
   return (
     <div
       id="card-new-product"
-      className={`border border-gray-300 rounded-xl  overflow-hidden group ${
+      className={`w-[80%] h-[80%] overflow-y-scroll  sm:w-[100%] sm:h-[100%] border border-gray-300 rounded-xl  sm:overflow-hidden group ${
         viewState ? "" : "hover:cursor-pointer"
       }`}
       onMouseEnter={viewState ? () => cardHoverHandler(true) : null}
@@ -53,7 +53,7 @@ const CardNewProduct = ({
     >
       <div
         id="img-card-product"
-        className="bg-gray-200 rounded-t-xl relative overflow-hidden"
+        className="h-[50%] sm:h-[100%] bg-gray-200 rounded-t-xl relative overflow-hidden"
       >
         <img
           src={imgSrc}
@@ -112,7 +112,7 @@ const CardNewProduct = ({
 
       <div
         id="info-card-product"
-        className="py-10 flex flex-col justify-center items-center"
+        className="h-[50%] sm:h-[100%] py-10 flex flex-col justify-center items-center"
       >
         <div id="rating-container" className="mb-2 flex">
           {rating &&

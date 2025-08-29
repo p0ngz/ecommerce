@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -30,8 +31,7 @@ const NavbarComponent = () => {
   };
   const receiveSearchState = (state) => {
     setActiveSearchModal(state);
-
-  }
+  };
   // useEffect(() => {
   //   console.log("activeSidebar changed: ", activeSidebar);
   // }, [activeSidebar]);
@@ -44,14 +44,14 @@ const NavbarComponent = () => {
       className="sm:fixed md:fixed xl:fixed top-0 left-0 w-full md:h-15 xl:h-25  px-6 py-8 bg-gray-100  flex justify-between items-center z-99 relative"
     >
       <div id="left" className="">
-        {/* md screen */}
+        {/* sm and md screen */}
         <div
           id="left-md-screen"
-          className="w-full h-full md:flex md:justify-center md:items-center md:gap-2 xl:hidden"
+          className="w-full h-full sm:flex sm:justify-center sm:items-center sm:gap-2 xl:hidden"
         >
           <DensityMediumIcon
             onClick={() => toggleSidebarHandler()}
-            className="hover:cursor-pointer md:scale-80  hover:scale-100"
+            className="hover:cursor-pointer sm:scale-80  hover:scale-100"
           />
           <SearchIcon
             className="hover:cursor-pointer hover:text-emerald-800"
@@ -60,25 +60,29 @@ const NavbarComponent = () => {
         </div>
 
         {/* xl screen */}
-        <div id="left-xl-screen" className="w-full h-full md:hidden xl:block">
-          <img
-            src="https://wpbingo-adena.myshopify.com/cdn/shop/files/logo.png?crop=center&height=129&v=1729503852&width=399"
-            alt="logo"
-            className="w-[5.5rem] h-[1.5rem] hover:cursor-pointer"
-          />
+        <div id="left-xl-screen" className="w-full h-full hidden xl:block">
+          <Link to="/">
+            <img
+              src="https://wpbingo-adena.myshopify.com/cdn/shop/files/logo.png?crop=center&height=129&v=1729503852&width=399"
+              alt="logo"
+              className="w-[5.5rem] h-[1.5rem] hover:cursor-pointer"
+            />
+          </Link>
         </div>
       </div>
       <div id="center">
         {/* md screen */}
         <div
           id="center-md-screen"
-          className="w-full h-full hidden md:block xl:hidden"
+          className="w-full h-full block  xl:hidden"
         >
-          <img
-            src="https://wpbingo-adena.myshopify.com/cdn/shop/files/logo.png?crop=center&height=129&v=1729503852&width=399"
-            alt="logo"
-            className="w-[5.5rem] h-[1.5rem] hover:cursor-pointer"
-          />
+          <Link to="/">
+            <img
+              src="https://wpbingo-adena.myshopify.com/cdn/shop/files/logo.png?crop=center&height=129&v=1729503852&width=399"
+              alt="logo"
+              className="w-[5.5rem] h-[1.5rem] hover:cursor-pointer"
+            />
+          </Link>
         </div>
 
         {/* xl screen */}
@@ -137,13 +141,15 @@ const NavbarComponent = () => {
         {/* md-screen */}
         <div
           id="right-md-screen"
-          className="hidden md:flex md:items-center md:gap-3 xl:hidden"
+          className="flex items-center gap-3 xl:hidden"
         >
           {onHoverFavorite ? (
-            <FavoriteIcon
-              className="text-red-400 hover:cursor-pointer"
-              onMouseLeave={() => setOnHoverFavorite(false)}
-            />
+            <Link to="/wishlist">
+              <FavoriteIcon
+                className="text-red-400 hover:cursor-pointer"
+                onMouseLeave={() => setOnHoverFavorite(false)}
+              />
+            </Link>
           ) : (
             <FavoriteBorderIcon
               className="hover:cursor-pointer"
@@ -151,10 +157,12 @@ const NavbarComponent = () => {
             />
           )}
           {onHoverShopping ? (
-            <ShoppingBag
-              className="text-fuchsia-600 hover:cursor-pointer"
-              onMouseLeave={() => setOnHoverShopping(false)}
-            />
+            <Link to="/shipping">
+              <ShoppingBag
+                className="text-fuchsia-600 hover:cursor-pointer"
+                onMouseLeave={() => setOnHoverShopping(false)}
+              />
+            </Link>
           ) : (
             <ShoppingBagOutlinedIcon
               className="hover:cursor-pointer"
@@ -181,10 +189,12 @@ const NavbarComponent = () => {
             />
           )}
           {onHoverFavorite ? (
-            <FavoriteIcon
-              className="text-red-400 hover:cursor-pointer"
-              onMouseLeave={() => setOnHoverFavorite(false)}
-            />
+            <Link to="/wishlist">
+              <FavoriteIcon
+                className="text-red-400 hover:cursor-pointer"
+                onMouseLeave={() => setOnHoverFavorite(false)}
+              />
+            </Link>
           ) : (
             <FavoriteBorderIcon
               className="hover:cursor-pointer"
@@ -192,10 +202,12 @@ const NavbarComponent = () => {
             />
           )}
           {onHoverShopping ? (
-            <ShoppingBag
-              className="text-fuchsia-600 hover:cursor-pointer"
-              onMouseLeave={() => setOnHoverShopping(false)}
-            />
+            <Link to="/shipping">
+              <ShoppingBag
+                className="text-fuchsia-600 hover:cursor-pointer"
+                onMouseLeave={() => setOnHoverShopping(false)}
+              />
+            </Link>
           ) : (
             <ShoppingBagOutlinedIcon
               className="hover:cursor-pointer"
@@ -208,7 +220,10 @@ const NavbarComponent = () => {
         toggleSidebar={activeSidebar}
         sendStatusToParent={receiveStatusSidebar}
       />
-      <SearchModalComponent searchModalState={activeSearchModal} sendStateToParent={receiveSearchState}/>
+      <SearchModalComponent
+        searchModalState={activeSearchModal}
+        sendStateToParent={receiveSearchState}
+      />
     </div>
   );
 };
