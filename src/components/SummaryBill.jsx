@@ -21,7 +21,7 @@ const SummaryBill = ({confirmHandler}) => {
   // Spinner and displayed total logic
   const [isCalculating, setIsCalculating] = useState(false);
   const [displayedTotal, setDisplayedTotal] = useState(0);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Get all needed values from context in one call
   const {

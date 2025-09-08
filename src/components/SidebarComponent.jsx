@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -8,15 +9,15 @@ import ListItemButton from "@mui/material/ListItemButton";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-const sidebarData = ["Home", "Shop", "Product", "Blog", "Featured"];
+const sidebarData = ["Home", "Products", "Blog", "Featured"];
+const routerData = ["/", "/products", "/blog", "/feature"];
 const SidebarComponent = ({ toggleSidebar, sendStatusToParent }) => {
   const [open, setOpen] = useState(false);
   const toggleButtonRef = useRef(null);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
-    sendStatusToParent(false)
-    
+    sendStatusToParent(false);
   };
   useEffect(() => {
     setOpen(toggleSidebar);
@@ -56,17 +57,20 @@ const SidebarComponent = ({ toggleSidebar, sendStatusToParent }) => {
         <List>
           {sidebarData.map((text, idx) => (
             <React.Fragment key={text}>
-              <ListItem disablePadding>
-                <ListItemButton sx={{ py: 2 }}>
-                  <div className="w-full h-full flex justify-between items-center hover:text-[#63512D]">
-                    <p>{text}</p>
-                    <KeyboardArrowRightIcon
-                      fontSize="medium"
-                      className="pt-1 text-gray-400"
-                    />
-                  </div>
-                </ListItemButton>
-              </ListItem>
+              <Link to={routerData[idx]}>
+                <ListItem disablePadding>
+                  <ListItemButton sx={{ py: 2 }}>
+                    <div className="w-full h-full flex justify-between items-center hover:text-[#63512D]">
+                      <p>{text}</p>
+                      <KeyboardArrowRightIcon
+                        fontSize="medium"
+                        className="pt-1 text-gray-400"
+                      />
+                    </div>
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+
               {idx < sidebarData.length && (
                 <Divider sx={{ mx: 2, borderColor: "#e5e7eb" }} />
               )}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import ShippingTable from "../components/shippingTable/ShippingTable";
 import TipShipping from "../components/TipShipping";

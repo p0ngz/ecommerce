@@ -72,10 +72,7 @@ const NavbarComponent = () => {
       </div>
       <div id="center">
         {/* md screen */}
-        <div
-          id="center-md-screen"
-          className="w-full h-full block  xl:hidden"
-        >
+        <div id="center-md-screen" className="w-full h-full block  xl:hidden">
           <Link to="/">
             <img
               src="https://wpbingo-adena.myshopify.com/cdn/shop/files/logo.png?crop=center&height=129&v=1729503852&width=399"
@@ -91,58 +88,65 @@ const NavbarComponent = () => {
           className="w-full xl:flex xl:items-center gap-4 hidden "
         >
           <div id="home-btn" className="hover:cursor-pointer">
-            <p>
-              Home
-              <KeyboardArrowDownIcon
-                fontSize="small"
-                className="text-gray-400"
-              />
-            </p>
+            <Link to="/">
+              <p>
+                Home
+                <KeyboardArrowDownIcon
+                  fontSize="small"
+                  className="text-gray-400"
+                />
+              </p>
+            </Link>
           </div>
-          <div id="shop-btn" className="hover:cursor-pointer">
-            <p>
-              Shop
-              <KeyboardArrowDownIcon
-                fontSize="small"
-                className="text-gray-400"
-              />
-            </p>
-          </div>
-          <div id="product-btn" className="hover:cursor-pointer">
-            <p>
-              Product
-              <KeyboardArrowDownIcon
-                fontSize="small"
-                className="text-gray-400"
-              />
-            </p>
+          {/* <div id="shop-btn" className="hover:cursor-pointer">
+            <Link to="/shop">
+              <p>
+                Shop
+                <KeyboardArrowDownIcon
+                  fontSize="small"
+                  className="text-gray-400"
+                />
+              </p>
+            </Link>
+          </div> */}
+          <div id="products-btn" className="hover:cursor-pointer">
+            <Link to="/products">
+              <p>
+                Products
+                <KeyboardArrowDownIcon
+                  fontSize="small"
+                  className="text-gray-400"
+                />
+              </p>
+            </Link>
           </div>
           <div id="blog-btn" className="hover:cursor-pointer">
-            <p>
-              Blog
-              <KeyboardArrowDownIcon
-                fontSize="small"
-                className="text-gray-400"
-              />
-            </p>
+            <Link to="/blog">
+              <p>
+                Blog
+                <KeyboardArrowDownIcon
+                  fontSize="small"
+                  className="text-gray-400"
+                />
+              </p>
+            </Link>
           </div>
           <div id="featured-btn" className="hover:cursor-pointer">
-            <p>
-              Featured
-              <KeyboardArrowDownIcon
-                fontSize="small"
-                className="text-gray-400"
-              />
-            </p>
+            <Link to="/feature">
+              <p>
+                Featured
+                <KeyboardArrowDownIcon
+                  fontSize="small"
+                  className="text-gray-400"
+                />
+              </p>
+            </Link>
           </div>
         </div>
       </div>
       <div id="right">
         {/* md-screen */}
-        <div
-          id="right-md-screen"
-          className="flex items-center gap-3 xl:hidden"
-        >
+        <div id="right-md-screen" className="flex items-center gap-3 xl:hidden">
           {onHoverFavorite ? (
             <Link to="/wishlist">
               <FavoriteIcon
