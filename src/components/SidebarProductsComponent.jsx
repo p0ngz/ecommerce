@@ -37,6 +37,9 @@ const SidebarProductsComponent = ({ toggleSidebar, sendStatusToParent }) => {
   const accordionChangeHandler = (panelIdx) => (event, isExpanded) => {
     setAccordionExpanded(isExpanded ? panelIdx : null);
   };
+//   const filterChangeHandler = () => {
+//     sendFilterToParent()
+//   }
   useEffect(() => {
     setOpen(toggleSidebar);
   }, [toggleSidebar]);
@@ -90,6 +93,7 @@ const SidebarProductsComponent = ({ toggleSidebar, sendStatusToParent }) => {
             sx={{
               marginBottom: "0.1rem",
               boxShadow: "none",
+              position: "relative",
               "&:before": {
                 display: "none",
               },
