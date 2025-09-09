@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
+import { useFilteredProducts } from "../../contexts/filterProductsContext";
 
 function valuetext(value) {
   return <span className="description">{value}°C</span>;
@@ -9,17 +10,40 @@ function valuetext(value) {
 
 const PriceTopic = () => {
   const [value, setValue] = useState([0, 100]);
+  const { setFilteredData } = useFilteredProducts();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const filteredHandler = (type, filterData) => {
+    const data = {
+      type: type,
+      filter: filterData,
+    };
+    setFilteredData((prev) => {
+      return { ...prev, ...data };
+    });
+  };
   const resetHandler = () => {
     setValue([0, 100]);
-  }
+  };
+  useEffect(() => {
+    filteredHandler("price", {
+      min: value[0],
+      max: value[1],
+    });
+  }, [value]);
   return (
     <>
       <Box sx={{ width: "90%", color: "gray", margin: "0 auto" }}>
-        <Typography><span className="text-gray-400 text-sm underline hover:cursor-pointer" onClick={() => resetHandler()}>Reset</span></Typography>
+        <Typography>
+          <span
+            className="text-gray-400 text-sm underline hover:cursor-pointer"
+            onClick={() => resetHandler()}
+          >
+            Reset
+          </span>
+        </Typography>
         <Slider
           getAriaLabel={() => "Temperature range"}
           value={value}

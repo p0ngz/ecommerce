@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useFilteredProducts } from "../../contexts/filterProductsContext";
 
 const collectionData = [
   {
@@ -31,14 +32,24 @@ const collectionData = [
 const CollectionTopic = () => {
   const [collections, setCollections] = useState([]);
   const [showMoreOrLess, setShowMoreOrLess] = useState(true);
+  const { setFilteredData } = useFilteredProducts();
 
   const showMoreCollectionHandler = (state) => {
     setShowMoreOrLess(state);
   };
-
+  const filteredHandler = (type, filterData) => {
+    const data = {
+      type: type,
+      filter: filterData,
+    };
+    setFilteredData((prev) => {
+      return { ...prev, ...data };
+    });
+  };
   useEffect(() => {
     setCollections(collectionData);
   }, []);
+
   return (
     <>
       <ul className="list-none p-0 m-0 leading-[2] ">
@@ -48,6 +59,7 @@ const CollectionTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                  onClick={() => filteredHandler("collection", collection.type)}
                 >
                   {collection.type} ({collection.count})
                 </li>
@@ -59,6 +71,7 @@ const CollectionTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                  onClick={() => filteredHandler("collection", collection.type)}
                 >
                   {collection.type} ({collection.count})
                 </li>
@@ -69,6 +82,7 @@ const CollectionTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                  onClick={() => filteredHandler("collection", collection.type)}
                 >
                   {collection.type} ({collection.count})
                 </li>

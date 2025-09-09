@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useFilteredProducts } from "../../contexts/filterProductsContext";
 
 const availData = [
   {
@@ -15,9 +16,19 @@ const availData = [
 const AvailabilityTopic = () => {
   const [availabilityData, setAvailabilityData] = useState([]);
   const [showMoreOrLess, setShowMoreOrLess] = useState(true);
+  const { setFilteredData } = useFilteredProducts();
 
   const showMoreOrLessHandler = (state) => {
     setShowMoreOrLess(state);
+  };
+  const filteredHandler = (type, filterData) => {
+    const data = {
+      type: type,
+      filter: filterData,
+    };
+    setFilteredData((prev) => {
+      return { ...prev, ...data };
+    });
   };
   useEffect(() => {
     setAvailabilityData(availData);
@@ -31,6 +42,7 @@ const AvailabilityTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                  onClick={() => filteredHandler("availability", data.type)}
                 >
                   {data.type} ({data.count})
                 </li>
@@ -42,6 +54,8 @@ const AvailabilityTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                  onClick={() => filteredHandler("availability", data.type)}
+
                 >
                   {data.type} ({data.count})
                 </li>
@@ -52,6 +66,8 @@ const AvailabilityTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                  onClick={() => filteredHandler("availability", data.type)}
+
                 >
                   {data.type} ({data.count})
                 </li>

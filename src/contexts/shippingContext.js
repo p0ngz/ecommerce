@@ -51,7 +51,7 @@ const initialShippingData = [
     price: 80,
     quantity: 3,
   },
-//   setDiscountPercentage
+  //   setDiscountPercentage
 ];
 const couponList = [
   { code: "NEA-7KQ4", discountType: "percent", discount: 15 },
@@ -167,9 +167,9 @@ export const ShippingProvider = ({ children }) => {
         getTotalSummary,
         setIsMatchCoupon,
         beforeDiscountCouponTotal,
-  setFormDataOrder,
-  isDisabledConfirm,
-  setIsDisabledConfirm
+        setFormDataOrder,
+        isDisabledConfirm,
+        setIsDisabledConfirm,
       },
     },
     children

@@ -8,7 +8,6 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-
 import { sidebarProductTopicData } from "./sidebarProducts/sidebarProductTopic";
 import CollectionTopic from "./sidebarProducts/CollectionTopic";
 import AvailabilityTopic from "./sidebarProducts/AvailabilityTopic";
@@ -16,6 +15,7 @@ import PriceTopic from "./sidebarProducts/PriceTopic";
 import ColorTopic from "./sidebarProducts/ColorTopic";
 import SizeTopic from "./sidebarProducts/SizeTopic";
 
+// use Context for pass data and implement it
 const accordionList = [
   <CollectionTopic />,
   <AvailabilityTopic />,
@@ -23,13 +23,19 @@ const accordionList = [
   <ColorTopic />,
   <SizeTopic />,
 ];
+/*
+When to fetch from API (backend filtering):
+ - Large datasets: If your product list is big (hundreds/thousands of items), always filter on the backend. Fetch only what you need.
+ - Dynamic data: If the data can change often (e.g., inventory, prices), fetch fresh data from the API.
+ - SEO or deep linking: If you want URLs to reflect filters (for sharing/bookmarking), backend filtering is best.
+ - Pagination, sorting, or search: These are usually best handled by the backend.
+*/
 
 const SidebarProductsComponent = ({
   toggleSidebar,
   sendStatusToParent = () => {},
 }) => {
   const [open, setOpen] = useState(false);
-  const [accordionExpanded, setAccordionExpanded] = useState(null);
   const [expandedAccordionData, setExpandedAccordionData] = useState(
     Array(accordionList.length).fill(null)
   );
@@ -40,7 +46,6 @@ const SidebarProductsComponent = ({
     sendStatusToParent(false);
   };
   const accordionChangeHandler = (panelIdx) => (event, isExpanded) => {
-    setAccordionExpanded(isExpanded ? panelIdx : null);
     setExpandedAccordionData((prev) => ({
       ...prev,
       [panelIdx]: isExpanded,
@@ -50,14 +55,13 @@ const SidebarProductsComponent = ({
   useEffect(() => {
     setOpen(toggleSidebar);
   }, [toggleSidebar]);
-  useEffect(() => {
-    if (!open) {
-      setAccordionExpanded(null);
-    }
-  }, [open]);
-  useEffect(() => {
-    console.log('expandedAccordionData: ', expandedAccordionData)
-  }, [expandedAccordionData])
+  //   useEffect(() => {
+  //     if (!open) {
+  //       setAccordionExpanded(null);
+  //     }
+  //   }, [open]);
+  // useEffect(() => {
+  // }, [expandedAccordionData]);
   const DrawerList = (
     <Box
       sx={{

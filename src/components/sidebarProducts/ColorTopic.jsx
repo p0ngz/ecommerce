@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
+import { useFilteredProducts } from "../../contexts/filterProductsContext";
 
 import ColorElement from "./colorElement";
 const colorData = [
@@ -23,6 +24,17 @@ const colorData = [
 const ColorTopic = () => {
   // eslint-disable-next-line no-unused-vars
   const [chooseColorList, setChooseColorList] = useState([]);
+  const { setFilteredData } = useFilteredProducts();
+
+  const filteredHandler = (type, filterData) => {
+    const data = {
+      type: type,
+      filter: filterData,
+    };
+    setFilteredData((prev) => {
+      return { ...prev, ...data };
+    });
+  };
   const receiveColor = useCallback((color, isChecked) => {
     setChooseColorList((prev) => {
       if (isChecked) {
@@ -34,14 +46,19 @@ const ColorTopic = () => {
       }
     });
   }, []);
-  // useEffect(() => {
-  //   console.log("chooseColorList: ", chooseColorList);
-  // }, [chooseColorList]);
+
+  useEffect(() => {
+    filteredHandler("color", chooseColorList);
+  }, [chooseColorList]);
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         {colorData.map((item, idx) => (
-          <ColorElement key={idx} item={item} sendColorToParent={receiveColor} />
+          <ColorElement
+            key={idx}
+            item={item}
+            sendColorToParent={receiveColor}
+          />
         ))}
       </Box>
     </>
