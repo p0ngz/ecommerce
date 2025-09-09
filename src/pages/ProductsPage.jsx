@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
@@ -48,11 +48,7 @@ const ProductsPage = () => {
   };
   const sidebarToggleHandler = () => {
     setSidebarToggle(!sidebarToggle);
-    console.log('change  status sidebarToggle: ', sidebarToggle);
   };
-  useMemo(() => {
-    console.log('check status sidebar: ', sidebarToggle);
-  }, [sidebarToggle]);
   return (
     <div
       id="products=page"

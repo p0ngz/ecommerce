@@ -34,7 +34,6 @@ const CollectionTopic = () => {
 
   const showMoreCollectionHandler = (state) => {
     setShowMoreOrLess(state);
-    console.log("check state: ", state);
   };
 
   useEffect(() => {

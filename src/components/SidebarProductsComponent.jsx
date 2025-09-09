@@ -16,7 +16,6 @@ import PriceTopic from "./sidebarProducts/PriceTopic";
 import ColorTopic from "./sidebarProducts/ColorTopic";
 import SizeTopic from "./sidebarProducts/SizeTopic";
 
-
 const accordionList = [
   <CollectionTopic />,
   <AvailabilityTopic />,
@@ -25,9 +24,15 @@ const accordionList = [
   <SizeTopic />,
 ];
 
-const SidebarProductsComponent = ({ toggleSidebar, sendStatusToParent }) => {
+const SidebarProductsComponent = ({
+  toggleSidebar,
+  sendStatusToParent = () => {},
+}) => {
   const [open, setOpen] = useState(false);
   const [accordionExpanded, setAccordionExpanded] = useState(null);
+  const [expandedAccordionData, setExpandedAccordionData] = useState(
+    Array(accordionList.length).fill(null)
+  );
   const toggleButtonRef = useRef(null);
 
   const toggleDrawer = (newOpen) => () => {
@@ -36,13 +41,23 @@ const SidebarProductsComponent = ({ toggleSidebar, sendStatusToParent }) => {
   };
   const accordionChangeHandler = (panelIdx) => (event, isExpanded) => {
     setAccordionExpanded(isExpanded ? panelIdx : null);
+    setExpandedAccordionData((prev) => ({
+      ...prev,
+      [panelIdx]: isExpanded,
+    }));
   };
-//   const filterChangeHandler = () => {
-//     sendFilterToParent()
-//   }
+
   useEffect(() => {
     setOpen(toggleSidebar);
   }, [toggleSidebar]);
+  useEffect(() => {
+    if (!open) {
+      setAccordionExpanded(null);
+    }
+  }, [open]);
+  useEffect(() => {
+    console.log('expandedAccordionData: ', expandedAccordionData)
+  }, [expandedAccordionData])
   const DrawerList = (
     <Box
       sx={{
@@ -83,44 +98,45 @@ const SidebarProductsComponent = ({ toggleSidebar, sendStatusToParent }) => {
       </div>
       <div id="sidebar-menu" className="">
         {/* Material ui component we styling it by using sx = {{}} */}
-        {sidebarProductTopicData && sidebarProductTopicData.map((accordion, idx) => (
-          /* transition for improve performance if accordion have nested data */
-          <Accordion
-            key={idx}
-            slotProps={{ transition: { unmountOnExit: true } }}
-            onChange={accordionChangeHandler(idx)}
-            disableGutters
-            sx={{
-              marginBottom: "0.1rem",
-              boxShadow: "none",
-              position: "relative",
-              "&:before": {
-                display: "none",
-              },
-            }}
-          >
-            <AccordionSummary
-              expandIcon={
-                accordionExpanded === idx ? (
-                  <RemoveIcon
-                    className="text-gray-400"
-                    sx={{ width: "16px", height: "16px" }}
-                  />
-                ) : (
-                  <AddIcon
-                    className="text-gray-400"
-                    sx={{ width: "16px", height: "16px" }}
-                  />
-                )
-              }
-              aria-controls="panel1-content"
-              id="panel1-header"
+        {sidebarProductTopicData &&
+          sidebarProductTopicData.map((accordion, idx) => (
+            /* transition for improve performance if accordion have nested data */
+            <Accordion
+              key={idx}
+              expanded={!!expandedAccordionData[idx]}
+              onChange={accordionChangeHandler(idx)}
+              disableGutters
+              sx={{
+                marginBottom: "0.1rem",
+                boxShadow: "none",
+                position: "relative",
+                "&:before": {
+                  display: "none",
+                },
+              }}
             >
-              <h2 className="text-xl">{accordion}</h2>
-            </AccordionSummary>
-            <AccordionDetails>{accordionList[idx]}</AccordionDetails>
-          </Accordion>
-        ))}
+              <AccordionSummary
+                expandIcon={
+                  expandedAccordionData[idx] ? (
+                    <RemoveIcon
+                      className="text-gray-400"
+                      sx={{ width: "16px", height: "16px" }}
+                    />
+                  ) : (
+                    <AddIcon
+                      className="text-gray-400"
+                      sx={{ width: "16px", height: "16px" }}
+                    />
+                  )
+                }
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                <h2 className="text-xl">{accordion}</h2>
+              </AccordionSummary>
+              <AccordionDetails>{accordionList[idx]}</AccordionDetails>
+            </Accordion>
+          ))}
       </div>
     </Box>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import Box from "@mui/material/Box";
 
 import ColorElement from "./colorElement";
@@ -21,9 +21,9 @@ const colorData = [
   },
 ];
 const ColorTopic = () => {
+  // eslint-disable-next-line no-unused-vars
   const [chooseColorList, setChooseColorList] = useState([]);
   const receiveColor = useCallback((color, isChecked) => {
-    console.log('55555')
     setChooseColorList((prev) => {
       if (isChecked) {
         // add
@@ -34,9 +34,9 @@ const ColorTopic = () => {
       }
     });
   }, []);
-  useEffect(() => {
-    console.log("chooseColorList: ", chooseColorList);
-  }, [chooseColorList]);
+  // useEffect(() => {
+  //   console.log("chooseColorList: ", chooseColorList);
+  // }, [chooseColorList]);
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center" }}>
