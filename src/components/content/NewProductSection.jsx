@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CardNewProduct from "../CardProduct";
 import ModalCardProduct from "../ModalCardProduct";
 const productData = [
@@ -43,19 +43,21 @@ const NewProductSection = () => {
     setDataModal(data.data);
     setActiveModal(data.open);
   };
-
+  useEffect(() => {
+    console.log('activeModel: ', activeModel)
+  }, [activeModel])
   return (
     <div
       id="new-product-container"
       className="py-20 w-full min-h-[10rem]"
     >
       <div id="new-product-header" className="text-center">
-        <h2 className="text-3xl capitalize">New in</h2>
+        <h2 className="text-5xl sm:text-3xl capitalize">New in</h2>
       </div>
 
       <div
         id="card-new-product-container"
-        className="px-10 sm:px-50 flex flex-col justify-center items-center sm:grid sm:grid-cols-1 md:grid-cols-2  xl:grid-cols-4 gap-5 px-5 py-10"
+        className=" sm:px-50 md:px-20 flex flex-col justify-center items-center sm:grid sm:grid-cols-1 md:grid-cols-2  xl:grid-cols-4 gap-5 px-5 py-10"
       >
         {/* we import CardComponent Here */}
         {productData.map((product, index) => {

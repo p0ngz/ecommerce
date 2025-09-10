@@ -7,7 +7,7 @@ const FooterSection = () => {
   return (
     <div
       id="footer-container"
-      className="py-10 px-5 xl:px-55 leading-[1.2] sm:leading-[1.5] w-full min-h-[35vh] grid grid-cols-1 gap-7 sm:grid-cols-4"
+      className="py-10 px-5 xl:px-55 leading-[1.2] sm:leading-[1.5] w-full min-h-[35vh] grid grid-cols-1 gap-7 sm:grid-cols-2 md:grid-cols-4"
     >
       <div id="contact-us" className="w-full h-full">
         <div id="header-text" className="mb-5">

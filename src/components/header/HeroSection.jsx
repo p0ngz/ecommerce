@@ -61,7 +61,7 @@ const HeroSection = () => {
     }
   }, [toggleFromChild, toggleIndex]);
   return (
-    <div id="background-hero" className="w-screen relative">
+    <div id="background-hero" className="w-screen">
       <HeroBackground
         imgID={bgData[currentBackground].imgId}
         imgSrc={bgData[currentBackground].imgSrc}

@@ -50,7 +50,7 @@ const TopProductsSection = () => {
       </div>
       <div
         id="card-top-product-container"
-        className="px-50 grid grid-cols-1 md:grid-cols-2  xl:grid-cols-4 gap-5 px-5 py-10"
+        className=" sm:px-50 md:px-20 flex flex-col justify-center items-center sm:grid sm:grid-cols-1 md:grid-cols-2  xl:grid-cols-4 gap-5 px-5 py-10"
       >
         {productData.map((product, index) => {
           return (

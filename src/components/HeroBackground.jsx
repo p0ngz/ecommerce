@@ -17,14 +17,14 @@ const HeroBackground = ({
     <div
       key={imgID}
       id={`bg-${imgID}`}
-      className="w-full h-screen p-0 relative"
+      className="w-full h-screen p-0 sm:relative"
     >
       <AnimatePresence mode="wait">
         <motion.img
           key={imgSrc}
           src={imgSrc}
           alt={`bg-${imgID}`}
-          className="w-full h-full object-cover"
+          className="w-full h-[50%] sm:w-full sm:h-full object-cover"
           initial={{ opacity: 0 }} // initial
           animate={{ opacity: 1 }} // when mount
           exit={{ opacity: 0 }} // when unmount
@@ -35,7 +35,7 @@ const HeroBackground = ({
         <motion.div
           key={imgID}
           id={`bg${imgID}-text`}
-          className="absolute md:left-10 lg:left-30 top-1/2 -translate-y-1/2 min-w-20 min-h-20 flex flex-col justify-start"
+          className="mt-10 sm:mt-0 w-full min-h-20 flex flex-col items-center sm:items-start -translate-x-8 sm:-translate-x-0 sm:justify-start sm:absolute sm:left-10 lg:left-30 sm:top-1/2 sm:-translate-y-1/2 sm:min-w-20"
           initial="initial"
           animate="animate"
           exit="exit"
@@ -47,7 +47,7 @@ const HeroBackground = ({
             transition: { duration: 0.8, ease: "easeOut" },
           }}
         >
-          <h2 className="mb-5 text-4xl font-normal leading-tight">
+          <h2 className="mb-5 text-center sm:text-start text-3xl sm:text-4xl font-normal leading-tight">
             {headerTxt.split("<br></br>").map((line, idx) => (
               <React.Fragment key={idx}>
                 {line}
@@ -55,6 +55,7 @@ const HeroBackground = ({
               </React.Fragment>
             ))}
           </h2>
+          
           <p className="mb-5">{descriptionTxt}</p>
           {
             <motion.button
@@ -77,40 +78,6 @@ const HeroBackground = ({
           }
         </motion.div>
       </AnimatePresence>
-      {/* <div
-        key={`bg${imgID}-text`}
-        id={`bg${imgID}-text`}
-        className="absolute md:left-10 lg:left-30 top-1/2 -translate-y-1/2 min-w-20 min-h-20 flex flex-col justify-start"
-      >
-        <h2 className="mb-5 text-4xl font-normal leading-tight">
-          {headerTxt.split("<br></br>").map((line, idx) => (
-            <React.Fragment key={idx}>
-              {line}
-              {idx !== headerTxt.split("<br></br>").length - 1 && <br />}
-            </React.Fragment>
-          ))}
-        </h2>
-        <p className="mb-5">{descriptionTxt}</p>
-        {
-          <motion.button
-            className="relative overflow-hidden mt-5 px-10 py-3 border border-gray-800  max-w-[10rem] hover:cursor-pointer"
-            initial="initial"
-            whileHover="hover"
-            variants={{
-              initial: { color: "black" },
-              hover: { border: "none", color: "white" },
-            }}
-          >
-            <motion.div
-              className="absolute top-0 left-1/2 h-full bg-[#63512D] z-0"
-              style={{ transform: "translateX(-50%)" }}
-              variants={bgVariants}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            />
-            <span className="relative z-10">{btnText}</span>
-          </motion.button>
-        }
-      </div> */}
     </div>
   );
 };

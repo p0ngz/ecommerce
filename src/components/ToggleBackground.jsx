@@ -18,7 +18,7 @@ const ToggleBackground = ({ countElements, activeBackground, sendToggleBackgroun
   return (
     <div
       id="toggle-bg"
-      className="absolute md:bottom-10 md:left-1/2 md:-translate-x-1/2 md:top-auto md:right-auto lg:bottom-auto lg:left-auto lg:right-10 lg:top-1/2 lg:translate-x-0 lg:-translate-y-1/2 z-3 flex lg:flex-col justify-center items-center gap-3"
+      className=" flex lg:flex-col justify-center items-center gap-3 sm:absolute sm:bottom-10 sm:left-1/2 sm:-translate-x-1/2 sm:top-auto sm:right-auto lg:bottom-auto lg:left-auto lg:right-10 lg:top-1/2 lg:translate-x-0 lg:-translate-y-1/2 z-3"
     >
       {Array.from({ length: countElements }).map((_, index) => {
         return (

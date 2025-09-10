@@ -23,9 +23,12 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
     setColor(color);
   };
   //   useEffect
-  useEffect(() => {
-    console.log("dataModal changed: ", dataModal);
-  }, [dataModal]);
+  // useEffect(() => {
+  //   console.log("dataModal changed: ", dataModal);
+  // }, [dataModal]);
+  // useEffect(() => {
+  //   console.log("openModal changed: ", openModal);
+  // }, [openModal])
 
   return (
     <div>

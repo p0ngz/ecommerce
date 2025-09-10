@@ -62,56 +62,11 @@ const ProductsSection = () => {
   //     }
   //   }, [sortSellerProduct]);
   return (
-    // using grid to layout it
-    // i want to dynamic stye grid with top 1, 2 from type that most seller
     <div
       id="products-container"
-      className="py-20 w-full min-h-[80vh]  grid grid-cols-12 grid-rows-4 gap-5 md:grid-cols-1 md:grid-rows-none sm:grid-cols-1 sm:grid-rows-none sm:gap-0 xl:gap-3 lg:gap-3"
+      className="py-20 w-full min-h-[80vh]  grid grid-cols-1 sm:grid-cols-12 grid-rows-4 gap-5 md:grid-cols-1 md:grid-rows-none sm:grid-cols-1 sm:grid-rows-none sm:gap-0 xl:gap-3 lg:gap-3"
     >
-      {/* {sortSellerProduct.map((product, index) => {
-        index === 1 ? (
-          <ProductTypeComponent
-            className="col-span-4 row-span-4 bg-slate-700 row-start-1 col-start-1"
-            imgSrc={product.imgSrc}
-            typeProduct={product.type}
-            shopButton={product.shopButton}
-          />
-        ) : index === 2 ? (
-          <ProductTypeComponent
-            className="col-span-4 row-span-4 bg-slate-700 row-start-1 col-start-9"
-            mgSrc={product.imgSrc}
-            typeProduct={product.type}
-            shopButton={product.shopButton}
-          />
-        ) : (
-          <ProductTypeComponent
-            className="col-span-4 row-span-2 bg-slate-700"
-            mgSrc={product.imgSrc}
-            typeProduct={product.type}
-            shopButton={product.shopButton}
-          />
-        );
-      })} */}
-      {/* {sortSellerProduct.map((product, index) => {
-        return (
-          <ProductTypeComponent
-            key={index}
-            imgSrc={product.imgSrc}
-            typeProduct={product.type}
-            shopButton={product.shopButton}
-            index={index}
-            className={`relative col-span-4 row-span-${
-              (index === 0) | (index === 1) ? 4 : 2
-            } ${
-              index === 0
-                ? "row-start-1 col-start-1"
-                : index === 1
-                ? "row-start-1 col-start-9"
-                : ""
-            } hover:cursor-pointer `}
-          />
-        );
-      })} */}
+
       {sortSellerProduct.map((product, index) => {
         // For xl: custom grid, for md and below: col-span-12, row-span-1, no manual placement
         const base = "relative hover:cursor-pointer";
@@ -135,15 +90,6 @@ const ProductsSection = () => {
           />
         );
       })}
-      {/* <div className="col-span-4 row-span-4 bg-slate-700 row-start-1 col-start-1">
-        1
-      </div>
-
-      <div className="col-span-4 row-span-4 bg-slate-700 row-start-1 col-start-9">
-        4
-      </div>
-      <div className="col-span-4 row-span-2 bg-slate-700">2</div>
-      <div className="col-span-4 row-span-2 bg-slate-700">3</div> */}
     </div>
   );
 };
