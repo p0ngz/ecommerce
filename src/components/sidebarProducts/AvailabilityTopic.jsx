@@ -16,19 +16,13 @@ const availData = [
 const AvailabilityTopic = () => {
   const [availabilityData, setAvailabilityData] = useState([]);
   const [showMoreOrLess, setShowMoreOrLess] = useState(true);
-  const { setFilteredData } = useFilteredProducts();
+  const { filteredProductsHandler } = useFilteredProducts();
 
   const showMoreOrLessHandler = (state) => {
     setShowMoreOrLess(state);
   };
-  const filteredHandler = (type, filterData) => {
-    const data = {
-      type: type,
-      filter: filterData,
-    };
-    setFilteredData((prev) => {
-      return { ...prev, ...data };
-    });
+  const filteredHandler = (filterData) => {
+    filteredProductsHandler("availability", filterData);
   };
   useEffect(() => {
     setAvailabilityData(availData);
@@ -42,7 +36,7 @@ const AvailabilityTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler("availability", data.type)}
+                  onClick={() => filteredHandler(data.type)}
                 >
                   {data.type} ({data.count})
                 </li>
@@ -54,8 +48,7 @@ const AvailabilityTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler("availability", data.type)}
-
+                  onClick={() => filteredHandler(data.type)}
                 >
                   {data.type} ({data.count})
                 </li>
@@ -66,8 +59,7 @@ const AvailabilityTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler("availability", data.type)}
-
+                  onClick={() => filteredHandler(data.type)}
                 >
                   {data.type} ({data.count})
                 </li>

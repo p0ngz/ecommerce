@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -11,7 +12,7 @@ const sizeData = [
 ];
 const SizeTopic = () => {
   const [checked, setChecked] = useState(Array(sizeData.length).fill(true));
-  const { setFilteredData } = useFilteredProducts();
+  const { filteredProductsHandler } = useFilteredProducts();
 
   const checkedAllHandler = (event) => {
     const isChecked = event.target.checked;
@@ -24,14 +25,13 @@ const SizeTopic = () => {
     setChecked(updatedChecked);
   };
   useEffect(() => {
-    const data = {
-      type: "size",
-      filter: checked.every((item) => item === true) ? "All" : sizeData
-        .filter((item, idx) => checked[idx])
-        .map((item) => item.size),
-    };
-    console.log('data: ', data)
-    setFilteredData(data)
+    const data = [
+      checked.every((item) => item === true) ||
+      checked.every((item) => item === false)
+        ? "All"
+        : sizeData.filter((item, idx) => checked[idx]).map((item) => item.size),
+    ];
+    filteredProductsHandler("size", data);
   }, [checked]);
   return (
     <>

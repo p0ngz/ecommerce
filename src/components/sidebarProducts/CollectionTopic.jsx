@@ -32,19 +32,14 @@ const collectionData = [
 const CollectionTopic = () => {
   const [collections, setCollections] = useState([]);
   const [showMoreOrLess, setShowMoreOrLess] = useState(true);
-  const { setFilteredData } = useFilteredProducts();
+  const { filteredProductsHandler } = useFilteredProducts();
 
   const showMoreCollectionHandler = (state) => {
     setShowMoreOrLess(state);
   };
-  const filteredHandler = (type, filterData) => {
-    const data = {
-      type: type,
-      filter: filterData,
-    };
-    setFilteredData((prev) => {
-      return { ...prev, ...data };
-    });
+  const filteredHandler = (filterData) => {
+    
+    filteredProductsHandler("collection", filterData);
   };
   useEffect(() => {
     setCollections(collectionData);
@@ -59,7 +54,7 @@ const CollectionTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler("collection", collection.type)}
+                  onClick={() => filteredHandler(collection.type)}
                 >
                   {collection.type} ({collection.count})
                 </li>
@@ -71,7 +66,7 @@ const CollectionTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler("collection", collection.type)}
+                  onClick={() => filteredHandler(collection.type)}
                 >
                   {collection.type} ({collection.count})
                 </li>
@@ -82,7 +77,7 @@ const CollectionTopic = () => {
                 <li
                   key={idx}
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler("collection", collection.type)}
+                  onClick={() => filteredHandler(collection.type)}
                 >
                   {collection.type} ({collection.count})
                 </li>

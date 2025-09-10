@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
 import { useFilteredProducts } from "../../contexts/filterProductsContext";
@@ -24,16 +25,10 @@ const colorData = [
 const ColorTopic = () => {
   // eslint-disable-next-line no-unused-vars
   const [chooseColorList, setChooseColorList] = useState([]);
-  const { setFilteredData } = useFilteredProducts();
+  const { filteredProductsHandler } = useFilteredProducts();
 
-  const filteredHandler = (type, filterData) => {
-    const data = {
-      type: type,
-      filter: filterData,
-    };
-    setFilteredData((prev) => {
-      return { ...prev, ...data };
-    });
+  const filteredHandler = (filterData) => {
+    filteredProductsHandler("color", filterData);
   };
   const receiveColor = useCallback((color, isChecked) => {
     setChooseColorList((prev) => {
@@ -48,7 +43,7 @@ const ColorTopic = () => {
   }, []);
 
   useEffect(() => {
-    filteredHandler("color", chooseColorList);
+    filteredHandler(chooseColorList);
   }, [chooseColorList]);
   return (
     <>

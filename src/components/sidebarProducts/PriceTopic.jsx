@@ -10,28 +10,23 @@ function valuetext(value) {
 
 const PriceTopic = () => {
   const [value, setValue] = useState([0, 100]);
-  const { setFilteredData } = useFilteredProducts();
+  const { filteredProductsHandler } = useFilteredProducts();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const filteredHandler = (type, filterData) => {
+  const filteredHandler = (filterData) => {
     const data = {
-      type: type,
-      filter: filterData,
+      min: filterData[0],
+      max: filterData[1],
     };
-    setFilteredData((prev) => {
-      return { ...prev, ...data };
-    });
+    filteredProductsHandler("price", data);
   };
   const resetHandler = () => {
     setValue([0, 100]);
   };
   useEffect(() => {
-    filteredHandler("price", {
-      min: value[0],
-      max: value[1],
-    });
+    filteredHandler(value);
   }, [value]);
   return (
     <>

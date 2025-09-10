@@ -145,7 +145,7 @@ const SidebarProductsComponent = ({
     </Box>
   );
   return (
-    <div className="absolute">
+    <div className="absolute overflow-y-scroll">
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>

@@ -6,8 +6,14 @@ import React, {
 } from "react";
 
 const initialFilteredData = {
-  type: "",
-  filter: "",
+  collection: "",
+  availability: "",
+  price: {
+    min: 0,
+    max: 100,
+  },
+  color: [],
+  size: [],
 };
 
 // filtered context
@@ -16,9 +22,19 @@ export const FilteredProductsContext = createContext();
 // filtered provider
 export const FilteredProductsProvider = ({ children }) => {
   const [filteredData, setFilteredData] = useState(initialFilteredData);
+
+  const filteredProductsHandler = (type, newFilter) => {
+    console.log('newFilter: ', newFilter)
+    setFilteredData((prev) => {
+      return {  
+        ...prev,
+        [type]: newFilter,
+      };
+    });
+  };
   return createElement(
     FilteredProductsContext.Provider,
-    { value: { filteredData, setFilteredData } },
+    { value: { filteredData, setFilteredData, filteredProductsHandler } },
     children
   );
 };
