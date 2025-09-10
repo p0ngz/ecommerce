@@ -17,7 +17,7 @@ const HeroBackground = ({
     <div
       key={imgID}
       id={`bg-${imgID}`}
-      className="w-full h-screen p-0 sm:relative"
+      className="w-full h-full p-0 sm:relative mb-10 sm:mb-0 "
     >
       <AnimatePresence mode="wait">
         <motion.img

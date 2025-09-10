@@ -51,7 +51,7 @@ const NavbarComponent = () => {
         >
           <DensityMediumIcon
             onClick={() => toggleSidebarHandler()}
-            className="hover:cursor-pointer sm:scale-80  hover:scale-100"
+            className="hover:cursor-pointer me-2 sm:me-4sm:scale-80  hover:scale-100"
           />
           <SearchIcon
             className="hover:cursor-pointer hover:text-emerald-800"
