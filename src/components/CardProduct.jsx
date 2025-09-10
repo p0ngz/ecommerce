@@ -6,6 +6,7 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { AnimatePresence, motion } from "motion/react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBag";
+import Divider from "@mui/material/Divider";
 
 const CardNewProduct = ({
   imgSrc,
@@ -15,10 +16,21 @@ const CardNewProduct = ({
   price,
   viewState = false,
   sendDataToModal,
+  isProductsPage = false,
+  description,
 }) => {
   const [cardHover, setCardHover] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [dataToModal, setDataToModal] = useState(null);
+  const [product, setProduct] = useState(0);
+  const decreaseHandler = () => {
+    if (product > 0) {
+      setProduct((prev) => prev - 1);
+    }
+  };
+  const increaseHandler = () => {
+    setProduct((prev) => prev + 1);
+  };
   const cardHoverHandler = (state) => {
     setCardHover(state);
   };
@@ -33,8 +45,8 @@ const CardNewProduct = ({
     });
   };
   const goToProduct = () => {
-    console.log('go to product page')
-  }
+    console.log("go to product page");
+  };
   useEffect(() => {
     if (openModal && viewState) {
       setOpenModalHandler();
@@ -44,7 +56,12 @@ const CardNewProduct = ({
   return (
     <div
       id="card-new-product"
-      className={`w-[80%] h-[80%] sm:w-[100%] sm:h-[100%] border border-gray-300 rounded-xl  overflow-hidden group ${
+      // ${isProductsPage ? "w-full h-full" : ""}
+      className={`mb-4 ${
+        isProductsPage
+          ? "sm:w-full sm:h-[90%] sm:grid sm:grid-cols-10 sm:gap-3 border-none rounded-sm"
+          : "border rounded-xl"
+      } w-[90%] h-[90%] sm:w-full sm:h-full  sm:border sm:border-gray-300   overflow-hidden group ${
         viewState ? "" : "hover:cursor-pointer"
       }`}
       onMouseEnter={viewState ? () => cardHoverHandler(true) : null}
@@ -53,12 +70,14 @@ const CardNewProduct = ({
     >
       <div
         id="img-card-product"
-        className="h-[100%] sm:h-[70%] bg-gray-200 rounded-t-xl relative overflow-hidden"
+        className={`h-[100%] ${
+          isProductsPage ? "sm:w-full sm:h-full sm:col-span-4" : ""
+        } sm:h-[70%] bg-gray-200 rounded-t-xl relative overflow-hidden`}
       >
         <img
           src={imgSrc}
           alt={titleProduct}
-          className="w-full h-full object-cover rounded-t-xl z-1"
+          className={`${isProductsPage ? "sm:aspect-[3/2]" : ""} w-full h-full object-cover rounded-t-xl z-1`}
         />
         {discount !== 0 && (
           <div
@@ -109,43 +128,128 @@ const CardNewProduct = ({
           )}
         </AnimatePresence>
       </div>
-
       <div
         id="info-card-product"
-        className="hidden sm:h-[30%] py-10 sm:flex flex-col justify-center items-center"
+        className={`${
+          isProductsPage
+            ? "visibility sm:w-full sm:h-full sm:col-span-6"
+            : "hidden"
+        } sm:min-h-[30%] py-10 sm:flex flex-col justify-center items-center`}
       >
-        <div id="rating-container" className="mb-2 flex">
+        <div id="rating-container" className="mb-2 flex justify-center">
           {rating &&
             [1, 2, 3, 4, 5].map((val) => {
               return rating - val > 0.5 ? (
-                <StarIcon key={val} className="text-orange-400" />
+                <StarIcon
+                  key={val}
+                  className="text-orange-400"
+                  sx={{
+                    fontSize: {
+                      xs: 20,
+                      sm: 24,
+                      md: 30
+                    },
+                  }}
+                />
               ) : val <= rating ? (
-                <StarHalfIcon key={val} className="text-orange-400" />
+                <StarHalfIcon
+                  key={val}
+                  className="text-orange-400"
+                  sx={{
+                    fontSize: {
+                      xs: 20,
+                      sm: 24,
+                      md: 30,
+                      
+                    },
+                  }}
+                />
               ) : (
-                <StarOutlineIcon key={val} />
+                <StarOutlineIcon
+                  key={val}
+                  sx={{
+                    fontSize: {
+                      xs: 20,
+                      sm: 24,
+                      md: 30,
+
+                    },
+                  }}
+                />
               );
             })}
         </div>
         <div
           id="title-card-product"
-          className="mb-2 title-product uppercase text-center"
+          className="mb-2 title-product uppercase text-center "
         >
           {titleProduct}
         </div>
-        <div id="price-product" className="mb-2 text-xl flex gap-3">
+        <div
+          id="price-product"
+          className="mb-2 text-xl flex justify-center gap-3"
+        >
           {discount > 0 ? (
             <>
-              <div className="text-red-400 line-through">${price}</div>
-              <div>${price - (price * discount) / 100}</div>
+              <div className="text-md sm:text-2xl  text-red-400 line-through">
+                ${price}
+              </div>
+              <div className="text-md sm:text-2xl ">
+                ${price - (price * discount) / 100}
+              </div>
             </>
           ) : (
             <div>${price}</div>
           )}
         </div>
-        <div id="color-product" className="flex gap-3">
-          <div className="rounded-full w-6 h-6 bg-gray-300 hover:cursor-pointer"></div>
-          <div className="rounded-full w-6 h-6 bg-orange-200 hover:cursor-pointer"></div>
+        <div id="color-product" className="flex justify-center gap-3">
+          <div className="rounded-full w-5 h-5 sm:w-6 sm:h-6 bg-gray-300 hover:cursor-pointer"></div>
+          <div className="rounded-full w-5 h-5 sm:w-6 sm:h-6 bg-orange-200 hover:cursor-pointer"></div>
         </div>
+        {isProductsPage && <Divider sx={{ mx: 2,  borderColor: "#e5e7eb" }} />}
+        <div id="description-card-product" className="my-5  p-4">
+          <p className="text-xs text-gray-500">{description}</p>
+        </div>
+        {isProductsPage && (
+          <div id="action-card-product" className="w-full px-3 grid grid-cols-5 gap-5">
+            <div
+              id="amount-product"
+              className="col-span-2 p-0 min-w-30 h-10 grid grid-cols-3 border border-gray-300"
+            >
+              <div
+                id="decrease-product"
+                className={`flex justify-center items-center hover:cursor-pointer ${
+                  product <= 0 ? "pointer-events-none opacity-50" : ""
+                }`}
+                onClick={() => decreaseHandler()}
+              >
+                -
+              </div>
+              <div
+                id="show-amount-product"
+                className="flex justify-center items-center  border-x-1 border-gray-300"
+              >
+                {product}
+              </div>
+              <div
+                id="increase-product"
+                className="flex justify-center items-center hover:cursor-pointer "
+                onClick={() => increaseHandler()}
+                disabled={product <= 0}
+              >
+                +
+              </div>
+            </div>
+            <div
+              id="add-to-cart"
+              className="col-span-3 p-0 min-w-35 h-10 flex justify-center items-center rounded-sm"
+            >
+              <button className="w-full h-full bg-black text-white rounded-sm">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
@@ -6,7 +6,10 @@ import TuneIcon from "@mui/icons-material/Tune";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import SidebarProductsComponent from "../components/SidebarProductsComponent";
-import { useFilteredProducts } from "../contexts/filterProductsContext";
+import SidebarMenu from "./sidebarProducts/SidebarMenu";
+import CardProduct from "./CardProduct";
+import TypeProducts from "./TypeProducts";
+// import { useFilteredProducts } from "../contexts/filterProductsContext";
 
 const filterProduct = [
   {
@@ -42,9 +45,53 @@ const filterProduct = [
     label: "DATE, OLD-NEW",
   },
 ];
+const productData = [
+  {
+    imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro.jpg?v=1714967262&width=600",
+    discount: 40,
+    rating: 5,
+    titleProduct: "Apollop Coin Necklace",
+    description:
+      "1 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+    price: 100,
+  },
+  {
+    imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-3.jpg?v=1714967344&width=600",
+    discount: 0,
+    rating: 4,
+    titleProduct: "Butterfly Ring",
+    description:
+      "2 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+    price: 65,
+  },
+  {
+    imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-5.jpg?v=1714968850&width=600%22",
+    discount: 20,
+    rating: 4.5,
+    titleProduct: "Cuban Link Chain Bracelet",
+    description:
+      "3 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+
+    price: 90,
+  },
+  {
+    imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
+    discount: 0,
+    rating: 3,
+    titleProduct: "Dainty Chain Bracelet",
+    description:
+      "4 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+
+    price: 80,
+  },
+];
 const ProductsComponent = () => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
-  const { filteredData } = useFilteredProducts();
+  // const { filteredData } = useFilteredProducts();
 
   const receiveStatusFromSidebar = (status) => {
     setSidebarToggle(status);
@@ -52,29 +99,22 @@ const ProductsComponent = () => {
   const sidebarToggleHandler = () => {
     setSidebarToggle(!sidebarToggle);
   };
-  useMemo(() => {
-    console.log("filteredData in ProductsComponent: ", filteredData);
-  }, [filteredData]);
+  // useMemo(() => {
+  //   console.log("filteredData in ProductsComponent: ", filteredData);
+  // }, [filteredData]);
   return (
     <div
       id="products=page"
       className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]"
     >
-      <h2
-        id="products-title"
-        className="text-center mb-3 text-3xl lg:text-start"
-      >
+      <h2 id="products-title" className="text-center mb-3 text-3xl lg:text-5xl">
         Products
       </h2>
-      <div
-        id="products-breadcrumb"
-        className="flex justify-center mb-10 lg:justify-start"
-      >
+      <div id="products-breadcrumb" className="flex justify-center mb-10">
         <Breadcrumbs
           aria-label="breadcrumb"
           separator=">"
           sx={{
-            // styling separator
             "& .MuiBreadcrumbs-separator": {
               color: "inherit",
               fontWeight: "bold",
@@ -90,14 +130,35 @@ const ProductsComponent = () => {
             sx={{
               "&:hover": {
                 color: "black",
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1rem",
+                  md: "1.1rem",
+                  lg: "1.2rem",
+                },
               },
             }}
           >
             Home
           </Link>
 
-          <Typography sx={{ color: "text.primary" }}>shipping</Typography>
+          <Typography
+            sx={{
+              color: "text.primary",
+              fontSize: {
+                xs: "1rem",
+                sm: "1rem",
+                md: "1.1rem",
+                lg: "1.2rem",
+              },
+            }}
+          >
+            shipping
+          </Typography>
         </Breadcrumbs>
+      </div>
+      <div id="type-products-container">
+        <TypeProducts />
       </div>
       <div
         id="filter-container"
@@ -139,7 +200,34 @@ const ProductsComponent = () => {
           </TextField>
         </div>
       </div>
-      {/* <SidebarProductsComponent toggleSidebar={sidebarToggle} sendStatusToParent={receiveStatusFromSidebar()}/> */}
+      <div
+        id="main-container"
+        className="mt-5 lg:grid lg:gap-5 lg:grid-cols-10 "
+      >
+        <div id="sidebar-container" className="hidden lg:block lg:col-span-2">
+          <SidebarMenu />
+        </div>
+        <div
+          id="products-container"
+          className="flex flex-col items-center lg:col-span-8"
+        >
+          {productData &&
+            productData.map((product, index) => {
+              return (
+                <CardProduct
+                  key={index}
+                  imgSrc={product.imgSrc}
+                  discount={product.discount}
+                  rating={product.rating}
+                  titleProduct={product.titleProduct}
+                  price={product.price}
+                  isProductsPage={true}
+                  description={product.description}
+                />
+              );
+            })}
+        </div>
+      </div>
       <SidebarProductsComponent
         toggleSidebar={sidebarToggle}
         sendStatusToParent={receiveStatusFromSidebar}
