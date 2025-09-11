@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import TuneIcon from "@mui/icons-material/Tune";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import SidebarProductsComponent from "../components/SidebarProductsComponent";
+import SidebarProductsComponent from "./SidebarProductsComponent";
 import SidebarMenu from "./sidebarProducts/SidebarMenu";
 import CardProduct from "./CardProduct";
 import TypeProducts from "./TypeProducts";
-// import { useFilteredProducts } from "../contexts/filterProductsContext";
 
 const filterProduct = [
   {
@@ -89,18 +89,25 @@ const productData = [
     price: 80,
   },
 ];
-const ProductsComponent = () => {
+const TypeProductsComponent = () => {
+  const { type } = useParams();
+  // const navigate = useNavigate();
   const [sidebarToggle, setSidebarToggle] = useState(false);
-  const navigate = useNavigate()
   const receiveStatusFromSidebar = (status) => {
     setSidebarToggle(status);
   };
   const sidebarToggleHandler = () => {
     setSidebarToggle(!sidebarToggle);
   };
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  useEffect(() => {
+    console.log("type: ", type);
+  });
   return (
     <div
-      id="products=page"
+      id="products-type-page"
       className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]"
     >
       <h2 id="products-title" className="text-center mb-3 text-3xl lg:text-5xl">
@@ -120,10 +127,9 @@ const ProductsComponent = () => {
           }}
         >
           <Typography
-            underline="hover"
-            onClick={() => navigate("/")}
-            className="hover:"
             color="inherit"
+            onClick={() => Navigate("/")}
+            className="hover:cursor-pointer"
             sx={{
               "&:hover": {
                 color: "black",
@@ -140,6 +146,25 @@ const ProductsComponent = () => {
           </Typography>
 
           <Typography
+            underline="hover"
+            onClick={() => Navigate("/products")}
+            className="hover:cursor-pointer"
+            color="inherit"
+            sx={{
+              "&:hover": {
+                color: "black",
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1rem",
+                  md: "1.1rem",
+                  lg: "1.2rem",
+                },
+              },
+            }}
+          >
+            Products
+          </Typography>
+          <Typography
             sx={{
               color: "text.primary",
               fontSize: {
@@ -150,12 +175,15 @@ const ProductsComponent = () => {
               },
             }}
           >
-            Products
+            {capitalizeFirstLetter(type)}
           </Typography>
         </Breadcrumbs>
       </div>
       <div id="type-products-container">
-        <TypeProducts pageType={"products"} />
+        <TypeProducts
+          pageType={"products"}
+          currentPage={capitalizeFirstLetter(type)}
+        />
       </div>
       <div
         id="filter-container"
@@ -233,4 +261,4 @@ const ProductsComponent = () => {
   );
 };
 
-export default ProductsComponent;
+export default TypeProductsComponent;

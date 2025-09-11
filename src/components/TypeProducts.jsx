@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 const typeProducts = [
   {
@@ -23,8 +24,9 @@ const typeProducts = [
       "https://wpbingo-adena.myshopify.com/cdn/shop/collections/cate-1.jpg?crop=center&height=450&v=1729845833&width=450",
   },
 ];
-const TypeProducts = ({ pageType }) => {
-  // const [checkPage, setCheckPage] = useState("Products");
+const TypeProducts = ({ pageType, currentPage = "products" }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showTypeProductsMobile, setShowTypeProductsMobile] = useState();
   const [current, setCurrent] = useState(0);
   const [isFromPrevious, setIsFromPrevious] = useState(false);
@@ -39,23 +41,24 @@ const TypeProducts = ({ pageType }) => {
     setIsFromPrevious(false);
     setIsFromNext(true);
   };
+  const navigateHandler = (page) => {
+    const urlNavigate = page.toLowerCase();
+    navigate(`/products/${urlNavigate}`);
+  };
+
   useEffect(() => {
     setShowTypeProductsMobile(() => {
       const findType =
         pageType === "products"
           ? typeProducts[0]
           : typeProducts.find((item) => item.type === pageType);
-      console.log("findType: ", findType);
       return findType;
     });
   }, []);
   useEffect(() => {
-    console.log("showTypeProductsMobile: ", showTypeProductsMobile);
+    // console.log("showTypeProductsMobile: ", showTypeProductsMobile);
     // check index
   }, [showTypeProductsMobile]);
-  useEffect(() => {
-    console.log("pageType: ", pageType);
-  }, [pageType]);
   return (
     <div
       id="type-products-container"
@@ -77,16 +80,20 @@ const TypeProducts = ({ pageType }) => {
       </button>
       <div
         id="type-products"
-        className="hidden sm:grid px-5 grid-cols-4 gap-3 "
+        className="hidden w-[80%] sm:grid px-10 grid-cols-4 gap-5"
       >
         {typeProducts.map((item, index) => (
-          <div key={index} className="flex flex-col items-center">
+          <div
+            key={index}
+            className="flex flex-col items-center hover:cursor-pointer"
+            onClick={() => navigateHandler(item.type)}
+          >
             <img
               src={item.imgSrc}
               alt={item.type}
-              className="w-full h-auto object-cover rounded-md"
+              className={`w-full h-auto object-cover rounded-md ${currentPage === item.type ? "shadow-lg" : ""}`}
             />
-            <span className="mt-2 text-center">{item.type}</span>
+            <span className={`mt-2 text-center ${currentPage === item.type ? "font-bold" : ""}`}>{item.type}</span>
           </div>
         ))}
       </div>
@@ -97,6 +104,7 @@ const TypeProducts = ({ pageType }) => {
               src={typeProducts[current].imgSrc}
               alt={typeProducts[current].type}
               className="w-full h-auto object-cover rounded-md"
+              onClick={() => navigateHandler(typeProducts[current].type)}
               key={current}
               initial="initial"
               animate="animate"
@@ -117,6 +125,7 @@ const TypeProducts = ({ pageType }) => {
               src={typeProducts[current].imgSrc}
               alt={typeProducts[current].type}
               className="w-full h-auto object-cover rounded-md"
+              onClick={() => navigateHandler(typeProducts[current].type)}
               initial="initial"
               animate="animate"
               exit="exit"
@@ -134,6 +143,7 @@ const TypeProducts = ({ pageType }) => {
             src={typeProducts[current].imgSrc}
             alt={typeProducts[current].type}
             className="w-full h-auto object-cover rounded-md"
+            onClick={() => navigateHandler(typeProducts[current].type)}
           />
         )}
         {/* from above animation can refactor to this 

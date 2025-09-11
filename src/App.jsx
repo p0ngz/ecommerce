@@ -16,9 +16,9 @@ import ProductsPage from "./pages/ProductsPage";
 import ProductPage from "./pages/ProductPage";
 import BlogPage from "./pages/BlogPage";
 import FeaturePage from "./pages/FeaturePage";
-import TrackingStatusOrder from "./pages/TrackingStatusOrder";
-import QRpayment from "./pages/QRpayment";
-
+import TrackingStatusOrderPage from "./pages/TrackingStatusOrderPage";
+import QRpaymentPage from "./pages/QRpaymentPage";
+import ProductTypePage from "./pages/ProductTypePage"
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -27,9 +27,13 @@ const routes = createBrowserRouter(
         {/* sub-page will have breadcrumb ex. Home / Wishlists */}
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/shipping" element={<ShippingPage />} />
-        <Route path="/tracking" element={<TrackingStatusOrder />} />
-        <Route path="/payment" element={<QRpayment />} />
-        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/tracking" element={<TrackingStatusOrderPage />} />
+        <Route path="/payment" element={<QRpaymentPage />} />
+        <Route path="/products">
+          <Route index element={<ProductsPage />} />
+          <Route path=":type" element={<ProductTypePage />}/>
+
+        </Route>
         <Route path="/products/:productID" element={<ProductPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/feature" element={<FeaturePage />} />
