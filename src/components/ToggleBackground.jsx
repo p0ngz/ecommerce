@@ -9,10 +9,8 @@ const ToggleBackground = ({ countElements, activeBackground, sendToggleBackgroun
   }
   useEffect(() => {
     setCurrentActive(activeBackground);
-    // console.log('autoCurrentActive: ', currentActive)
   }, [activeBackground, currentActive]);
   useEffect(() => {
-    // console.log('toggle index: ', toggleBackgroundIndex)
     sendToggleBackgroundIndex(toggleBackgroundIndex)
   }, [toggleBackgroundIndex, sendToggleBackgroundIndex])
   return (

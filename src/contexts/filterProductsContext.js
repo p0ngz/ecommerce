@@ -24,7 +24,6 @@ export const FilteredProductsProvider = ({ children }) => {
   const [filteredData, setFilteredData] = useState(initialFilteredData);
 
   const filteredProductsHandler = (type, newFilter) => {
-    console.log('newFilter: ', newFilter)
     setFilteredData((prev) => {
       return {  
         ...prev,

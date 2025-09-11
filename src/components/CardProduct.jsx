@@ -71,13 +71,15 @@ const CardNewProduct = ({
       <div
         id="img-card-product"
         className={`h-[100%] ${
-          isProductsPage ? "sm:w-full sm:h-full sm:col-span-4" : ""
+          isProductsPage ? "sm:w-full lg:w-[80%] sm:h-full sm:col-span-4" : ""
         } sm:h-[70%] bg-gray-200 rounded-t-xl relative overflow-hidden`}
       >
         <img
           src={imgSrc}
           alt={titleProduct}
-          className={`${isProductsPage ? "sm:aspect-[3/2]" : ""} w-full h-full object-cover rounded-t-xl z-1`}
+          className={`${
+            isProductsPage ? "sm:aspect-[3/2]" : ""
+          } w-full h-full object-cover rounded-t-xl z-1`}
         />
         {discount !== 0 && (
           <div
@@ -147,7 +149,7 @@ const CardNewProduct = ({
                     fontSize: {
                       xs: 20,
                       sm: 24,
-                      md: 30
+                      md: 30,
                     },
                   }}
                 />
@@ -160,7 +162,6 @@ const CardNewProduct = ({
                       xs: 20,
                       sm: 24,
                       md: 30,
-                      
                     },
                   }}
                 />
@@ -172,7 +173,6 @@ const CardNewProduct = ({
                       xs: 20,
                       sm: 24,
                       md: 30,
-
                     },
                   }}
                 />
@@ -206,12 +206,15 @@ const CardNewProduct = ({
           <div className="rounded-full w-5 h-5 sm:w-6 sm:h-6 bg-gray-300 hover:cursor-pointer"></div>
           <div className="rounded-full w-5 h-5 sm:w-6 sm:h-6 bg-orange-200 hover:cursor-pointer"></div>
         </div>
-        {isProductsPage && <Divider sx={{ mx: 2,  borderColor: "#e5e7eb" }} />}
+        {isProductsPage && <Divider sx={{ mx: 2, borderColor: "#e5e7eb" }} />}
         <div id="description-card-product" className="my-5  p-4">
           <p className="text-xs text-gray-500">{description}</p>
         </div>
         {isProductsPage && (
-          <div id="action-card-product" className="w-full px-3 grid grid-cols-5 gap-5">
+          <div
+            id="action-card-product"
+            className="w-full px-3 grid grid-cols-5 gap-5"
+          >
             <div
               id="amount-product"
               className="col-span-2 p-0 min-w-30 h-10 grid grid-cols-3 border border-gray-300"

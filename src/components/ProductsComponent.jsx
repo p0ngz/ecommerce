@@ -153,12 +153,13 @@ const ProductsComponent = () => {
               },
             }}
           >
-            shipping
+            Products
           </Typography>
         </Breadcrumbs>
       </div>
       <div id="type-products-container">
-        <TypeProducts />
+        {/* Products, Earring, Necklace, Rings, Bracelets */}
+        <TypeProducts pageType={"products"}/>
       </div>
       <div
         id="filter-container"
