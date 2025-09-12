@@ -52,6 +52,7 @@ const productData = [
     discount: 40,
     rating: 5,
     titleProduct: "Apollop Coin Necklace",
+    type: "necklace",
     description:
       "1 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
     price: 100,
@@ -62,6 +63,7 @@ const productData = [
     discount: 0,
     rating: 4,
     titleProduct: "Butterfly Ring",
+    type: "rings",
     description:
       "2 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
     price: 65,
@@ -72,6 +74,7 @@ const productData = [
     discount: 20,
     rating: 4.5,
     titleProduct: "Cuban Link Chain Bracelet",
+    type: "bracelets",
     description:
       "3 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
 
@@ -83,10 +86,22 @@ const productData = [
     discount: 0,
     rating: 3,
     titleProduct: "Dainty Chain Bracelet",
+    type: "bracelets",
     description:
       "4 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
 
     price: 80,
+  },
+  {
+    imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59_18c1dec3-e10e-466f-9f6d-0960696ecbbf.jpg?v=1714980909&width=600",
+    discount: 0,
+    rating: 4.5,
+    titleProduct: "Pearl Earring",
+    type: "earring",
+    description:
+      "5 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum",
+    price: 78,
   },
 ];
 const ProductsComponent = () => {
@@ -217,6 +232,7 @@ const ProductsComponent = () => {
                   discount={product.discount}
                   rating={product.rating}
                   titleProduct={product.titleProduct}
+                  type={product.type}
                   price={product.price}
                   isProductsPage={true}
                   description={product.description}

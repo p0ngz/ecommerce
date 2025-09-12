@@ -8,6 +8,7 @@ const productData = [
     discount: 40,
     rating: 5,
     titleProduct: "Apollop Coin Necklace",
+    type: "necklace",
     price: 100,
   },
   {
@@ -16,6 +17,7 @@ const productData = [
     discount: 0,
     rating: 4,
     titleProduct: "Butterfly Ring",
+    type: "rings",
     price: 65,
   },
   {
@@ -24,16 +26,29 @@ const productData = [
     discount: 20,
     rating: 4.5,
     titleProduct: "Cuban Link Chain Bracelet",
+    type: "bracelets",
     price: 90,
   },
   {
     imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59_18c1dec3-e10e-466f-9f6d-0960696ecbbf.jpg?v=1714980909&width=600",
     discount: 0,
-    rating: 3,
-    titleProduct: "Dainty Chain Bracelet",
-    price: 80,
+    rating: 4.5,
+    titleProduct: "Pearl Earring",
+    type: "earring",
+    description:
+      "5 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum",
+    price: 78,
   },
+  // {
+  //   imgSrc:
+  //     "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
+  //   discount: 0,
+  //   rating: 3,
+  //   titleProduct: "Dainty Chain Bracelet",
+  //   type: "bracelets",
+  //   price: 80,
+  // },
 ];
 
 const NewProductSection = () => {
@@ -43,14 +58,11 @@ const NewProductSection = () => {
     setDataModal(data.data);
     setActiveModal(data.open);
   };
-  useEffect(() => {
-    console.log('activeModel: ', activeModel)
-  }, [activeModel])
+  // useEffect(() => {
+  //   console.log("activeModel: ", activeModel);
+  // }, [activeModel]);
   return (
-    <div
-      id="new-product-container"
-      className="py-20 w-full min-h-[10rem]"
-    >
+    <div id="new-product-container" className="py-20 w-full min-h-[10rem]">
       <div id="new-product-header" className="text-center">
         <h2 className="text-5xl sm:text-3xl capitalize">New in</h2>
       </div>
@@ -69,15 +81,16 @@ const NewProductSection = () => {
               rating={product.rating}
               titleProduct={product.titleProduct}
               price={product.price}
+              type={product.type}
               viewState={true}
               sendDataToModal={receiveData}
             />
           );
         })}
       </div>
-      {
-        activeModel ? <ModalCardProduct toggleState={activeModel} dataModal={dataModal}/> : null
-      }
+      {activeModel ? (
+        <ModalCardProduct toggleState={activeModel} dataModal={dataModal} />
+      ) : null}
     </div>
   );
 };

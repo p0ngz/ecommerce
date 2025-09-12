@@ -80,7 +80,7 @@ const TypeProducts = ({ pageType, currentPage = "products" }) => {
       </button>
       <div
         id="type-products"
-        className="hidden w-[80%] sm:grid px-10 grid-cols-4 gap-5"
+        className="hidden w-[100%] sm:w[80%] sm:grid px-10 grid-cols-4 gap-5"
       >
         {typeProducts.map((item, index) => (
           <div

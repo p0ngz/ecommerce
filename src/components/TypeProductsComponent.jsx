@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -10,6 +9,7 @@ import SidebarProductsComponent from "./SidebarProductsComponent";
 import SidebarMenu from "./sidebarProducts/SidebarMenu";
 import CardProduct from "./CardProduct";
 import TypeProducts from "./TypeProducts";
+import { capitalizeHandler } from "../utility/capitalizeHandler";
 
 const filterProduct = [
   {
@@ -52,6 +52,7 @@ const productData = [
     discount: 40,
     rating: 5,
     titleProduct: "Apollop Coin Necklace",
+    type: "necklace",
     description:
       "1 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
     price: 100,
@@ -62,6 +63,7 @@ const productData = [
     discount: 0,
     rating: 4,
     titleProduct: "Butterfly Ring",
+    type: "rings",
     description:
       "2 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
     price: 65,
@@ -72,6 +74,7 @@ const productData = [
     discount: 20,
     rating: 4.5,
     titleProduct: "Cuban Link Chain Bracelet",
+    type: "bracelets",
     description:
       "3 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
 
@@ -83,28 +86,44 @@ const productData = [
     discount: 0,
     rating: 3,
     titleProduct: "Dainty Chain Bracelet",
+    type: "bracelets",
     description:
       "4 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
 
     price: 80,
   },
+  {
+    imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59_18c1dec3-e10e-466f-9f6d-0960696ecbbf.jpg?v=1714980909&width=600",
+    discount: 0,
+    rating: 4.5,
+    titleProduct: "Pearl Earring",
+    type: "earring",
+    description:
+      "5 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum",
+    price: 78,
+  },
 ];
 const TypeProductsComponent = () => {
-  const { type } = useParams();
-  // const navigate = useNavigate();
+  const { typeProduct } = useParams();
+  const navigate = useNavigate();
   const [sidebarToggle, setSidebarToggle] = useState(false);
+  const [type, setType] = useState("");
+
   const receiveStatusFromSidebar = (status) => {
     setSidebarToggle(status);
   };
   const sidebarToggleHandler = () => {
     setSidebarToggle(!sidebarToggle);
   };
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+  const navigateToProductHandler = (productType, productName) => {
+    const urlNavigate = productName.toLowerCase();
+    navigate(`/products/${productType}/${urlNavigate}`);
+  };
   useEffect(() => {
-    console.log("type: ", type);
-  });
+    const type = capitalizeHandler(typeProduct);
+    setType(type);
+  }, [typeProduct]);
   return (
     <div
       id="products-type-page"
@@ -128,7 +147,7 @@ const TypeProductsComponent = () => {
         >
           <Typography
             color="inherit"
-            onClick={() => Navigate("/")}
+            onClick={() => navigate("/")}
             className="hover:cursor-pointer"
             sx={{
               "&:hover": {
@@ -147,7 +166,7 @@ const TypeProductsComponent = () => {
 
           <Typography
             underline="hover"
-            onClick={() => Navigate("/products")}
+            onClick={() => navigate("/products")}
             className="hover:cursor-pointer"
             color="inherit"
             sx={{
@@ -175,14 +194,14 @@ const TypeProductsComponent = () => {
               },
             }}
           >
-            {capitalizeFirstLetter(type)}
+            {type}
           </Typography>
         </Breadcrumbs>
       </div>
       <div id="type-products-container">
         <TypeProducts
           pageType={"products"}
-          currentPage={capitalizeFirstLetter(type)}
+          currentPage={type}
         />
       </div>
       <div
@@ -227,7 +246,7 @@ const TypeProductsComponent = () => {
       </div>
       <div
         id="main-container"
-        className="mt-5 lg:grid lg:gap-5 lg:grid-cols-10 "
+        className="mt-5 lg:grid lg:gap-5 lg:grid-cols-10"
       >
         <div id="sidebar-container" className="hidden lg:block lg:col-span-2">
           <SidebarMenu />
@@ -246,8 +265,12 @@ const TypeProductsComponent = () => {
                   rating={product.rating}
                   titleProduct={product.titleProduct}
                   price={product.price}
+                  type={product.type}
                   isProductsPage={true}
                   description={product.description}
+                  onClick={() =>
+                    navigateToProductHandler(product.type, product.titleProduct)
+                  }
                 />
               );
             })}

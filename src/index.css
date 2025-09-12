@@ -178,22 +178,25 @@ body {
 
 @layer utilities {
   .scrollbar-thin {
-    scrollbar-width: thin;
+    scrollbar-width: thin; /* Firefox */
   }
+
   .scrollbar-none {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
   }
   .scrollbar-none::-webkit-scrollbar {
-    display: none;
+    display: none; /* Chrome/Safari */
   }
+
   .scrollbar-custom::-webkit-scrollbar {
-    width: 8px;
+    width: 4px;
   }
   .scrollbar-custom::-webkit-scrollbar-thumb {
-    background: var(--sidebar-ring);
-    border-radius: 9999px;
+    background: var(--sidebar-ring); 
+    border-radius: 9999px; 
   }
+
   .center-screen {
     @apply flex justify-center items-center w-full h-full;
   }

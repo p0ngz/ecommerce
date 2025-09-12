@@ -5,36 +5,51 @@ import ModalCardTopProduct from "../ModalCardProduct";
 const productData = [
   {
     imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro.jpg?v=1714967262&width=600",
+    discount: 40,
+    rating: 5,
+    titleProduct: "Apollop Coin Necklace",
+    type: "necklace",
+    price: 100,
+  },
+  {
+    imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-3.jpg?v=1714967344&width=600",
+    discount: 0,
+    rating: 4,
+    titleProduct: "Butterfly Ring",
+    type: "rings",
+    price: 65,
+  },
+  {
+    imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-5.jpg?v=1714968850&width=600%22",
+    discount: 20,
+    rating: 4.5,
+    titleProduct: "Cuban Link Chain Bracelet",
+    type: "bracelets",
+    price: 90,
+  },
+  {
+    imgSrc:
       "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59_18c1dec3-e10e-466f-9f6d-0960696ecbbf.jpg?v=1714980909&width=600",
     discount: 0,
-    rating: 0,
-    titleProduct: "Pearl Earrings",
-    price: 76,
+    rating: 4.5,
+    titleProduct: "Pearl Earring",
+    type: "earring",
+    description:
+      "5 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum",
+    price: 78,
   },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-57.jpg?v=1714980825&width=600",
-    discount: 0,
-    rating: "",
-    titleProduct: "Open Rope Hoop Earrings",
-    price: 70,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59.jpg?v=1714980247&width=600",
-    discount: 0,
-    rating: "",
-    titleProduct: "Mini Daily Hoop Earrings",
-    price: 72,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-44.jpg?v=1714979980&width=600",
-    discount: 7,
-    rating: "",
-    titleProduct: "Majestic Floral Cascade Earrings",
-    price: 70,
-  },
+  // {
+  //   imgSrc:
+  //     "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
+  //   discount: 0,
+  //   rating: 3,
+  //   titleProduct: "Dainty Chain Bracelet",
+  //   type: "bracelets",
+  //   price: 80,
+  // },
 ];
 const TopProductsSection = () => {
   const [activeModel, setActiveModal] = useState(false);
@@ -60,6 +75,7 @@ const TopProductsSection = () => {
               discount={product.discount}
               titleProduct={product.titleProduct}
               price={product.price}
+              type={product.type}
               viewState={true}
               sendDataToModal={receiveData}
             />

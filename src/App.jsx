@@ -18,7 +18,7 @@ import BlogPage from "./pages/BlogPage";
 import FeaturePage from "./pages/FeaturePage";
 import TrackingStatusOrderPage from "./pages/TrackingStatusOrderPage";
 import QRpaymentPage from "./pages/QRpaymentPage";
-import ProductTypePage from "./pages/ProductTypePage"
+import ProductTypePage from "./pages/ProductTypePage";
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -31,10 +31,11 @@ const routes = createBrowserRouter(
         <Route path="/payment" element={<QRpaymentPage />} />
         <Route path="/products">
           <Route index element={<ProductsPage />} />
-          <Route path=":type" element={<ProductTypePage />}/>
-
+          <Route path=":typeProduct">
+            <Route index element={<ProductTypePage />} />
+            <Route path=":productName" element={<ProductPage />} />
+          </Route>
         </Route>
-        <Route path="/products/:productID" element={<ProductPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/feature" element={<FeaturePage />} />
         <Route path="*" element={<NotFoundPage />} />
