@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { capitalizeHandler } from "../utility/capitalizeHandler";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import CardNewProduct from "./CardProduct";
-
+import CardBreadcrumb from "./CardBreadcrumb";
 const topRateProductData = [
   {
     imgSrc:
@@ -102,7 +102,19 @@ const relateProductData = [
 
     price: 80,
   },
+  {
+    imgSrc:
+      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
+    discount: 0,
+    rating: 3,
+    titleProduct: "Dainty Chain Bracelet",
+    type: "bracelets",
+    description:
+      "4 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
 
+    price: 80,
+  },
+  
 ];
 
 const TopRateProductElement = ({ imgSrc, titleProduct, price }) => {
@@ -122,6 +134,7 @@ const ProductComponent = () => {
   const { typeProduct, productName } = useParams();
   const [type, setType] = useState("");
   const [realProductName, setRealProductName] = useState("");
+  const productPageRef = useRef(null);
 
   useEffect(() => {
     const removeDash = productName.split("-").join(" ");
@@ -133,12 +146,15 @@ const ProductComponent = () => {
     setType(type);
   }, [typeProduct]);
   useEffect(() => {
-    console.log("product: ", product);
-  }, [product]);
+    if (productPageRef.current) {
+      productPageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  })
   return (
     <div
       id="products-page"
       className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]"
+      ref={productPageRef}
     >
       <h2 id="products-title" className="text-center mb-3 text-3xl lg:text-5xl">
         {realProductName}
@@ -286,37 +302,16 @@ const ProductComponent = () => {
           />
         </div>
         {/* <div id="review" className="col-span-10"></div> */}
-        <div
-          id="relate-product"
-          className="mt-15 col-span-12 flex flex-col justify-center"
+      </div>
+      <div id="relate-product" className="mt-15 flex flex-col justify-center">
+        <h2
+          id="products-title"
+          className="mb-10 text-center text-3xl lg:text-5xl"
         >
-          <h2
-            id="products-title"
-            className="mb-10 text-center text-3xl lg:text-5xl"
-          >
-            Related Products
-          </h2>
-          <div
-            id="relate-product-container"
-            className=" px-5 md:px-10 flex grid grid-cols-2   xl:grid-cols-4 gap-5 px-5 py-10"
-          >
-            {relateProductData &&
-              relateProductData.map((item, index) => {
-                return (
-                  <CardNewProduct
-                    key={index}
-                    imgSrc={item.imgSrc}
-                    discount={item.discount}
-                    rating={item.rating}
-                    titleProduct={item.titleProduct}
-                    price={item.price}
-                    type={item.type}
-                    viewState={true}
-                    isRelateProduct={true}
-                  />
-                );
-              })}
-          </div>
+          Related Products
+        </h2>
+        <div id="relate-product-container" className="w-screnn flex justify-center">
+          <CardBreadcrumb relatedProducts={relateProductData}/>
         </div>
       </div>
     </div>

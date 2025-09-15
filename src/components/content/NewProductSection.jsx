@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CardNewProduct from "../CardProduct";
 import ModalCardProduct from "../ModalCardProduct";
 const productData = [
@@ -58,9 +58,7 @@ const NewProductSection = () => {
     setDataModal(data.data);
     setActiveModal(data.open);
   };
-  // useEffect(() => {
-  //   console.log("activeModel: ", activeModel);
-  // }, [activeModel]);
+
   return (
     <div id="new-product-container" className="py-20 w-full min-h-[10rem]">
       <div id="new-product-header" className="text-center">

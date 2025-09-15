@@ -52,6 +52,7 @@ const CardNewProduct = ({
     });
   };
   const goToProduct = () => {
+    console.log("go to product");
     const typeProductLower = type.toLowerCase();
     const titleProductLower = titleProduct.split(" ").join("-").toLowerCase();
     const productData = {
@@ -72,10 +73,13 @@ const CardNewProduct = ({
       sendDataToModal({ data: dataToModal, open: openModal });
     }
   }, [openModal]);
+  useEffect(() => {}, [imgSrc]);
   return (
     <div
       id="card-new-product"
-      className={`mb-4 ${isRelateProduct ? "w-[50%] h-[50%] sm:w-full sm:h-[90%]" : ""} ${
+      className={`mb-4 ${
+        isRelateProduct ? "h-[50%] " : ""
+      } ${
         isProductsPage || isProductPage
           ? "sm:w-full sm:h-[90%] sm:grid sm:grid-cols-10 sm:gap-3 border-none rounded-sm"
           : "border rounded-xl"
@@ -85,7 +89,7 @@ const CardNewProduct = ({
     >
       <div
         id="img-card-product"
-        className={`h-[100%] ${isRelateProduct ? "w-full h-[50%]" : ""}${
+        className={`h-[100%] ${isRelateProduct ? "w-full h-full sm:h-[50%]" : ""}${
           isProductPage ? "h-full lg:w-[90%] lg:col-span-5" : ""
         }  ${
           isProductsPage || isProductPage
@@ -93,16 +97,18 @@ const CardNewProduct = ({
             : ""
         }sm:h-[70%] bg-gray-200 rounded-t-xl relative overflow-hidden`}
       >
-        <img
-          src={imgSrc}
-          alt={titleProduct}
-          className={`${
-            isProductsPage || isProductPage ? "sm:aspect-[3/2]" : ""
-          } w-full h-full object-cover rounded-t-xl z-1 ${
-            viewState || isProductsPage ? "hover:cursor-pointer" : ""
-          }`}
-          onClick={viewState || isProductsPage ? () => goToProduct() : null}
-        />
+        {imgSrc && (
+          <img
+            src={imgSrc}
+            alt={titleProduct}
+            className={`${
+              isProductsPage || isProductPage ? "sm:aspect-[3/2]" : ""
+            } w-full h-full object-cover rounded-t-xl z-1 ${
+              viewState || isProductsPage ? "hover:cursor-pointer" : ""
+            }`}
+            onClick={viewState || isProductsPage || isRelateProduct? () => goToProduct() : null}
+          />
+        )}
         {discount !== 0 && (
           <div
             id="discount"
@@ -113,6 +119,7 @@ const CardNewProduct = ({
         )}
         <div
           className={`
+            ${isRelateProduct ? "hidden sm:absolute" : ""}
           absolute left-0 right-0 bottom-0 
           bg-zinc-950 text-white p-4 
           text-center
@@ -127,7 +134,11 @@ const CardNewProduct = ({
         <AnimatePresence>
           {cardHover && (
             <motion.div
-              className={`absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex justify-center gap-3 ${
+              className={`${
+                isRelateProduct
+                  ? "hidden sm:flex sm:justify-center sm:gap-3"
+                  : ""
+              } absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2  ${
                 viewState ? "" : "hidden"
               }`}
               // animate={{ opacity: 1, scale: 1 }}
@@ -151,6 +162,22 @@ const CardNewProduct = ({
             </motion.div>
           )}
         </AnimatePresence>
+        <div
+          className={`${isRelateProduct ? "sm:hidden" : "hidden"} absolute right-3 top-3  flex justify-center flex flex-col gap-2`}
+        >
+          <div className="w-8 h-8 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-indigo-500 group transition-colors duration-200">
+            <ShoppingBagOutlinedIcon
+              fontSize="small"
+              className="text-inherit group-hover:text-white transition-colors duration-200"
+            />
+          </div>
+          <div className="w-8 h-8 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-red-500 group transition-colors duration-200">
+            <FavoriteBorderIcon
+              fontSize="small"
+              className="text-inherit group-hover:text-white transition-colors duration-200"
+            />
+          </div>
+        </div>
       </div>
       <div
         id="info-card-product"
@@ -215,15 +242,15 @@ const CardNewProduct = ({
         >
           {discount > 0 ? (
             <>
-              <div className="text-md sm:text-2xl  text-red-400 line-through">
+              <div className="text-md sm:text-xl  text-red-400 line-through">
                 ${price}
               </div>
-              <div className="text-md sm:text-2xl ">
+              <div className="text-md sm:text-xl">
                 ${price - (price * discount) / 100}
               </div>
             </>
           ) : (
-            <div>${price}</div>
+            <div className="text-md sm:text-xl">${price}</div>
           )}
         </div>
         <div id="color-product" className="flex justify-center gap-3">
@@ -231,7 +258,7 @@ const CardNewProduct = ({
           <div className="rounded-full w-5 h-5 sm:w-6 sm:h-6 bg-orange-200 hover:cursor-pointer"></div>
         </div>
         {(isProductsPage || isProductPage) && (
-          <Divider sx={{ mx: 2, my: 2,  borderColor: "#e5e7eb" }} />
+          <Divider sx={{ mx: 2, my: 2, borderColor: "#e5e7eb" }} />
         )}
         <div id="description-card-product" className="my-5  p-4">
           <p className="text-xs text-gray-500">{description}</p>

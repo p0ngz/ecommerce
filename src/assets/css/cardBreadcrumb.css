@@ -1,0 +1,97 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+  
+  padding-bottom: 40px; /* Space for pagination */
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: white;
+  min-height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swiper-pagination {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex !important;
+  justify-content: center;
+}
+/* Make bullets larger and change color */
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #e0e0e0;
+  opacity: 1;
+  border-radius: 50%;
+  margin: 0 6px !important;
+  transition: background 0.3s, transform 0.3s;
+}
+
+/* Active bullet style */
+.swiper-pagination-bullet-active {
+  background: #2e2c2c;
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Center pagination below slides */
+.swiper-pagination {
+  position: static;
+  margin-top: 16px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+/* Hide default Swiper arrows */
+.swiper-button-prev,
+.swiper-button-next {
+  display: none !important;
+}
+
+/* Style your custom buttons */
+.custom-swiper-prev,
+.custom-swiper-next {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  background: #fff;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  border: none;
+  cursor: pointer;
+}
+.custom-swiper-prev {
+  left: -15%;
+}
+.custom-swiper-next {
+  right: -15%;
+}
+
+
+@media screen and (min-width: 1024px) {
+  .custom-swiper-prev {
+    left: -5%;
+  }
+  .custom-swiper-next {
+    right: -5%;
+  }
+  
+}
