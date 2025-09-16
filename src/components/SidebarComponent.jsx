@@ -10,7 +10,7 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 const sidebarData = ["Home", "Products", "Blog", "Featured"];
-const routerData = ["/", "/products", "/blog", "/feature"];
+const routerData = ["/", "/products", "/blogs", "/feature"];
 const SidebarComponent = ({ toggleSidebar, sendStatusToParent }) => {
   const [open, setOpen] = useState(false);
   const toggleButtonRef = useRef(null);

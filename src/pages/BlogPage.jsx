@@ -1,15 +1,12 @@
-import React from 'react'
-
+import React from "react";
+// import { useParams } from "react-router-dom";
+import BlogComponent from "../components/blogs/BlogComponent";
 const BlogPage = () => {
   return (
-    <div
-      id="blog-page"
-      className="px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]"
-    >
-      <h1>Blog</h1>
-      <p>Welcome to the blog page!</p>
+    <div id="blog-page" className="w-full min-h-screen">
+      <BlogComponent />
     </div>
-  )
-}
+  );
+};
 
-export default BlogPage
+export default BlogPage;

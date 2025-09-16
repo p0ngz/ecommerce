@@ -53,6 +53,9 @@ body {
   font-family: "sans-serif", serif;
 }
 
+.MuiTabs-scrollButtons.Mui-disabled {
+  opacity: 1;
+}
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -193,8 +196,8 @@ body {
     width: 4px;
   }
   .scrollbar-custom::-webkit-scrollbar-thumb {
-    background: var(--sidebar-ring); 
-    border-radius: 9999px; 
+    background: var(--sidebar-ring);
+    border-radius: 9999px;
   }
 
   .center-screen {

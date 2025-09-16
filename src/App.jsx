@@ -14,11 +14,13 @@ import ShippingPage from "./pages/ShippingPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductPage from "./pages/ProductPage";
+import BlogsPage from "./pages/BlogsPage";
 import BlogPage from "./pages/BlogPage";
 import FeaturePage from "./pages/FeaturePage";
 import TrackingStatusOrderPage from "./pages/TrackingStatusOrderPage";
 import QRpaymentPage from "./pages/QRpaymentPage";
 import ProductTypePage from "./pages/ProductTypePage";
+
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -36,7 +38,11 @@ const routes = createBrowserRouter(
             <Route path=":productName" element={<ProductPage />} />
           </Route>
         </Route>
-        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blogs">
+          <Route index element={<BlogsPage />} />
+          <Route path=":blog" element={<BlogPage />} />
+        </Route>
+
         <Route path="/feature" element={<FeaturePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

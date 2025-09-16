@@ -34,7 +34,6 @@ const productSlice = createSlice({
         price,
         description,
       };
-      console.log('newProduct: ', newProduct)
       state.product = newProduct;
     },
   },
