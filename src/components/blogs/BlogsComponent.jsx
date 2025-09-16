@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
@@ -37,10 +37,12 @@ const tabsMenuObj = {
 };
 const tabMenuArray = Object.values(tabsMenuObj);
 const customWidth = 100 / tabMenuArray.length;
+
 const BlogsComponent = () => {
   const navigate = useNavigate();
   const [valueTab, setValueTab] = useState(0);
   const [tab, setTab] = useState("Accessories");
+  const blogContainerRef = useRef();
   const handleChange = (event, newValue) => {
     setValueTab(newValue);
   };
@@ -48,11 +50,15 @@ const BlogsComponent = () => {
     setTab(() => {
       return tabMenuArray[valueTab].split(" ").join("");
     });
-  }, [valueTab])
+  }, [valueTab]);
+  useEffect(() => {
+    blogContainerRef.current.scrollIntoView({ behavior: "smooth" });
+  }, []);
   return (
     <div
       id="blog-container"
       className="relative px-5 py-10 w-full min-h-[70vh]"
+      ref={blogContainerRef}
     >
       <h2 id="blogs-title" className="text-center mb-3 text-3xl lg:text-5xl">
         Blogs

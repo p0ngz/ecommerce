@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
@@ -6,6 +6,7 @@ import { capitalizeHandler } from "../../utility/capitalizeHandler";
 import BlogCard from "./BlogCard";
 import { useSelector } from "react-redux";
 const BlogComponent = () => {
+  const mainContainerRef = useRef();
   const navigate = useNavigate();
   const { blog } = useParams();
   const [blogName, setBlogName] = useState("");
@@ -19,10 +20,14 @@ const BlogComponent = () => {
   useEffect(() => {
     console.log("blogState: ", blogState);
   }, [blogState])
+  useEffect(() => {
+    mainContainerRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [])
   return (
     <div
       id="blog-container"
       className="py-10 ps-5 sm:ps-0 md:mt-15 xl:mt-25 w-full min-h-[70vh]"
+      ref={mainContainerRef}
     >
       <div id="blog-breadcrumbs" className="flex justify-start mb-10">
         <Breadcrumbs
@@ -103,7 +108,7 @@ const BlogComponent = () => {
           </Typography>
         </Breadcrumbs>
       </div>
-      <div id="main-blog" className="w-full min-h-full">
+      <div id="main-blog" className="w-full min-h-full" >
         <BlogCard
           img={blogState.img}
           title={blogState.title}
