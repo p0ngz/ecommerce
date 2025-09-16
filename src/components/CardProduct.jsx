@@ -52,7 +52,6 @@ const CardNewProduct = ({
     });
   };
   const goToProduct = () => {
-    console.log("go to product");
     const typeProductLower = type.toLowerCase();
     const titleProductLower = titleProduct.split(" ").join("-").toLowerCase();
     const productData = {
@@ -65,6 +64,7 @@ const CardNewProduct = ({
       description,
     };
     dispatch(setProduct(productData));
+
     navigate(`/products/${typeProductLower}/${titleProductLower}`);
   };
   useEffect(() => {
@@ -77,9 +77,7 @@ const CardNewProduct = ({
   return (
     <div
       id="card-new-product"
-      className={`mb-4 ${
-        isRelateProduct ? "h-[50%] " : ""
-      } ${
+      className={`mb-4 ${isRelateProduct ? "h-[50%] " : ""} ${
         isProductsPage || isProductPage
           ? "sm:w-full sm:h-[90%] sm:grid sm:grid-cols-10 sm:gap-3 border-none rounded-sm"
           : "border rounded-xl"
@@ -89,9 +87,9 @@ const CardNewProduct = ({
     >
       <div
         id="img-card-product"
-        className={`h-[100%] ${isRelateProduct ? "w-full h-full sm:h-[50%]" : ""}${
-          isProductPage ? "h-full lg:w-[90%] lg:col-span-5" : ""
-        }  ${
+        className={`h-[100%] ${
+          isRelateProduct ? "w-full h-full sm:h-[50%]" : ""
+        }${isProductPage ? "h-full lg:w-[90%] lg:col-span-5" : ""}  ${
           isProductsPage || isProductPage
             ? "sm:w-full lg:w-[80%] sm:h-full sm:col-span-4 lg:col-span-5"
             : ""
@@ -106,7 +104,11 @@ const CardNewProduct = ({
             } w-full h-full object-cover rounded-t-xl z-1 ${
               viewState || isProductsPage ? "hover:cursor-pointer" : ""
             }`}
-            onClick={viewState || isProductsPage || isRelateProduct? () => goToProduct() : null}
+            onClick={
+              viewState || isProductsPage || isRelateProduct
+                ? () => goToProduct()
+                : null
+            }
           />
         )}
         {discount !== 0 && (
@@ -119,7 +121,7 @@ const CardNewProduct = ({
         )}
         <div
           className={`
-            ${isRelateProduct ? "hidden sm:absolute" : ""}
+            ${isRelateProduct ? "hidden sm:block" : ""}
           absolute left-0 right-0 bottom-0 
           bg-zinc-950 text-white p-4 
           text-center
@@ -163,7 +165,9 @@ const CardNewProduct = ({
           )}
         </AnimatePresence>
         <div
-          className={`${isRelateProduct ? "sm:hidden" : "hidden"} absolute right-3 top-3  flex justify-center flex flex-col gap-2`}
+          className={`${
+            isRelateProduct ? "sm:hidden" : "hidden"
+          } absolute right-3 top-3  flex justify-center flex flex-col gap-2`}
         >
           <div className="w-8 h-8 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-indigo-500 group transition-colors duration-200">
             <ShoppingBagOutlinedIcon

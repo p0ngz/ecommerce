@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -25,7 +25,7 @@ const CardBreadcrumb = ({ relatedProducts }) => {
       spaceBetween: 30,
     },
     1280: {
-      slidesPerView: Math.min(5, countRelatedProducts),
+      slidesPerView: Math.min(4, countRelatedProducts),
       spaceBetween: 30,
     },
   };
@@ -58,7 +58,6 @@ const CardBreadcrumb = ({ relatedProducts }) => {
           handleSwiper(swiper);
         }}
         onInit={(swiper) => {
-          console.log("swiper: ", swiper);
           swiper.params.navigation.prevEl = prevRef.current;
           swiper.params.navigation.nextEl = nextRef.current;
           swiper.navigation.init();
