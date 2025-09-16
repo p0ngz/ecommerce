@@ -163,7 +163,7 @@ const ProductComponent = () => {
         <Breadcrumbs
           aria-label="breadcrumb"
           separator=">"
-          i
+          
           sx={{
             "& .MuiBreadcrumbs-separator": {
               color: "inherit",
@@ -197,7 +197,6 @@ const ProductComponent = () => {
           >
             Home
           </Typography>
-
           <Typography
             className="hover:cursor-pointer hover:underline"
             onClick={() => navigate("/products")}
