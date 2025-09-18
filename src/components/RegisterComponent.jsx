@@ -38,7 +38,6 @@ const RegisterComponent = () => {
     validateOnChange: true,
     //   validateOnBlur: true,
     onSubmit: async (values, action) => {
-
       await new Promise((resolve) => setTimeout(resolve, 1000));
       action.resetForm();
     },
@@ -54,11 +53,11 @@ const RegisterComponent = () => {
     <div id="register-component" className="w-full h-full flex">
       <div
         id="left"
-        className="w-[50%] px-15 py-25 flex justify-center items-center bg-gradient-to-br from-[#e7dccb] via-[#d6c3b1] to-[#b8a48a]"
+        className="w-[100%] mid:w-[50%] px-15 py-25 flex justify-center items-center mid:bg-gradient-to-br mid:from-[#e7dccb] mid:via-[#d6c3b1] mid:to-[#b8a48a] bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover"
       >
         <div
           id="register-container"
-          className="w-full max-w-md rounded-xl shadow-lg p-8 flex flex-col gap-6 bg-white/60 backdrop-blur-md"
+          className="w-full max-w-mid rounded-xl shadow-lg p-8 flex flex-col gap-6 bg-white/60 backdrop-blur-sm backdrop-blur-md"
         >
           <h2 className="text-3xl font-bold text-center text-[#3E2C23] mb-2">
             Register
@@ -78,7 +77,7 @@ const RegisterComponent = () => {
                 !!values.firstName && errors.firstName
                   ? "ring-2 ring-red-400 focus:bg-red-200"
                   : "focus:ring-2 focus:ring-[#F4B350]"
-              } px-4 py-3 rounded-lg border border-gray-300 focus:outline-none`}
+              } px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none`}
               required
               value={values.firstName}
               onBlur={handleBlur}
@@ -93,7 +92,7 @@ const RegisterComponent = () => {
                 !!values.lastName && errors.lastName
                   ? "ring-2 ring-red-400 focus:bg-red-200"
                   : "focus:ring-2 focus:ring-[#F4B350]"
-              } px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2`}
+              } px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none focus:ring-2`}
               required
               value={values.lastName}
               onBlur={handleBlur}
@@ -108,7 +107,7 @@ const RegisterComponent = () => {
                 !!values.email && errors.email
                   ? "ring-2 ring-red-400 focus:bg-red-200"
                   : "focus:ring-2 focus:ring-[#F4B350]"
-              } px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2`}
+              } px-4 py-3 rounded-lg border border-gray-600  mid:border-gray-300 focus:outline-none focus:ring-2`}
               required
               value={values.email}
               onBlur={handleBlur}
@@ -124,7 +123,7 @@ const RegisterComponent = () => {
                   !!values.password && errors.password
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
-                } w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2`}
+                } w-full px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none focus:ring-2`}
                 required
                 value={values.password}
                 onBlur={handleBlur}
@@ -161,7 +160,7 @@ const RegisterComponent = () => {
                   !!values.confirmPassword && errors.confirmPassword
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
-                } w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4B350]`}
+                } w-full px-4 py-3 rounded-lg border border-gray-600  mid:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4B350]`}
                 required
                 value={values.confirmPassword}
                 onBlur={handleBlur}
@@ -193,8 +192,8 @@ const RegisterComponent = () => {
               disabled={!(isValid && dirty)}
               className={`w-full py-3 rounded-lg  font-semibold   ${
                 !(isValid && dirty)
-                  ? "bg-[#F5F5F5] text-gray-400 cursor-not-allowed"
-                  : "bg-[#d6c3b1] text-gray-600 hover:text-gray-900 hover:cursor-pointer hover:bg-[#b8a48a] transition"
+                  ? "bg-[#F5F5F5] text-gray-400 cursor-not-allowed border border-gray-300"
+                  : "bg-[#d6c3b1] text-gray-600 sm:hover:text-gray-900 sm:hover:cursor-pointer sm:hover:bg-[#b8a48a] transition"
               }  shadow`}
             >
               Register
@@ -213,7 +212,7 @@ const RegisterComponent = () => {
       </div>
       <div
         id="right"
-        className="w-[50%] flex justify-center items-center bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]"
+        className="hidden  mid:block mid:w-[50%] flex justify-center items-center mid:bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]"
       ></div>
     </div>
   );

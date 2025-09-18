@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@theme {
+  --breakpoint-mid: 850px;
+}
 @font-face {
   font-family: "CanelaText-Black";
   src: url("./assets/fonts/CanelaText-Black-Trial.otf") format("opentype");
