@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 const LoginComponent = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordHandler = (state) => {
+    setShowPassword(state);
+  };
+  const { values, handleChange, handleBlur, handleSubmit } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+  });
   return (
     <div id="login-component" className="w-full h-full flex">
       <div
@@ -18,22 +32,60 @@ const LoginComponent = () => {
           <h2 className="text-3xl font-bold text-center text-[#3E2C23] mb-2">
             Sign In
           </h2>
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <input
+              id="email"
+              name="email"
               type="email"
               placeholder="Email"
               className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4B350]"
               required
+              value={values.email}
+              onBlur={handleBlur}
+              onChange={handleChange}
             />
-            <input
-              type="password"
-              placeholder="Password"
-              className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4B350]"
-              required
-            />
+            <div id="password-container" className="relative w-full">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4B350]"
+                required
+                value={values.password}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              <span
+                id="toggle-password"
+                className="absolute right-3 top-1/2 -translate-y-1/2 hover:cursor-pointer"
+              >
+                {showPassword ? (
+                  <VisibilityOffIcon
+                    fontSize="small"
+                    onClick={() => togglePasswordHandler(false)}
+                    className="text-gray-400 hover:text-gray-800 transition duration-500"
+                    sx={{}}
+                  />
+                ) : (
+                  <VisibilityIcon
+                    fontSize="small"
+                    onClick={() => togglePasswordHandler(true)}
+                    className="text-gray-400 hover:text-gray-800 transition duration-500"
+                    sx={{}}
+                  />
+                )}
+              </span>
+            </div>
+
             <button
               type="submit"
-              className="w-full py-3 rounded-lg text-white font-semibold transition bg-gradient-to-r from-[#e7dccb] via-[#d6c3b1] to-[#e7dccb] hover:cursor-pointer hover:from-[#b8a48a] hover:via-[#d6c3b1] hover:to-[#b8a48a] hover:text-gray-700 shadow"
+              disabled={!!values.email && !!values.password}
+              className={`${
+                !(!!values.email && !!values.password)
+                  ? "bg-[#F5F5F5] text-gray-400 cursor-not-allowed"
+                  : "bg-[#d6c3b1] text-gray-600 hover:text-gray-900 hover:cursor-pointer hover:bg-[#b8a48a] transition"
+              } w-full py-3 rounded-lg  font-semibold shadow`}
             >
               Login
             </button>
