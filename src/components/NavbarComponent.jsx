@@ -115,12 +115,24 @@ const NavbarComponent = () => {
               </p>
             </Link>
           </div>
-          
         </div>
       </div>
       <div id="right">
         {/* md-screen */}
         <div id="right-md-screen" className="flex items-center gap-3 xl:hidden">
+          {onHoverProfile ? (
+            <Link to="/profile">
+              <PersonIcon
+                className="text-teal-500 hover:cursor-pointer"
+                onMouseLeave={() => setOnHoverProfile(false)}
+              />
+            </Link>
+          ) : (
+            <PersonOutlineIcon
+              className="hover:cursor-pointer"
+              onMouseEnter={() => setOnHoverProfile(true)}
+            />
+          )}
           {onHoverFavorite ? (
             <Link to="/wishlist">
               <FavoriteIcon
@@ -154,12 +166,17 @@ const NavbarComponent = () => {
           id="right-xl-screen"
           className="hidden md:hidden xl:flex xl:items-center xl:gap-3"
         >
-          <SearchIcon className="hover:cursor-pointer hover:text-emerald-800" />
+          <SearchIcon
+            className="hover:cursor-pointer hover:text-emerald-800"
+            onClick={() => activeSearchModalHandler()}
+          />
           {onHoverProfile ? (
-            <PersonIcon
-              className="text-teal-500 hover:cursor-pointer"
-              onMouseLeave={() => setOnHoverProfile(false)}
-            />
+            <Link to="/profile">
+              <PersonIcon
+                className="text-teal-500 hover:cursor-pointer"
+                onMouseLeave={() => setOnHoverProfile(false)}
+              />
+            </Link>
           ) : (
             <PersonOutlineIcon
               className="hover:cursor-pointer"
