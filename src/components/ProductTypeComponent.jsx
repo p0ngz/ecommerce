@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
+import { useIsMobileScreen } from "../utility/isMobile";
 const ProductTypeComponent = ({
   className,
   imgSrc,
@@ -10,6 +10,7 @@ const ProductTypeComponent = ({
   shopButton = {},
   index,
 }) => {
+  const isMobile = useIsMobileScreen();
   const bgVariants = {
     initial: { width: 0 },
     hover: { width: "200%", borderWidth: "0px" },
@@ -19,9 +20,7 @@ const ProductTypeComponent = ({
     const url = typeProduct.toLowerCase();
     navigate(`/products/${url}`);
   };
-  useEffect(() => {
-    // console.log("index: ", index);
-  }, [index]);
+
   return (
     <motion.div
       className={className}
@@ -30,6 +29,7 @@ const ProductTypeComponent = ({
       whileHover={{ scale: 1.025, opacity: 1 }}
       whileTap={{ scale: 0.8 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
+      onClick={isMobile ? () => goToProductType() : null}
     >
       <img
         src={imgSrc}
@@ -39,10 +39,16 @@ const ProductTypeComponent = ({
 
       <div
         id="type-product-container"
-        className={`absolute left-10 top-[80%] sm:left-10 sm:top-[60%] lg:left-10 lg:top-[75%]  ${index === 2 || index === 3 ? "xl:left-10 xl:top-[60%]" : "xl:left-10 xl:top-[80%]"}  z-3`}
+        className={`absolute left-10 top-[80%] sm:left-10 sm:top-[60%] lg:left-10 lg:top-[75%]  ${
+          index === 2 || index === 3
+            ? "xl:left-10 xl:top-[60%]"
+            : "xl:left-10 xl:top-[80%]"
+        }  z-3`}
       >
         <div id="type-product">
-          <h2 className={`mb-5 lg:mb-7 xl:mb-3 text-white text-5xl lg:text-5xl font-normal leading-tight`}>
+          <h2
+            className={`mb-5 lg:mb-7 xl:mb-3 text-white text-5xl lg:text-5xl font-normal leading-tight`}
+          >
             {typeProduct}
           </h2>
 
