@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
@@ -109,7 +109,7 @@ const TypeProductsComponent = () => {
   const navigate = useNavigate();
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const [type, setType] = useState("");
-
+  const productTypeRef = useRef(null);
   const receiveStatusFromSidebar = (status) => {
     setSidebarToggle(status);
   };
@@ -124,10 +124,16 @@ const TypeProductsComponent = () => {
     const type = capitalizeHandler(typeProduct);
     setType(type);
   }, [typeProduct]);
+  useEffect(() => {
+    if(productTypeRef.current) {
+      productTypeRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  })
   return (
     <div
       id="products-type-page"
       className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]"
+      ref={productTypeRef}
     >
       <h2 id="products-title" className="text-center mb-3 text-3xl lg:text-5xl">
         Products
