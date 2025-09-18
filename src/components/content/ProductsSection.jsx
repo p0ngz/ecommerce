@@ -21,7 +21,7 @@ const productTypeData = [
       "https://wpbingo-adena.myshopify.com/cdn/shop/files/banner-8.jpg?crop=center&height=333&v=1730102058&width=630",
     sellAmount: 40,
     shopButton: {
-      active: false,
+      active: true,
       text: "",
     },
   },
@@ -38,12 +38,12 @@ const productTypeData = [
   },
   {
     id: 4,
-    type: "Ring",
+    type: "Rings",
     imgSrc:
       "https://wpbingo-adena.myshopify.com/cdn/shop/files/banner-9.jpg?crop=center&height=333&v=1730102058&width=630",
     sellAmount: 35,
     shopButton: {
-      active: false,
+      active: true,
       text: "",
     },
   },
@@ -56,28 +56,23 @@ const ProductsSection = () => {
       .slice(0, productTypeData.length);
     setSortSellerProduct(sorted);
   }, []);
-  //   useEffect(() => {
-  //     if (sortSellerProduct.length > 0) {
-  //       console.log("sortSellerProduct changed: ", sortSellerProduct);
-  //     }
-  //   }, [sortSellerProduct]);
+
   return (
     <div
       id="products-container"
-      className="py-20 w-full min-h-[80vh]  grid grid-cols-1 sm:grid-cols-12 grid-rows-4 gap-5 md:grid-cols-1 md:grid-rows-none sm:grid-cols-1 sm:grid-rows-none sm:gap-0 xl:gap-3 lg:gap-3"
+      className="py-20 w-full min-h-[80vh]  grid grid-cols-1 grid-rows-4 gap-0 xl:gap-2 sm:grid-cols-12  xl:grid-cols-12 xl:h-screen"
     >
-
       {sortSellerProduct.map((product, index) => {
-        // For xl: custom grid, for md and below: col-span-12, row-span-1, no manual placement
-        const base = "relative hover:cursor-pointer";
+        const base = "relative hover:cursor-pointer h-[50vh] xl:h-auto";
+        const lg = "lg:row-span-4 lg:h-[80vh]";
         const xl =
           index === 0
             ? "xl:col-span-4 xl:row-span-4 xl:row-start-1 xl:col-start-1"
             : index === 1
             ? "xl:col-span-4 xl:row-span-4 xl:row-start-1 xl:col-start-9 "
             : "xl:col-span-4 xl:row-span-2";
-        const sm = "md:col-span-12 md:row-span-1 md:row-auto md:col-auto"
-        const md = "md:col-span-12 md:row-span-1 md:row-auto md:col-auto";
+        const sm = "sm:col-span-12 sm:h-[40vh]";
+        const md = "md:col-span-12";
 
         return (
           <ProductTypeComponent
@@ -86,7 +81,7 @@ const ProductsSection = () => {
             typeProduct={product.type}
             shopButton={product.shopButton}
             index={index}
-            className={`${base} ${xl} ${md} ${sm}`}
+            className={`${base} ${sm} ${md}  ${lg} ${xl} h-full`}
           />
         );
       })}

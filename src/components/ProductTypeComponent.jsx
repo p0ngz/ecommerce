@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const ProductTypeComponent = ({
   className,
@@ -12,6 +13,11 @@ const ProductTypeComponent = ({
   const bgVariants = {
     initial: { width: 0 },
     hover: { width: "200%", borderWidth: "0px" },
+  };
+  const navigate = useNavigate();
+  const goToProductType = () => {
+    const url = typeProduct.toLowerCase();
+    navigate(`/products/${url}`);
   };
   useEffect(() => {
     // console.log("index: ", index);
@@ -33,45 +39,33 @@ const ProductTypeComponent = ({
 
       <div
         id="type-product-container"
-        className="absolute left-10 top-[70%] z-3"
+        className={`absolute left-10 top-[80%] sm:left-10 sm:top-[60%] lg:left-10 lg:top-[75%]  ${index === 2 || index === 3 ? "xl:left-10 xl:top-[60%]" : "xl:left-10 xl:top-[80%]"}  z-3`}
       >
         <div id="type-product">
-          <h2 className="mb-5 text-white text-5xl font-normal leading-tight">
+          <h2 className={`mb-5 lg:mb-7 xl:mb-3 text-white text-5xl lg:text-5xl font-normal leading-tight`}>
             {typeProduct}
           </h2>
 
           {shopButton.active ? (
             <motion.button
-              className="relative overflow-hidden mt-5 px-10 py-3  border border-white text-white max-w-[10rem]"
+              className="relative hidden sm:block overflow-hidden  px-10 py-3  border border-white text-white min-w-[10rem] hover:cursor-pointer"
               initial="initial"
               whileHover="hover"
               variants={{
                 initial: {},
                 hover: { border: "none" },
               }}
+              onClick={() => goToProductType()}
             >
               <motion.div
                 className="absolute top-0 left-1/2 h-full bg-[#63512D] z-0"
                 style={{ transform: "translateX(-50%)" }}
                 variants={bgVariants}
-                // variants={{
-                //   initial: { width: 0 },
-                //   hover: { width: "100%", border: 'none' },
-                // }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
               />
-              <span className="relative z-10">Shop Now</span>
+              <span className="relative lg:text-md z-10">Shop Now</span>
             </motion.button>
-          ) : // <button className="mt-5 px-10 py-3 bg-inherit max-w-[10rem] border-white border-1 hover:cursor-pointer relative">
-          //   <motion.div
-          //     className="absolute top-0 left-1/2 h-full bg-emerald-900 z-0"
-          //     style={{ width: 0, transform: "translateX(-50%)" }}
-          //     whileHover={{ width: "200%", zIndex: 3}}
-          //     transition={{ duration: 0.5, ease: "easeOut" }}
-          //   />
-          //   <p className="text-sm text-white">Shop Now</p>
-          // </button>
-          null}
+          ) : null}
         </div>
       </div>
     </motion.div>

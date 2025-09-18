@@ -1,7 +1,7 @@
 import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
-// AnimatePresence for transition when mount or unmount
+import { useNavigate } from "react-router-dom";
 const HeroBackground = ({
   imgID,
   imgSrc,
@@ -13,6 +13,10 @@ const HeroBackground = ({
     initial: { width: 0 },
     hover: { width: "200%", borderWidth: "0px" },
   };
+  const navigate = useNavigate()
+  const goToProducts = () => {
+    navigate('/products')
+  }
   return (
     <div
       key={imgID}
@@ -66,6 +70,7 @@ const HeroBackground = ({
                 initial: { color: "black" },
                 hover: { border: "none", color: "white" },
               }}
+              onClick={() => goToProducts()}
             >
               <motion.div
                 className="absolute top-0 left-1/2 h-full bg-[#63512D] z-0"
