@@ -139,7 +139,7 @@ const CardNewProduct = ({
               className={`${
                 isRelateProduct
                   ? "hidden sm:flex sm:justify-center sm:gap-3"
-                  : ""
+                  : "flex justify-center gap-3"
               } absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2  ${
                 viewState ? "" : "hidden"
               }`}
@@ -199,7 +199,7 @@ const CardNewProduct = ({
               return rating - val > 0.5 ? (
                 <StarIcon
                   key={val}
-                  className="text-orange-400"
+                  className="text-[#F4B350]"
                   sx={{
                     fontSize: {
                       xs: 20,
@@ -211,7 +211,7 @@ const CardNewProduct = ({
               ) : val <= rating ? (
                 <StarHalfIcon
                   key={val}
-                  className="text-orange-400"
+                  className="text-[#F4B350]"
                   sx={{
                     fontSize: {
                       xs: 20,
