@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 // layout
 import MainLayout from "./layouts/MainLayout";
-
+import RegisterLoginLayout from "./layouts/RegisterLoginLayout";
 // pages
 import HomePage from "./pages/HomePage";
 import WishlistPage from "./pages/WishlistPage";
@@ -20,7 +20,9 @@ import FeaturePage from "./pages/FeaturePage";
 import TrackingStatusOrderPage from "./pages/TrackingStatusOrderPage";
 import QRpaymentPage from "./pages/QRpaymentPage";
 import ProductTypePage from "./pages/ProductTypePage";
-
+import ProfilePage from "./pages/ProfilePage";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -42,7 +44,12 @@ const routes = createBrowserRouter(
           <Route index element={<BlogsPage />} />
           <Route path=":blog" element={<BlogPage />} />
         </Route>
+        <Route path="/profile" element={<ProfilePage />}></Route>
         <Route path="*" element={<NotFoundPage />} />
+      </Route>
+      <Route path="/" element={<RegisterLoginLayout />}>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Route>
     </>
   )
