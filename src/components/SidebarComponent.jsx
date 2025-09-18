@@ -9,8 +9,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-const sidebarData = ["Home", "Products", "Blog", "Featured"];
-const routerData = ["/", "/products", "/blogs", "/feature"];
+const sidebarData = ["Home", "Products", "Blogs"];
+const routerData = ["/", "/products", "/blogs"];
 const SidebarComponent = ({ toggleSidebar, sendStatusToParent }) => {
   const [open, setOpen] = useState(false);
   const toggleButtonRef = useRef(null);

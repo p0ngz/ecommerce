@@ -32,12 +32,7 @@ const NavbarComponent = () => {
   const receiveSearchState = (state) => {
     setActiveSearchModal(state);
   };
-  // useEffect(() => {
-  //   console.log("activeSidebar changed: ", activeSidebar);
-  // }, [activeSidebar]);
-  // useEffect(() => {
-  //   console.log("activeSearchModal: ", activeSearchModal);
-  // }, [activeSearchModal]);
+
   return (
     <div
       id="navbar"
@@ -98,17 +93,6 @@ const NavbarComponent = () => {
               </p>
             </Link>
           </div>
-          {/* <div id="shop-btn" className="hover:cursor-pointer">
-            <Link to="/shop">
-              <p>
-                Shop
-                <KeyboardArrowDownIcon
-                  fontSize="small"
-                  className="text-gray-400"
-                />
-              </p>
-            </Link>
-          </div> */}
           <div id="products-btn" className="hover:cursor-pointer">
             <Link to="/products">
               <p>
@@ -123,7 +107,7 @@ const NavbarComponent = () => {
           <div id="blog-btn" className="hover:cursor-pointer">
             <Link to="/blog">
               <p>
-                Blog
+                Blogs
                 <KeyboardArrowDownIcon
                   fontSize="small"
                   className="text-gray-400"
@@ -131,17 +115,7 @@ const NavbarComponent = () => {
               </p>
             </Link>
           </div>
-          <div id="featured-btn" className="hover:cursor-pointer">
-            <Link to="/feature">
-              <p>
-                Featured
-                <KeyboardArrowDownIcon
-                  fontSize="small"
-                  className="text-gray-400"
-                />
-              </p>
-            </Link>
-          </div>
+          
         </div>
       </div>
       <div id="right">

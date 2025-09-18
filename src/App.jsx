@@ -42,8 +42,6 @@ const routes = createBrowserRouter(
           <Route index element={<BlogsPage />} />
           <Route path=":blog" element={<BlogPage />} />
         </Route>
-
-        <Route path="/feature" element={<FeaturePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </>
