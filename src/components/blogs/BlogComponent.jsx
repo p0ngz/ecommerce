@@ -18,9 +18,6 @@ const BlogComponent = () => {
   }, [blog]);
 
   useEffect(() => {
-    console.log("blogState: ", blogState);
-  }, [blogState])
-  useEffect(() => {
     mainContainerRef.current.scrollIntoView({ behavior: "smooth" });
   }, [])
   return (
