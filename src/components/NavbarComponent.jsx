@@ -36,7 +36,7 @@ const NavbarComponent = () => {
   return (
     <div
       id="navbar"
-      className="sm:fixed md:fixed xl:fixed top-0 left-0 w-full md:h-15 xl:h-25  px-6 py-8 bg-gray-100  flex justify-between items-center z-99 relative"
+      className="sm:fixed md:fixed xl:fixed top-0 left-0 w-full md:h-15 xl:h-25  px-6 py-8 bg-white  flex justify-between items-center z-99 relative"
     >
       <div id="left" className="">
         {/* sm and md screen */}

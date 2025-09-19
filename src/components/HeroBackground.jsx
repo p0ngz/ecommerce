@@ -39,7 +39,7 @@ const HeroBackground = ({
         <motion.div
           key={imgID}
           id={`bg${imgID}-text`}
-          className="mt-10 sm:mt-0 w-full min-h-20 flex flex-col items-center sm:items-start -translate-x-8 sm:-translate-x-0 sm:justify-start sm:absolute sm:left-10 lg:left-30 sm:top-1/2 sm:-translate-y-1/2 sm:min-w-20"
+          className="mt-10 sm:mt-0 w-full min-h-20  flex flex-col items-center sm:items-start -translate-x-8 sm:-translate-x-0 sm:justify-start sm:absolute sm:left-10 lg:left-30 sm:top-1/2 sm:-translate-y-1/2 sm:min-w-20"
           initial="initial"
           animate="animate"
           exit="exit"

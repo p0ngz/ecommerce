@@ -39,7 +39,7 @@ const ProductTypeComponent = ({
 
       <div
         id="type-product-container"
-        className={`absolute left-10 top-[80%] sm:left-10 sm:top-[60%] lg:left-10 lg:top-[75%]  ${
+        className={`absolute left-10 top-[80%] sm:left-10 sm:top-[55%] lg:left-10 lg:top-[75%]  ${
           index === 2 || index === 3
             ? "xl:left-10 xl:top-[60%]"
             : "xl:left-10 xl:top-[80%]"

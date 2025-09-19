@@ -19,11 +19,11 @@ const LoginComponent = () => {
     <div id="login-component" className="w-full h-full flex">
       <div
         id="left"
-        className="hidden mid:block mid:w-[50%] bg-gray-500 flex justify-center items-center mid:bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]"
+        className="hidden mid:block mid:w-[50%] 2xl:w-[60%] bg-gray-500 flex justify-center items-center mid:bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] mid:bg-cover"
       ></div>
       <div
         id="right"
-        className="w-[100%] mid:w-[50%] px-15 py-25 flex justify-center items-center mid:bg-gradient-to-br mid:from-[#e7dccb] mid:via-[#d6c3b1] mid:to-[#b8a48a] bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] sm:bg-cover"
+        className="w-[100%] mid:w-[50%] 2xl:w-[30%]px-15 py-25 flex justify-center items-center mid:bg-gradient-to-br mid:from-[#e7dccb] mid:via-[#d6c3b1] mid:to-[#b8a48a] bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover"
       >
         <div
           id="login-container"

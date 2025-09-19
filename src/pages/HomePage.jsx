@@ -5,6 +5,7 @@ import ProductsSection from "../components/content/ProductsSection";
 import DescriptionSection from "../components/content/DescriptionSection";
 import TopProductsSection from "../components/content/TopProductsSection";
 import PromoteSection from "../components/content/PromoteSection";
+import ViewProductSection from "../components/content/ViewProductSection";
 
 const HomePage = () => {
   return (
@@ -14,6 +15,7 @@ const HomePage = () => {
       <ProductsSection />
       <DescriptionSection />
       <TopProductsSection />
+      <ViewProductSection />
       <PromoteSection />
     </div>
   );

@@ -53,7 +53,7 @@ const RegisterComponent = () => {
     <div id="register-component" className="w-full h-full flex">
       <div
         id="left"
-        className="w-[100%] mid:w-[50%] px-15 py-25 flex justify-center items-center mid:bg-gradient-to-br mid:from-[#e7dccb] mid:via-[#d6c3b1] mid:to-[#b8a48a] bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover"
+        className="w-[100%] mid:w-[50%] 2xl:w-[40%] px-15 py-25 flex justify-center items-center mid:bg-gradient-to-br mid:from-[#e7dccb] mid:via-[#d6c3b1] mid:to-[#b8a48a] bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover"
       >
         <div
           id="register-container"
@@ -212,7 +212,7 @@ const RegisterComponent = () => {
       </div>
       <div
         id="right"
-        className="hidden  mid:block mid:w-[50%] flex justify-center items-center mid:bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]"
+        className="hidden  mid:block mid:w-[50%] 2xl:w-[60%] flex justify-center items-center mid:bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] mid:bg-cover mid:bg-center aspect-[4/3]"
       ></div>
     </div>
   );
