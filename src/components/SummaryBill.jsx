@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -12,7 +12,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import Divider from "@mui/material/Divider";
 import { useShipping } from "../contexts/shippingContext";
-import LoadingSpinner from "../utility/LoadingSpinner";
+import LoadingSpinner from "../utility/components/LoadingSpinner";
 
 // for real if use couponCode need user click APPLY first then go check no auto check like this => w8 to refactor
 const SummaryBill = ({confirmHandler}) => {

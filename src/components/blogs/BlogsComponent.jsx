@@ -125,7 +125,6 @@ const BlogsComponent = () => {
             onChange={handleChange}
             variant="scrollable"
             scrollButtons="auto"
-            aria-label="scrollable auto tabs example"
             sx={{
               maxWidth: {
                 xs: 425, // fits about 3 tabs on xs
