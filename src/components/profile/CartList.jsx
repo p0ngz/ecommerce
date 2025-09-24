@@ -35,7 +35,7 @@ const CartList = ({ cartInfo }) => {
   return (
     <div
       id="cart-list"
-      className="py-3 w-full h-full sm:relative sm:h-45 md:h-55 lg:h-[50] xl:h-70 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden sm:flex sm:justify-between"
+      className="py-3 w-full  sm:relative sm:h-45 md:h-55 lg:h-[50] xl:h-70 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden sm:flex sm:justify-between"
     >
       <div className="relative w-full sm:w-[50%] lg:w-[60%] bg-gray-100 overflow-hidden group  sm:flex sm:items-center ">
         <div id="cart-img" className=" w-full h-60 sm:w-[50%] sm:h-full">

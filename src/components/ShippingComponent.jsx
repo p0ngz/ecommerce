@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ShippingTable from "../components/shippingTable/ShippingTable";
+import CartList from "./profile/CartList";
 import TipShipping from "../components/TipShipping";
 import AddressShipping from "../components/AddressShipping";
 import SummaryBill from "../components/SummaryBill";
@@ -13,7 +14,7 @@ import { useShipping } from "../contexts/shippingContext";
 import { useUserInfo } from "../contexts/userInfoContext";
 
 const ShippingComponent = () => {
-  const { formDataOrder } = useShipping();
+  const { shippingData, formDataOrder } = useShipping();
   const { formDataUser } = useUserInfo();
   const navigate = useNavigate();
   const receiveConfirm = (confirm, paymentMethod) => {
@@ -35,10 +36,7 @@ const ShippingComponent = () => {
   };
 
   return (
-    <div
-      id="shipping=page"
-      className="px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]"
-    >
+    <div id="shipping=page" className="px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]">
       <h2 id="shipping-title" className="mb-3 text-3xl">
         Shipping Cart
       </h2>
@@ -76,11 +74,13 @@ const ShippingComponent = () => {
         id="shipping-container"
         className="w-full h-full grid grid-cols-1 sm:grid-cols-8 md:grid-col-8 xl:grid-col-8 lg:grid-col-8gap-5 "
       >
-        <div
-          id="left-shipping-container"
-          className="sm:col-span-8 md:col-span-8 lg:col-span-5"
-        >
-          <ShippingTable />
+        <div id="left-shipping-container" className="sm:col-span-8 md:col-span-8 lg:col-span-5">
+        {/* <div id="left-shipping-container" className=""> */}
+          {/* <ShippingTable /> */}
+          {shippingData.map((cart, index) => {
+            return <CartList cartInfo={cart} key={index} />;
+          })}
+
           <div id="instruction" className="my-15">
             <p className="text-sm">Special instructions for seller</p>
             <Box sx={{ width: "100%", height: "100px" }}>
@@ -88,10 +88,7 @@ const ShippingComponent = () => {
             </Box>
           </div>
         </div>
-        <div
-          id="right-shipping-container"
-          className="px-5 h-auto sm:col-span-8 md:col-span-8 lg:col-span-3"
-        >
+        <div id="right-shipping-container" className="px-5 h-auto sm:col-span-8 md:col-span-8 lg:col-span-3">
           <TipShipping />
           <AddressShipping />
           <SummaryBill confirmHandler={receiveConfirm}></SummaryBill>
