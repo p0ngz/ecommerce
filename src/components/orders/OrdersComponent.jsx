@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import OrderList from "./OrderList";
+import OrderList from "../profile/OrderList";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Typography from "@mui/material/Typography";
 
 const orderListData = [
   {
@@ -283,37 +285,86 @@ const orderListData = [
     trackingNumber: "TRK778899123",
   },
 ];
-const UserOrderList = () => {
+const OrdersComponent = () => {
   const navigate = useNavigate();
-
-  const goToOrdersPageHandler = () => {
-    navigate("/profile/orders");
-  }
   return (
-    // for real we need to fetch data from backend and filter from date
-    <div
-      id="user-order-list-container"
-      className="w-full h-full border border-gray-300 p-3 rounded-md flex flex-col gap-3 "
-    >
-      {orderListData.length === 0 ? (
-        <div className="w-full h-full flex justify-center items-center">
-          <span className="text-gray-400">No orders found...</span>
-        </div>
-      ) : (
-        <>
-          <div id="user-order-list-header" className="flex justify-between">
-            <h2 className="text-lg font-semibold">Order List</h2>
-            <button className="text-gray-700  hover:text-gray-900 hover:font-semibold hover:cursor-pointer" onClick={goToOrdersPageHandler}>See all..</button>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            {orderListData.map((order) => (
-              <OrderList key={order.orderId} orderInfo={order} OrderPage={false} />
-            ))}
-          </div>
-        </>
-      )}
+    <div id="orders-component" className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]">
+      <h2 id="orders-title" className="text-center mb-3 text-3xl lg:text-5xl">
+        Orders
+      </h2>
+      <div id="orders-breadcrumb" className="flex justify-center mb-10">
+        <Breadcrumbs
+          aria-label="breadcrumb"
+          separator=">"
+          sx={{
+            "& .MuiBreadcrumbs-separator": {
+              color: "inherit",
+              fontWeight: "bold",
+              fontSize: "1rem",
+              mx: 1,
+            },
+          }}
+        >
+          <Typography
+            underline="hover"
+            onClick={() => navigate("/")}
+            className="hover:"
+            color="inherit"
+            sx={{
+              "&:hover": {
+                color: "black",
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1rem",
+                  md: "1.1rem",
+                  lg: "1.2rem",
+                },
+              },
+            }}
+          >
+            Home
+          </Typography>
+          <Typography
+            underline="hover"
+            onClick={() => navigate("/profile")}
+            className="hover:"
+            color="inherit"
+            sx={{
+              "&:hover": {
+                color: "black",
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1rem",
+                  md: "1.1rem",
+                  lg: "1.2rem",
+                },
+              },
+            }}
+          >
+            Profile
+          </Typography>
+          <Typography
+            sx={{
+              color: "text.primary",
+              fontSize: {
+                xs: "1rem",
+                sm: "1rem",
+                md: "1.1rem",
+                lg: "1.2rem",
+              },
+            }}
+          >
+            Orders
+          </Typography>
+        </Breadcrumbs>
+      </div>
+      <div id="orders-list-container" className="md:grid md:grid-cols-2 gap-2 lg:grid-cols-3 2xl:grid-cols-4">
+        {orderListData.map((order) => (
+          <OrderList key={order.orderId} orderInfo={order} />
+        ))}
+      </div>
     </div>
   );
 };
 
-export default UserOrderList;
+export default OrdersComponent;

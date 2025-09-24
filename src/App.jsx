@@ -1,9 +1,4 @@
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  RouterProvider,
-  Route,
-} from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
 // layout
 import MainLayout from "./layouts/MainLayout";
 import RegisterLoginLayout from "./layouts/RegisterLoginLayout";
@@ -23,6 +18,8 @@ import ProductTypePage from "./pages/ProductTypePage";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import OrdersPage from "./pages/OrdersPage";
+import OrderPage from "./pages/OrderPage";
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -44,7 +41,14 @@ const routes = createBrowserRouter(
           <Route index element={<BlogsPage />} />
           <Route path=":blog" element={<BlogPage />} />
         </Route>
-        <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route path="/profile">
+          <Route index element={<ProfilePage />} />
+          <Route path="orders">
+            <Route index element={<OrdersPage />} />
+            <Route path=":orderId" element={<OrderPage />} />
+          </Route>
+        </Route>
+
         <Route path="*" element={<NotFoundPage />} />
       </Route>
       <Route path="/" element={<RegisterLoginLayout />}>

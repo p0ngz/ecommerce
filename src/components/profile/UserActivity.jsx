@@ -52,7 +52,7 @@ const tabPanelContent = {
 };
 
 const UserActivity = () => {
-  const [valueTab, setValueTab] = useState(3);
+  const [valueTab, setValueTab] = useState(0);
   const tabRef = useRef();
 
   const handleChange = (event, newValue) => {

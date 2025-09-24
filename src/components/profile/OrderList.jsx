@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import ChipCard from "../../utility/components/ChipCard";
 import { colorChipCardFromStatusOrder } from "../../utility/colorChipCard";
@@ -8,25 +9,15 @@ import PendingIcon from "@mui/icons-material/Pending";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-const OrderList = ({ orderInfo }) => {
-  const {
-    orderId,
-    date,
-    status,
-    order,
-    trackingStatus,
-    shipping,
-    tax,
-    address,
-    trackingNumber,
-  } = orderInfo;
+const styleOrderProcessIcon = { fontSize: { xs: "medium", md: "medium", lg: "large" } };
+const OrderList = ({ orderInfo, OrderPage = true }) => {
+  const { orderId, date, status, order, trackingStatus, shipping, tax, address, trackingNumber } = orderInfo;
 
   const [isCancel, setIsCancel] = useState(trackingStatus?.cancel || false);
   const [isView, setIsView] = useState(false);
   const [inComingStatus, setInComingStatus] = useState("");
-  const [currentStatus, setCurrentStatus] = useState(
-    trackingStatus?.currentStatus
-  );
+  const [currentStatus, setCurrentStatus] = useState(trackingStatus?.currentStatus);
+  const navigate = useNavigate();
   const viewOrderHandler = () => {
     setIsView((prev) => !prev);
   };
@@ -37,16 +28,10 @@ const OrderList = ({ orderInfo }) => {
   const findCurrentStatusDate = (curStatus, type) => {
     const currentStatus = curStatus;
 
-    if (
-      !trackingStatus ||
-      !trackingStatus.statusHistory ||
-      !Array.isArray(trackingStatus.statusHistory)
-    ) {
+    if (!trackingStatus || !trackingStatus.statusHistory || !Array.isArray(trackingStatus.statusHistory)) {
       return null;
     }
-    const currentStatusInfo = trackingStatus.statusHistory.find(
-      (statusItem) => statusItem.status === currentStatus
-    );
+    const currentStatusInfo = trackingStatus.statusHistory.find((statusItem) => statusItem.status === currentStatus);
     if (!currentStatusInfo) {
       return null;
     }
@@ -59,27 +44,21 @@ const OrderList = ({ orderInfo }) => {
       return formateDateTime;
     }
   };
+  const goToOrderHandler = (id) => {
+    const orderByIdDetail = { ...orderInfo };
+    console.log("orderByIdDetail: ", orderByIdDetail);
+    navigate(`/profile/orders/${id}`, { state: { orderByIdDetail } });
+  };
   useEffect(() => {
-    const statusOrderCycle = [
-      "OrderPlaced",
-      "Pending",
-      "Processing",
-      "Shipped",
-      "Delivered",
-    ];
-    const currentStatusIndex = statusOrderCycle.indexOf(
-      trackingStatus?.currentStatus
-    );
+    const statusOrderCycle = ["OrderPlaced", "Pending", "Processing", "Shipped", "Delivered"];
+    const currentStatusIndex = statusOrderCycle.indexOf(trackingStatus?.currentStatus);
     if (currentStatusIndex !== -1) {
       setInComingStatus(statusOrderCycle[currentStatusIndex + 1] || "");
     }
   }, [trackingStatus]);
   useEffect(() => {}, [isCancel]);
   return (
-    <div
-      id="order-list"
-      className=" w-full h-full text-sm rounded-md border border-gray-300  p-5 relative"
-    >
+    <div id="order-list" className="w-full h-full text-sm rounded-md border border-gray-300  p-5 relative">
       {!trackingStatus?.cancel &&
         trackingStatus?.currentStatus !== "Delivered" &&
         trackingStatus?.currentStatus !== "Cancelled" && (
@@ -91,14 +70,8 @@ const OrderList = ({ orderInfo }) => {
           </button>
         )}
 
-      <div
-        id="before-view"
-        className="flex flex-col justify-center items-center gap-3"
-      >
-        <div
-          id="order-id-container"
-          className="flex justify-start items-center gap-3 w-full"
-        >
+      <div id="before-view" className="flex flex-col justify-center items-center gap-3">
+        <div id="order-id-container" className="flex justify-start items-center gap-3 w-full">
           <div className="w-auto h-auto p-2 rounded-full bg-gray-200 flex justify-center items-center">
             <InventoryIcon fontSize="small" />
           </div>
@@ -112,10 +85,7 @@ const OrderList = ({ orderInfo }) => {
           </div>
         </div>
         <div id="order-info-container" className="w-full flex justify-between">
-          <div
-            id="price-status"
-            className="flex gap-2 justify-start  items-center"
-          >
+          <div id="price-status" className="flex gap-2 justify-start  items-center">
             <span id="total" className="base font-semibold ">
               ${order.total}
             </span>
@@ -133,25 +103,26 @@ const OrderList = ({ orderInfo }) => {
             {isView ? "Viewing" : "View"}
           </button>
         </div>
+        {OrderPage && (
+          <div id="tracking-container" className="w-full h-full mt-3">
+            <button
+              id="tracking-btn"
+              className="w-full rounded-md py-2 bg-gray-900 text-gray-100 text-center sm:hover:cursor-pointer"
+              onClick={() => goToOrderHandler(orderId)}
+            >
+              Tracking
+            </button>
+          </div>
+        )}
       </div>
 
       {isView && (
-        <div
-          id="order-view-container"
-          className="w-full mt-3 p-3 border border-gray-300 rounded-sm"
-        >
-          <div
-            id="order-items"
-            className="mb-10 p-3 border border-gray-200 rounded-sm"
-          >
+        <div id="order-view-container" className="w-full mt-3 p-3 border border-gray-300 rounded-sm">
+          <div id="order-items" className="mb-10 p-3 border border-gray-200 rounded-sm">
             <h2 className="mb-5 text-lg font-semibold">Order Items</h2>
             {order.items.map((item, index) => {
               return (
-                <div
-                  id="order-items-list"
-                  className="flex justify-between items-center mb-3"
-                  key={index}
-                >
+                <div id="order-items-list" className="flex justify-between items-center mb-3" key={index}>
                   <div id="left" className="flex gap-3 items-start">
                     <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-sm overflow-hidden">
                       <img
@@ -161,30 +132,21 @@ const OrderList = ({ orderInfo }) => {
                       />
                     </div>
                     <div id="order-item-list-info" className="flex-1 gap-2">
-                      <h3 className="base text-md font-semibold">
-                        {item.name}
-                      </h3>
-                      <p className="base text-sm text-gray-400">
-                        {item.productId}
-                      </p>
+                      <h3 className="base text-md font-semibold">{item.name}</h3>
+                      <p className="base text-sm text-gray-400">{item.productId}</p>
                       <p className="base text-sm text-gray-400">
                         Quantity: {item.quantity} * ${item.price.toFixed(2)}
                       </p>
                     </div>
                   </div>
                   <div id="right" className="flex-shrink-0">
-                    <span className="base font-semibold">
-                      ${item.quantity * item.price.toFixed(2)}
-                    </span>
+                    <span className="base font-semibold">${item.quantity * item.price.toFixed(2)}</span>
                   </div>
                 </div>
               );
             })}
           </div>
-          <div
-            id="order-summary"
-            className="mb-10 p-3 border border-gray-200 rounded-sm"
-          >
+          <div id="order-summary" className="mb-10 p-3 border border-gray-200 rounded-sm">
             <h2 className="mb-5 text-lg font-semibold">Order Summary</h2>
             <div id="order-summary-container" className="flex flex-col gap-1">
               <div className="flex justify-between">
@@ -202,15 +164,10 @@ const OrderList = ({ orderInfo }) => {
             </div>
             <div className="mt-5 flex justify-between">
               <span className="base font-semibold">Total</span>
-              <span className="base font-semibold">
-                ${(order.total * tax + shipping).toFixed(2)}
-              </span>
+              <span className="base font-semibold">${(order.total * tax + shipping).toFixed(2)}</span>
             </div>
           </div>
-          <div
-            id="shipping info"
-            className="mb-10 p-3 border border-gray-200 rounded-sm"
-          >
+          <div id="shipping info" className="mb-10 p-3 border border-gray-200 rounded-sm">
             <h2 className="mb-5 text-lg font-semibold">Shipping Information</h2>
             <div id="shipping-information-container">
               <div id="delivered-address">
@@ -220,9 +177,7 @@ const OrderList = ({ orderInfo }) => {
               {findCurrentStatusDate(status, "date") && (
                 <div id="current-status">
                   <h3 className="base text-md font-semibold">{status}</h3>
-                  <p className="base text-gray-400">
-                    {findCurrentStatusDate(status, "date")}
-                  </p>
+                  <p className="base text-gray-400">{findCurrentStatusDate(status, "date")}</p>
                 </div>
               )}
               <div id="tracking-number" className="mt-3">
@@ -232,10 +187,7 @@ const OrderList = ({ orderInfo }) => {
             </div>
           </div>
 
-          <div
-            id="order-timeline"
-            className="mb-10 p-3 border border-gray-200 rounded-sm"
-          >
+          <div id="order-timeline" className="mb-10 p-3 border border-gray-200 rounded-sm">
             <h2 className="mb-5 text-lg font-semibold">Order Timeline</h2>
 
             {trackingStatus?.statusHistory.map((statusItem, index) => {
@@ -243,9 +195,7 @@ const OrderList = ({ orderInfo }) => {
                 // complete
                 <div
                   id="complete-progress-order"
-                  className={`flex justify-start items-center gap-3 ${
-                    isCancel ? "line-through" : ""
-                  }`}
+                  className={`flex justify-start items-center gap-3 ${isCancel ? "line-through" : ""}`}
                   key={index}
                 >
                   <div
@@ -259,12 +209,8 @@ const OrderList = ({ orderInfo }) => {
                     )}
                   </div>
                   <div id="complete-progress-info" className="">
-                    <h3 className="base text-md font-semibold">
-                      {statusItem.status}
-                    </h3>
-                    <p className="base text-gray-400">
-                      {findCurrentStatusDate(statusItem.status, "dateTime")}
-                    </p>
+                    <h3 className="base text-md font-semibold">{statusItem.status}</h3>
+                    <p className="base text-gray-400">{findCurrentStatusDate(statusItem.status, "dateTime")}</p>
                   </div>
                 </div>
               );
@@ -272,9 +218,7 @@ const OrderList = ({ orderInfo }) => {
             {inComingStatus && !isCancel && (
               <div
                 id="incoming-progress-order"
-                className={`flex justify-start items-center gap-3 ${
-                  isCancel ? "line-through" : ""
-                }`}
+                className={`flex justify-start items-center gap-3 ${isCancel ? "line-through" : ""}`}
               >
                 <div
                   id="icon-progress-order"
@@ -287,9 +231,7 @@ const OrderList = ({ orderInfo }) => {
                   )}
                 </div>
                 <div id="complete-progress-info" className="">
-                  <h3 className="base text-md font-semibold">
-                    {inComingStatus} ...
-                  </h3>
+                  <h3 className="base text-md font-semibold">{inComingStatus} ...</h3>
                   {/* <p className="base text-gray-400">
                     {findCurrentStatusDate(status, "dateTime")}
                   </p> */}
