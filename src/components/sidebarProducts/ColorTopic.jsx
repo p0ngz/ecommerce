@@ -15,7 +15,7 @@ const colorData = [
   },
   {
     color: "Rainbow",
-    hex: "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)",
+    hex: "linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3)",
   },
   {
     color: "Rose Gold",

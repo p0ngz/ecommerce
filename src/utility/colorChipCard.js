@@ -12,19 +12,30 @@ export const colorChipCardFromRole = (role) => {
 export const colorChipCardFromStatusOrder = (status) => {
   switch (status) {
     case "OrderPlaced":
-      return "bg-blue-400 text-gray-100";
+      return "bg-blue-400";
     case "Pending":
-      return "bg-orange-400 text-gray-100";
+      return "bg-orange-400";
     case "Processing":
-      return "bg-yellow-400 text-gray-100";
+      return "bg-yellow-400";
     case "Shipped":
-      return "bg-purple-400 text-gray-100";
+      return "bg-purple-400";
     case "Delivered":
-      return "bg-green-400 text-gray-100";
+      return "bg-green-400";
     case "Cancelled":
-      return "bg-red-400 text-gray-100";
-
+      return "bg-red-400";
     default:
-      return "bg-gray-400 text-gray-100";
+      return "bg-gray-400";
+  }
+};
+export const colorChipCardFromStatusCoupon = (status) => {
+  switch (status) {
+    case "Available":
+      return "bg-green-400";
+    case "Used":
+      return "bg-gray-400";
+    case "Expired":
+      return "bg-red-400";
+    default:
+      return "bg-gray-400";
   }
 };

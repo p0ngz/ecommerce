@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from "@mui/icons-material/Pending";
 import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 const OrderList = ({ orderInfo }) => {
   const {
@@ -23,13 +24,15 @@ const OrderList = ({ orderInfo }) => {
   const [isCancel, setIsCancel] = useState(trackingStatus?.cancel || false);
   const [isView, setIsView] = useState(false);
   const [inComingStatus, setInComingStatus] = useState("");
-  const [currentStatus, setCurrentStatus] = useState(trackingStatus?.currentStatus);
+  const [currentStatus, setCurrentStatus] = useState(
+    trackingStatus?.currentStatus
+  );
   const viewOrderHandler = () => {
     setIsView((prev) => !prev);
   };
   const cancelOrderHandler = () => {
     setIsCancel(true);
-    setCurrentStatus("Cancelled")
+    setCurrentStatus("Cancelled");
   };
   const findCurrentStatusDate = (curStatus, type) => {
     const currentStatus = curStatus;
@@ -71,9 +74,7 @@ const OrderList = ({ orderInfo }) => {
       setInComingStatus(statusOrderCycle[currentStatusIndex + 1] || "");
     }
   }, [trackingStatus]);
-  useEffect(() => {
-
-  }, [isCancel])
+  useEffect(() => {}, [isCancel]);
   return (
     <div
       id="order-list"
@@ -83,10 +84,10 @@ const OrderList = ({ orderInfo }) => {
         trackingStatus?.currentStatus !== "Delivered" &&
         trackingStatus?.currentStatus !== "Cancelled" && (
           <button
-            className="min-w-10 h-auto px-3 py-1 absolute top-5 right-5 bg-red-300 text-white rounded-sm hover:cursor-pointer hover:bg-red-500"
+            className="min-w-8 h-auto p-1 absolute top-3 right-5 bg-red-300 text-white rounded-sm hover:cursor-pointer hover:bg-red-500"
             onClick={() => cancelOrderHandler()}
           >
-            Cancel
+            <DeleteForeverIcon fontSize="small" />
           </button>
         )}
 
@@ -154,7 +155,7 @@ const OrderList = ({ orderInfo }) => {
                   <div id="left" className="flex gap-3 items-start">
                     <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-sm overflow-hidden">
                       <img
-                        src=""
+                        src="https://images.unsplash.com/photo-1719427129638-3058a01c3a66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9kdWN0JTIwc2hvcHBpbmclMjBpdGVtc3xlbnwxfHx8fDE3NTg1NDc3NjF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                         alt=""
                         className="w-full h-full object-cover rounded-sm"
                       />

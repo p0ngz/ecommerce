@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import UserOrderList from "./UserOrderList";
 import UserWishlist from "./UserWishlist";
 import UserCartList from "./UserCartList";
+import UserCoupon from "../profile/UserCoupon";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
+import { ShippingProvider } from "../../contexts/shippingContext";
+import { useIsMobileScreen } from "../../utility/isMobile";
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
   return (
@@ -36,35 +39,36 @@ const tabsMenuObj = {
 };
 
 const tabMenuArray = Object.values(tabsMenuObj);
-const customWidth = 100 / tabMenuArray.length;
 
 const tabPanelContent = {
   1: <UserOrderList />,
   2: <UserWishlist />,
-  3: <UserCartList />,
-  4: <div>Coupon</div>,
+  3: (
+    <ShippingProvider>
+      <UserCartList />
+    </ShippingProvider>
+  ),
+  4: <UserCoupon />,
 };
 
 const UserActivity = () => {
-  const [valueTab, setValueTab] = useState(0);
+  const [valueTab, setValueTab] = useState(3);
+  const tabRef = useRef();
 
   const handleChange = (event, newValue) => {
     setValueTab(newValue);
   };
   return (
-    <div
-      id="user-activity-container"
-      className="w-full min-h-full px-3 flex flex-col gap-5"
-    >
-      <div id="activity-tab-container" className="mx-3">
+    <div id="user-activity-container" className="w-full min-h-full px-3 lg:px-5 xl:px-10 2xl:px-15 flex flex-col gap-5 items-center">
+      <div id="activity-tab-container" className="mx-3 w-full flex justify-center">
         <Tabs
+          ref={tabRef}
           value={valueTab}
           onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="auto"
+          variant={useIsMobileScreen() ? "scrollable" : "fullWidth"}
           sx={{
             maxWidth: {
-              xs: "none", // fits about 3 tabs on xs
+              xs: "none",
             },
             width: "100%",
             "& .MuiTabs-indicator": {
@@ -72,6 +76,7 @@ const UserActivity = () => {
             },
             "& .MuiTab-root": {
               color: "#AAB6C3",
+              minWidth: "25%",
               "&.Mui-selected": {
                 color: "#2d2c2aff",
                 backgroundColor: "#E6E8EB",
@@ -90,11 +95,6 @@ const UserActivity = () => {
             <Tab
               label={item}
               key={index}
-              sx={{
-                width: {
-                  xs: `${customWidth}%`,
-                },
-              }}
             />
           ))}
         </Tabs>

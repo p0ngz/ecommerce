@@ -14,3 +14,4 @@ export function useIsMobileScreen() {
 
   return isMobile;
 }
+

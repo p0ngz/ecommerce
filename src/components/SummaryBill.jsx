@@ -97,7 +97,7 @@ const SummaryBill = ({confirmHandler}) => {
     [beforeDiscountCouponTotal, shippingData]
   );
   const finalTotal = useMemo(
-    () => (isMatchCoupon ? getTotalSummary() : beforeDiscountTotal),
+    () => (isMatchCoupon ? getTotalSummary() : getTotalSummary()),
     [isMatchCoupon, getTotalSummary, beforeDiscountTotal]
   );
 

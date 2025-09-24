@@ -26,7 +26,7 @@ const ProfileComponent = () => {
   return (
     <div
       id="profile-container"
-      className="w-full min-h-screen flex flex-col justify-center gap-5 items-center sm:flex-row overflow-y-auto"
+      className="w-full min-h-screen sm:py-20 xl:py-25 flex flex-col justify-center gap-5 items-center overflow-y-auto lg:bg-gray-100"
     >
       <UserInfo
         firstName={userData.name.firstName}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useShipping } from "../../contexts/shippingContext";
-const QuantityColumn = ({ id }) => {
+const QuantityColumn = ({ id, customStyle="" }) => {
   const { shippingData, increaseQuantity, decreaseQuantity } = useShipping();
   const quantityItem = shippingData.find((item) => item.id === id);
   const productQuantity = quantityItem ? quantityItem.quantity : 0;
@@ -8,7 +8,7 @@ const QuantityColumn = ({ id }) => {
   return (
     <div
       id="quantity-column"
-      className="w-full h-[20%] border border-gray-400 flex justify-center items-center"
+      className={` ${customStyle ? customStyle : "w-full h-[20%] rounded-none"} border border-gray-400 flex justify-center items-center`}
     >
       <div
         id="decrease-product"

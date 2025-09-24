@@ -197,19 +197,19 @@ const UserOrderList = () => {
       id="user-order-list-container"
       className="w-full h-full border border-gray-300 p-3 rounded-md flex flex-col gap-3"
     >
-      {orderListData.length > 0 && (
-        <h2 className="text-lg font-semibold">Order List</h2>
-      )}
+      
       {orderListData.length === 0 ? (
         <div className="w-full h-full flex justify-center items-center">
-          <span className="text-gray-400">No orders found.</span>
+          <span className="text-gray-400">No orders found...</span>
         </div>
       ) : (
-        orderListData.map((order) => (
-          <OrderList key={order.orderId} orderInfo={order} />
-        ))
+        <>
+          <h2 className="text-lg font-semibold">Order List</h2>
+          {orderListData.map((order) => (
+            <OrderList key={order.orderId} orderInfo={order} />
+          ))}
+        </>
       )}
-      {}
     </div>
   );
 };

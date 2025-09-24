@@ -62,6 +62,8 @@ const couponList = [
 export const ShippingContext = createContext();
 
 export const ShippingProvider = ({ children }) => {
+  const shippingPrice = 9.99; // now constant for real need to adapt to each shipping method
+  const tax = 0.085; // 8.5% tax
   const [shippingData, setShippingData] = useState(initialShippingData);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [couponCode, setCouponCode] = useState(null);
@@ -76,6 +78,7 @@ export const ShippingProvider = ({ children }) => {
   const [isDisabledConfirm, setIsDisabledConfirm] = useState(true);
   // Increase quantity
   const increaseQuantity = (id) => {
+    console.log("id to increase: ", id);
     setShippingData((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
@@ -85,6 +88,7 @@ export const ShippingProvider = ({ children }) => {
 
   // Decrease quantity
   const decreaseQuantity = (id) => {
+    console.log("id to decrease: ", id);
     setShippingData((prev) =>
       prev.map((item) =>
         item.id === id && item.quantity > 1
@@ -128,9 +132,14 @@ export const ShippingProvider = ({ children }) => {
     }, 0);
     if (isMatchCoupon) {
       const matchCoupon = matchCouponCode(couponCode);
-      return beforeCouponCodeTotal * (1 - matchCoupon[0]?.discount / 100);
+      return (
+        beforeCouponCodeTotal *
+          (1 - matchCoupon[0]?.discount / 100) *
+          (1 + tax) +
+        shippingPrice
+      );
     }
-    return beforeCouponCodeTotal;
+    return beforeCouponCodeTotal * (1 + tax) + shippingPrice;
   };
 
   // Remove item
@@ -154,6 +163,9 @@ export const ShippingProvider = ({ children }) => {
         couponCode,
         isMatchCoupon,
         formDataOrder,
+        shippingPrice,
+        tax,
+
         // function
         setShippingData,
         increaseQuantity,
