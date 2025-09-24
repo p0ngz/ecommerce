@@ -44,7 +44,7 @@ const UserInfo = ({
 
       <div
         id="right-info"
-        className="w-full h-full flex flex-col justify-center items-center lg:w-[50%] lg:h-full lg:gap-5 lg:px-5  lg:rounded-lg"
+        className="w-full h-full flex flex-col justify-center items-center gap-3 lg:w-[50%] lg:h-full lg:gap-5 lg:px-5  lg:rounded-lg"
       >
         <div id="user-name">
           <h2 id="fullName" className="text-2xl xl:text-3xl">
