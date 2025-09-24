@@ -32,7 +32,7 @@ const imgData = [
 const ViewProductSection = () => {
 
   return (
-    <div id="testimonial-container" className="w-full h-[70vh]">
+    <div id="testimonial-container" className="w-full h-[50vh]">
       <div id="new-product-header" className="py-10 text-center">
         <h2 className="text-5xl sm:text-3xl capitalize">Our Instagram</h2>
       </div>

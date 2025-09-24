@@ -9,8 +9,7 @@ const PromoteSection = () => {
   return (
     <div
       id="promote-container"
-      //   63512D
-      className="my-10 w-full sm:h-[100vh] flex flex-col sm:flex-row bg-[#F6F3EF]"
+      className="my-10 w-full h-screen flex flex-col sm:flex-row bg-[#F6F3EF]"
     >
       <div
         id="left-promoted-container"
