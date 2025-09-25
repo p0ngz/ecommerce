@@ -32,17 +32,17 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white min-w-[50rem] h-[25rem] flex justify-center items-center rounded-md">
-          <div id="left-modal" className="w-1/2 h-full">
+        <div className="p-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[70%] sm:min-w-[45rem] min-h-[25rem] max-h-[80vh] sm:min-h-[25rem] flex flex-col sm:flex-row sm:justify-center sm:items-center rounded-md ">
+          <div id="left-modal" className="w-full sm:w-1/2 h-[20%] sm:h-full">
             <img
               src={dataModal.imgSrc}
               alt={dataModal.titleProduct}
-              className="w-full h-full object-cover rounded-md"
+              className="w-full h-70 sm:h-full object-cover rounded-md"
             />
           </div>
           <div
             id="right-modal"
-            className="scrollbar-custom ps-10 pe-3 py-10 w-1/2 h-full flex flex-col items-start overflow-scroll scroll-smooth"
+            className="scrollbar-x-custom scrollbar-y-custom p-4 sm:ps-10 sm:pe-3  w-full sm:w-1/2 sm:h-full flex flex-col items-start overflow-scroll scroll-smooth"
           >
             <div
               id="title-product"
@@ -99,7 +99,7 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
               <CheckCircleOutlinedIcon fontSize="small"></CheckCircleOutlinedIcon>
               <span>In Stock</span>
             </div>
-            <div id="action-product" className="grid grid-cols-5 gap-5">
+            <div id="action-product" className="grid grid-cols-5 gap-10 sm:gap-5">
               <div
                 id="amount-product"
                 className="col-span-2 p-0 min-w-30 h-10 grid grid-cols-3 border border-gray-300"
