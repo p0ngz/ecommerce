@@ -10,7 +10,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 // const styleOrderProcessIcon = { fontSize: { xs: "medium", md: "medium", lg: "large" } };
-const OrderList = ({ orderInfo, OrderPage = true }) => {
+const OrderList = ({ orderInfo, ProfilePage = false }) => {
   const { orderId, date, status, order, trackingStatus, shipping, tax, address, trackingNumber } = orderInfo;
 
   const [isCancel, setIsCancel] = useState(trackingStatus?.cancel || false);
@@ -98,15 +98,17 @@ const OrderList = ({ orderInfo, OrderPage = true }) => {
               txtColor={colorChipCardFromStatusOrder(currentStatus)}
             />
           </div>
-          <button
-            id="view"
-            className="min-w-10 h-auto px-3 py-1 border border-gray-300 rounded-sm hover:cursor-pointer hover:bg-gray-100 transition"
-            onClick={() => viewOrderHandler()}
-          >
-            {isView ? "Viewing" : "View"}
-          </button>
+          {ProfilePage && (
+            <button
+              id="view"
+              className="min-w-10 h-auto px-3 py-1 border border-gray-300 rounded-sm hover:cursor-pointer hover:bg-gray-100 transition"
+              onClick={() => viewOrderHandler()}
+            >
+              {isView ? "Viewing" : "View"}
+            </button>
+          )}
         </div>
-        {OrderPage && (
+        {!ProfilePage && (
           <div id="tracking-container" className="w-full h-full mt-3">
             <button
               id="tracking-btn"

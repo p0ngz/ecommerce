@@ -307,7 +307,7 @@ const UserOrderList = () => {
           </div>
           <div className="flex flex-wrap gap-3">
             {orderListData.map((order) => (
-              <OrderList key={order.orderId} orderInfo={order} OrderPage={false} />
+              <OrderList key={order.orderId} orderInfo={order} ProfilePage={true} />
             ))}
           </div>
         </>
