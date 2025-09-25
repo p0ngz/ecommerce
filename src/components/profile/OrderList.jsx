@@ -8,6 +8,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from "@mui/icons-material/Pending";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 
 // const styleOrderProcessIcon = { fontSize: { xs: "medium", md: "medium", lg: "large" } };
 const OrderList = ({ orderInfo, ProfilePage = false }) => {
@@ -66,10 +67,10 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
         trackingStatus?.currentStatus !== "Delivered" &&
         trackingStatus?.currentStatus !== "Cancelled" && (
           <button
-            className="min-w-8 h-auto p-1 absolute top-3 right-5 bg-red-300 text-white rounded-sm hover:cursor-pointer hover:bg-red-500"
+            className="min-w-8 h-auto p-1 absolute top-3 right-5 p-2 rounded-md hover:cursor-pointer hover:bg-red-500 group transition-color duration-300 ease-in-out"
             onClick={() => cancelOrderHandler()}
           >
-            <DeleteForeverIcon fontSize="small" />
+            <DeleteForeverOutlinedIcon className="text-black group-hover:text-white transition-color duration-300 ease-in-out" />
           </button>
         )}
 

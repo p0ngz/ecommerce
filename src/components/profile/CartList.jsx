@@ -25,8 +25,7 @@ const colorData = [
   },
 ];
 const CartList = ({ cartInfo }) => {
-  const { id, imgSrc, titleProduct, rating, discount, price, color } =
-    cartInfo;
+  const { id, imgSrc, titleProduct, rating, discount, price, color } = cartInfo;
   const { removeItem, getTotal } = useShipping();
   const removeShippingProductHandler = () => {
     removeItem(id);
@@ -37,8 +36,8 @@ const CartList = ({ cartInfo }) => {
       id="cart-list"
       className="py-3 w-full  sm:relative sm:h-45 md:h-55 lg:h-[50] xl:h-70 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden sm:flex sm:justify-between"
     >
-      <div className="relative w-full sm:w-[50%] lg:w-[60%] bg-gray-100 overflow-hidden group  sm:flex sm:items-center ">
-        <div id="cart-img" className=" w-full h-60 sm:w-[50%] sm:h-full">
+      <div className="relative w-full h-full sm:w-[50%] lg:w-[60%] bg-gray-100 overflow-hidden group  sm:flex sm:items-center ">
+        <div id="cart-img" className=" w-full full sm:w-[50%] sm:h-full">
           <img
             src={imgSrc}
             alt={titleProduct}
@@ -123,12 +122,8 @@ const CartList = ({ cartInfo }) => {
           <div className="flex items-center gap-2 mb-4">
             {discount > 0 ? (
               <>
-                <div className="text-md sm:text-sm  text-red-400 line-through">
-                  ${price}
-                </div>
-                <div className="text-md sm:text-sm">
-                  ${price - (price * discount) / 100}
-                </div>
+                <div className="text-md sm:text-sm  text-red-400 line-through">${price}</div>
+                <div className="text-md sm:text-sm">${price - (price * discount) / 100}</div>
               </>
             ) : (
               <div className="text-md sm:text-sm">${price}</div>
@@ -137,23 +132,13 @@ const CartList = ({ cartInfo }) => {
         </div>
       </div>
       <div className="sm:w-1/2 sm:h-full lg:h-[100%] sm:flex sm:flex-col lg:flex-row sm:justify-center sm:items-center ">
-        <div
-          id="total"
-          className="w-full h-full sm:h-[30%] lg:h-[20%] flex justify-center items-center"
-        >
+        <div id="total" className="w-full h-full sm:h-[30%] lg:h-[20%] flex justify-center items-center">
           <div className="mb-3 lg:mb-0 w-[80%] sm:w-[100%] flex justify-between sm:justify-center sm:items-center sm:gap-3 font-semibold sm:text-sm md:text-lg lg:text-xl">
-            <h3 className="base text-gray-700 font-bold ">
-              Total:
-            </h3>
-            <h3 className="base text-gray-700 font-bold">
-              ${getTotal(id)} 
-            </h3>
+            <h3 className="base text-gray-700 font-bold ">Total:</h3>
+            <h3 className="base text-gray-700 font-bold">${getTotal(id)}</h3>
           </div>
         </div>
-        <div
-          id="action"
-          className="w-full h-full sm:h-[20%] lg:h-[20%] flex justify-center "
-        >
+        <div id="action" className="w-full h-full sm:h-[20%] lg:h-[20%] flex justify-center ">
           <div className="w-[80%]">
             <QuantityColumn id={id} customStyle={"h-full rounded-sm"} />
           </div>
