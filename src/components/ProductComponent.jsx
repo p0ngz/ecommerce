@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { capitalizeHandler } from "../utility/capitalizeHandler";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
-import CardNewProduct from "./CardProduct";
+import CardProduct from "./CardProduct";
 import CardBreadcrumb from "./CardBreadcrumb";
 const topRateProductData = [
   {
@@ -288,7 +288,7 @@ const ProductComponent = () => {
           </div>
         </div>
         <div id="main-product" className="flex justify-center lg:col-span-9">
-          <CardNewProduct
+          <CardProduct
             key={product.titleProduct}
             imgSrc={product.imgSrc}
             discount={product.discount}

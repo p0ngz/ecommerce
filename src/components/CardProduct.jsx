@@ -270,11 +270,11 @@ const CardNewProduct = ({
         {(isProductsPage || isProductPage) && (
           <div
             id="action-card-product"
-            className="w-full px-3 grid grid-cols-5 gap-5"
+            className={`w-full px-3 grid grid-cols-5  ${isProductPage ? "gap-7 sm:gap-3" : "gap-3"}`}
           >
             <div
               id="amount-product"
-              className="col-span-2 p-0 min-w-30 h-10 grid grid-cols-3 border border-gray-300"
+              className="col-span-2  min-w-30 h-10 grid grid-cols-3 border border-gray-300"
             >
               <div
                 id="decrease-product"
@@ -302,7 +302,7 @@ const CardNewProduct = ({
             </div>
             <div
               id="add-to-cart"
-              className="col-span-3 p-0 min-w-35 h-10 flex justify-center items-center rounded-sm"
+              className="col-span-3  min-w-35 h-10 flex justify-center items-center rounded-sm"
             >
               <button className="w-full h-full bg-gray-500 hover:bg-black text-white rounded-sm hover:cursor-pointer transition-color duration-300">
                 Add to Cart

@@ -9,8 +9,6 @@ import { colorChipCardFromStatusOrder } from "../../utility/colorChipCard";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import OrderProcessCard from "./OrderProcessCard";
-import OrderList from "../profile/OrderList";
-
 const OrderByIdComponent = () => {
   const navigate = useNavigate();
   const { orderId } = useParams();
