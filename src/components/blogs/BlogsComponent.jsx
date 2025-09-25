@@ -55,11 +55,7 @@ const BlogsComponent = () => {
     blogContainerRef.current.scrollIntoView({ behavior: "smooth" });
   }, []);
   return (
-    <div
-      id="blog-container"
-      className="relative px-5 py-10 w-full min-h-[70vh]"
-      ref={blogContainerRef}
-    >
+    <div id="blog-container" className="relative px-5 py-10 w-full min-h-[70vh]" ref={blogContainerRef}>
       <h2 id="blogs-title" className="text-center mb-3 text-3xl lg:text-5xl">
         Blogs
       </h2>
@@ -77,9 +73,8 @@ const BlogsComponent = () => {
           }}
         >
           <Typography
-            underline="hover"
             onClick={() => navigate("/")}
-            className="hover:"
+            className="hover:cursor-pointer hover:underline"
             color="inherit"
             sx={{
               "&:hover": {

@@ -308,7 +308,7 @@ const OrdersComponent = () => {
           <Typography
             underline="hover"
             onClick={() => navigate("/")}
-            className="hover:"
+            className="hover:cursor-pointer"
             color="inherit"
             sx={{
               "&:hover": {
@@ -327,7 +327,7 @@ const OrdersComponent = () => {
           <Typography
             underline="hover"
             onClick={() => navigate("/profile")}
-            className="hover:"
+            className="hover:cursor-pointer"
             color="inherit"
             sx={{
               "&:hover": {

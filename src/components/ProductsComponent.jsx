@@ -137,7 +137,7 @@ const ProductsComponent = () => {
           <Typography
             underline="hover"
             onClick={() => navigate("/")}
-            className="hover:"
+            className="hover:cursor-pointer"
             color="inherit"
             sx={{
               "&:hover": {

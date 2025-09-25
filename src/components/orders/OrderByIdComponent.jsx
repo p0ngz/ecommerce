@@ -86,7 +86,7 @@ const OrderByIdComponent = () => {
           <Typography
             underline="hover"
             onClick={() => navigate("/")}
-            className="hover:"
+            className="hover:cursor-pointer"
             color="inherit"
             sx={{
               "&:hover": {
@@ -105,7 +105,7 @@ const OrderByIdComponent = () => {
           <Typography
             underline="hover"
             onClick={() => navigate("/profile")}
-            className="hover:"
+            className="hover:cursor-pointer"
             color="inherit"
             sx={{
               "&:hover": {
@@ -124,7 +124,7 @@ const OrderByIdComponent = () => {
           <Typography
             underline="hover"
             onClick={() => navigate("/profile/orders")}
-            className="hover:"
+            className="hover:cursor-pointer"
             color="inherit"
             sx={{
               "&:hover": {
