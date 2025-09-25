@@ -89,9 +89,9 @@ const CardNewProduct = ({
         id="img-card-product"
         className={`h-[100%] ${
           isRelateProduct ? "w-full h-full sm:h-[50%]" : ""
-        }${isProductPage ? "h-full lg:w-[90%] lg:col-span-5" : ""}  ${
+        }${isProductPage ? "h-full lg:w-[90%] lg:col-span-4" : ""}  ${
           isProductsPage || isProductPage
-            ? "sm:w-full lg:w-[80%] sm:h-full sm:col-span-4 lg:col-span-5"
+            ? "sm:w-full lg:w-[100%] sm:h-full sm:col-span-4 lg:col-span-6"
             : ""
         }sm:h-[70%] bg-gray-200 rounded-t-xl relative overflow-hidden`}
       >
@@ -185,13 +185,13 @@ const CardNewProduct = ({
       </div>
       <div
         id="info-card-product"
-        className={`$ ${
-          isProductPage ? "h-full lg:w-[90%] lg:col-span-5" : ""
+        className={`$ ${isRelateProduct ? "h-auto" : ""} ${
+          isProductPage ? "min-h-auto lg:w-[90%] lg:col-span-5" : ""
         } ${
           isProductsPage || isProductPage
-            ? "visibility sm:w-full sm:h-full sm:col-span-6 lg:col-span-5"
+            ? "visibility sm:w-full sm:h-full  sm:col-span-6 lg:col-span-6"
             : "hidden"
-        } sm:min-h-[30%] py-10 sm:flex flex-col justify-center items-center`}
+        } sm:min-h-[30%] py-10 sm:flex sm:flex-col sm:items-center sm:justify-center`}
       >
         <div id="rating-container" className="mb-2 flex justify-center">
           {rating &&
@@ -264,7 +264,7 @@ const CardNewProduct = ({
         {(isProductsPage || isProductPage) && (
           <Divider sx={{ mx: 2, my: 2, borderColor: "#e5e7eb" }} />
         )}
-        <div id="description-card-product" className="my-5  p-4">
+        <div id="description-card-product" className={`my-5 p-4 ${isRelateProduct ? "hidden" : "block"}`}>
           <p className="text-xs text-gray-500">{description}</p>
         </div>
         {(isProductsPage || isProductPage) && (
