@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import OrderList from "../profile/OrderList";
 import ChipCard from "../../utility/components/ChipCard";
 import LinearProgressbar from "../../utility/components/LinearProgressbar";
 import { orderProcessArray } from "../../utility/OrderProcess";
@@ -10,9 +9,7 @@ import { colorChipCardFromStatusOrder } from "../../utility/colorChipCard";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
 import OrderProcessCard from "./OrderProcessCard";
-// import {
-//     Inventory2SharpIcon, AccessTimeFilledSharpIcon, LocalShippingSharpIcon, CheckCircleOutlineSharpIcon
-// } from '@mui/icons-material';
+import OrderList from "../profile/OrderList";
 
 const OrderByIdComponent = () => {
   const navigate = useNavigate();
@@ -22,26 +19,44 @@ const OrderByIdComponent = () => {
     orderId: orderID,
     date,
     status,
-    // order,
+    order,
     trackingStatus,
-    // shipping,
-    // tax,
-    // address,
-    // trackingNumber,
+    shipping,
+    tax,
+    address,
+    trackingNumber,
   } = orderByIdDetail;
 
   // Style variable for consistent icon sizing
-//   const orderProcessIconStyle = {
-//     fontSize: {
-//       xs: "large",
-//       sm: "large",
-//       md: "large",
-//       lg: "large",
-//       xl: "large",
-//     },
-//   };
+  //   const orderProcessIconStyle = {
+  //     fontSize: {
+  //       xs: "large",
+  //       sm: "large",
+  //       md: "large",
+  //       lg: "large",
+  //       xl: "large",
+  //     },
+  //   };
   const formatDate = format(date, "MMMM d, yyyy");
+  const findCurrentStatusDate = (curStatus, type) => {
+    const currentStatus = curStatus;
 
+    if (!trackingStatus || !trackingStatus.statusHistory || !Array.isArray(trackingStatus.statusHistory)) {
+      return null;
+    }
+    const currentStatusInfo = trackingStatus.statusHistory.find((statusItem) => statusItem.status === currentStatus);
+    if (!currentStatusInfo) {
+      return null;
+    }
+    const currentDateObj = new Date(currentStatusInfo.date);
+    if (type === "date") {
+      const formatDate = format(currentDateObj, "MMM dd, yyyy");
+      return formatDate;
+    } else if (type === "dateTime") {
+      const formateDateTime = format(currentDateObj, "MMM dd, yyyy, HH:mm:ss");
+      return formateDateTime;
+    }
+  };
   const backToPreviousHandler = () => {
     navigate(-1);
   };
@@ -172,48 +187,6 @@ const OrderByIdComponent = () => {
           </p>
         </div>
         <div id="order-tracking-process" className="flex flex-col gap-4">
-          {/* <div id="ordered-placed" className="flex flex-start items-center gap-3">
-            <div id="ordered-placed-icon" className="p-3 rounded-full bg-gray-200">
-              <Inventory2SharpIcon sx={orderProcessIconStyle} />
-            </div>
-            <div className="flex flex-col justify-start">
-              <h3 id="order-id" className="base text-lg font-semibold ">
-                Order Placed
-              </h3>
-              <span className="base text-gray-400">
-                {format(date, "MMM dd, yyyy")} ~ {order.count} items
-              </span>
-            </div>
-          </div>
-          <div id="processing" className="flex flex-start items-center gap-3 mt-4">
-            <div id="processing-icon" className="p-3 rounded-full bg-gray-200">
-              <AccessTimeFilledSharpIcon sx={orderProcessIconStyle} />
-            </div>
-            <div className="flex flex-col justify-start">
-              <h3 className="base text-lg font-semibold">Processing</h3>
-              <span className="base text-gray-400">Order is being prepared</span>
-            </div>
-          </div>
-
-          <div id="shipped" className="flex flex-start items-center gap-3 mt-4">
-            <div id="shipped-icon" className="p-3 rounded-full bg-gray-200">
-              <LocalShippingSharpIcon sx={orderProcessIconStyle} />
-            </div>
-            <div className="flex flex-col justify-start">
-              <h3 className="base text-lg font-semibold">Shipped</h3>
-              <span className="base text-gray-400">Package is on the way</span>
-            </div>
-          </div>
-
-          <div id="delivered" className="flex flex-start items-center gap-3 mt-4">
-            <div id="delivered-icon" className="p-3 rounded-full bg-gray-200">
-              <CheckCircleOutlineSharpIcon sx={orderProcessIconStyle} />
-            </div>
-            <div className="flex flex-col justify-start">
-              <h3 className="base text-lg font-semibold">Delivered</h3>
-              <span className="base text-gray-400">Package delivered successfully</span>
-            </div>
-          </div> */}
           {orderProcessArray.map((processStatus, index) => {
             const matchStatusInTracking = trackingStatus.statusHistory.find((item) => item.status === processStatus);
             const lastStatusInTracking = trackingStatus.statusHistory.at(-1);
@@ -231,6 +204,74 @@ const OrderByIdComponent = () => {
               return <OrderProcessCard key={index} status={processStatus} isComing={true} />;
             }
           })}
+        </div>
+        <div id="order-items" className="mb-10 p-3 border border-gray-200 rounded-sm">
+          <h2 className="mb-5 text-lg font-semibold">Order Items</h2>
+          {order.items.map((item, index) => {
+            return (
+              <div id="order-items-list" className="flex justify-between items-center mb-3" key={index}>
+                <div id="left" className="flex gap-3 items-start">
+                  <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-sm overflow-hidden">
+                    <img
+                      src="https://images.unsplash.com/photo-1719427129638-3058a01c3a66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9kdWN0JTIwc2hvcHBpbmclMjBpdGVtc3xlbnwxfHx8fDE3NTg1NDc3NjF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                      alt=""
+                      className="w-full h-full object-cover rounded-sm"
+                    />
+                  </div>
+                  <div id="order-item-list-info" className="flex-1 gap-2">
+                    <h3 className="base text-md font-semibold">{item.name}</h3>
+                    <p className="base text-sm text-gray-400">{item.productId}</p>
+                    <p className="base text-sm text-gray-400">
+                      Quantity: {item.quantity} * ${item.price.toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+                <div id="right" className="flex-shrink-0">
+                  <span className="base font-semibold">${item.quantity * item.price.toFixed(2)}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div id="order-summary" className="mb-10 p-3 border border-gray-200 rounded-sm">
+          <h2 className="mb-5 text-lg font-semibold">Order Summary</h2>
+          <div id="order-summary-container" className="flex flex-col gap-1">
+            <div className="flex justify-between">
+              <span className="base">Subtotal</span>
+              <span className="base">${order.total}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="base">Shipping</span>
+              <span className="base">${shipping}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="base">Tax</span>
+              <span className="base">${tax}</span>
+            </div>
+          </div>
+          <div className="mt-5 flex justify-between">
+            <span className="base font-semibold">Total</span>
+            <span className="base font-semibold">${(order.total * tax + shipping).toFixed(2)}</span>
+          </div>
+        </div>
+        <div id="shipping info" className="mb-10 p-3 border border-gray-200 rounded-sm">
+          <h2 className="mb-5 text-lg font-semibold">Shipping Information</h2>
+          <div id="shipping-information-container">
+            <div id="delivered-address">
+              <h3 className="base text-md font-semibold">Delivery Address</h3>
+              <p className="base text-gray-400">{address}</p>
+            </div>
+            {findCurrentStatusDate(status, "date") && (
+              <div id="current-status">
+                <h3 className="base text-md font-semibold">{status}</h3>
+                <p className="base text-gray-400">{findCurrentStatusDate(status, "date")}</p>
+              </div>
+            )}
+            <div id="tracking-number" className="mt-3">
+              <h3 className="base text-md font-semibold">Tracking Number</h3>
+              <p className="base text-gray-400">{trackingNumber}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

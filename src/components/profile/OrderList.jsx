@@ -9,7 +9,7 @@ import PendingIcon from "@mui/icons-material/Pending";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-const styleOrderProcessIcon = { fontSize: { xs: "medium", md: "medium", lg: "large" } };
+// const styleOrderProcessIcon = { fontSize: { xs: "medium", md: "medium", lg: "large" } };
 const OrderList = ({ orderInfo, OrderPage = true }) => {
   const { orderId, date, status, order, trackingStatus, shipping, tax, address, trackingNumber } = orderInfo;
 
@@ -58,7 +58,10 @@ const OrderList = ({ orderInfo, OrderPage = true }) => {
   }, [trackingStatus]);
   useEffect(() => {}, [isCancel]);
   return (
-    <div id="order-list" className="w-full h-full text-sm rounded-md border border-gray-300  p-5 relative">
+    <div
+      id="order-list"
+      className={`w-full ${isView ? "h-screen" : "h-full"} text-sm rounded-md border border-gray-300  p-5 relative`}
+    >
       {!trackingStatus?.cancel &&
         trackingStatus?.currentStatus !== "Delivered" &&
         trackingStatus?.currentStatus !== "Cancelled" && (
@@ -232,33 +235,9 @@ const OrderList = ({ orderInfo, OrderPage = true }) => {
                 </div>
                 <div id="complete-progress-info" className="">
                   <h3 className="base text-md font-semibold">{inComingStatus} ...</h3>
-                  {/* <p className="base text-gray-400">
-                    {findCurrentStatusDate(status, "dateTime")}
-                  </p> */}
                 </div>
               </div>
             )}
-
-            {/* cancel */}
-            {/* {isCancel && (
-              <div
-                id="cancel-progress-order"
-                className="flex justify-start items-center gap-3"
-              >
-                <div
-                  id="icon-progress-order"
-                  className="w-8 h-8 rounded-full bg-gray-200 flex justify-center items-center"
-                >
-                  <CancelIcon className="w-full h-full text-red-500" />
-                </div>
-                <div id="complete-progress-info" className="">
-                  <h3 className="base text-md font-semibold">Order Placed</h3>
-                  <p className="base text-gray-400">
-                    {findCurrentStatusDate(status, "dateTime")}
-                  </p>
-                </div>
-              </div>
-            )} */}
           </div>
         </div>
       )}
