@@ -188,17 +188,15 @@ const OrderByIdComponent = () => {
           {orderProcessArray.map((processStatus, index) => {
             const matchStatusInTracking = trackingStatus.statusHistory.find((item) => item.status === processStatus);
             const lastStatusInTracking = trackingStatus.statusHistory.at(-1);
-
-            if (matchStatusInTracking && matchStatusInTracking.status === trackingStatus.currentStatus) {
+            if (trackingStatus.cancel) {
+              return <OrderProcessCard key={index} status={processStatus} isCancel={true} />;
+            } else if (matchStatusInTracking && matchStatusInTracking.status === trackingStatus.currentStatus) {
               const formatDate = format(matchStatusInTracking.date, "MMM d, yyyy");
-              //   console.log("case 1: ", processStatus);
               return <OrderProcessCard key={index} status={processStatus} completeDate={formatDate} isCurrent={true} />;
             } else if (matchStatusInTracking && matchStatusInTracking.status !== lastStatusInTracking.status) {
-              //   console.log("case 2: ", processStatus);
               const formatDate = format(matchStatusInTracking.date, "MMM d, yyyy");
               return <OrderProcessCard key={index} status={processStatus} completeDate={formatDate} isPast={true} />;
             } else {
-              //   console.log("case 3: ", processStatus);
               return <OrderProcessCard key={index} status={processStatus} isComing={true} />;
             }
           })}
