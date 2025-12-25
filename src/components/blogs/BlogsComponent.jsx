@@ -17,6 +17,7 @@ const TabPanel = (props) => {
       id={`horizontal-tabpanel-${index}`}
       aria-labelledby={`horizontal-tab-${index}`}
       {...other}
+      style={{ width: "100%" }}
     >
       {value === index && <Box>{children}</Box>}
     </div>
@@ -55,11 +56,11 @@ const BlogsComponent = () => {
     blogContainerRef.current.scrollIntoView({ behavior: "smooth" });
   }, []);
   return (
-    <div id="blog-container" className="relative px-5 py-10 w-full min-h-[70vh]" ref={blogContainerRef}>
-      <h2 id="blogs-title" className="text-center mb-3 text-3xl lg:text-5xl">
+    <div id="blog-container" className="relative py-10 w-full min-h-[70vh]" ref={blogContainerRef}>
+      <h2 id="blogs-title" className="text-center mb-3 text-3xl lg:text-5xl px-5">
         Blogs
       </h2>
-      <div id="blogs-breadcrumb" className="flex justify-center mb-10">
+      <div id="blogs-breadcrumb" className="flex justify-center mb-10 px-5">
         <Breadcrumbs
           aria-label="breadcrumb"
           separator=">"
@@ -106,7 +107,7 @@ const BlogsComponent = () => {
           </Typography>
         </Breadcrumbs>
       </div>
-      <div id="blogs-menu" className="w-full h-auto">
+      <div id="blogs-menu" className="w-full  h-auto flex justify-center mb-10 px-5">
         <Box
           sx={{
             width: "100%",
@@ -123,7 +124,7 @@ const BlogsComponent = () => {
             sx={{
               maxWidth: {
                 xs: 425, // fits about 3 tabs on xs
-                sm: "none", // show all tabs on sm and up
+                sm: "100%", // full width on sm and up
               },
               width: "100%",
             }}
@@ -133,16 +134,21 @@ const BlogsComponent = () => {
                 label={item}
                 key={index}
                 sx={{
-                  width: {
+                  minWidth: {
                     sm: `${customWidth}%`,
                   },
+                  maxWidth: {
+                    sm: `${customWidth}%`,
+                  },
+                  flexGrow: 0,
+                  flexShrink: 0,
                 }}
               />
             ))}
           </Tabs>
         </Box>
       </div>
-      <div id="blogs-content" className="w-full h-auto">
+      <div id="blogs-content" className="w-full h-auto flex justify-center mb-10 px-5">
         {tabMenuArray.map((item, index) => {
           return (
             valueTab === index && (

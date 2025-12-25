@@ -63,11 +63,9 @@ const contentData = {
 };
 
 const ContentBlogs = ({ type }) => {
-  useEffect(() => {
-    // console.log(type);
-  }, [type]);
+
   return (
-    <div id="blog-contents" className="w-full h-auto px-5">
+    <div id="blog-contents" className="w-full h-auto xl:grid-rows-4 xl:grid xl:grid-cols-2 2xl:grid-cols-3 xl:gap-5 lg:px-20">
       {contentData[type]?.map((item, index) => {
         return (
           <BlogCard

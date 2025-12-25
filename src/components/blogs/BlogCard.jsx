@@ -23,11 +23,11 @@ const BlogCard = ({ img, title, date, description, isBlogsPage = false }) => {
     }
   }, [description]);
   return (
-    <div id="blog-card" className="w-full max-h[70vh] mt-5 mb-10">
-      <div id="blog-img" className="w-full h-[50%]">
-        {img ? <img src={img} alt={title} /> : null}
+    <div id="blog-card" className="w-full h-auto mt-5 mb-10 xl:mb-0 xl-row-span-3 ">
+      <div id="blog-img" className="w-full h-[50%] xl:h-auto 2xl:h-64 overflow-hidden">
+        {img ? <img src={img} alt={title} className="w-full h-full"/> : null}
       </div>
-      <div id="blog-info" className="w-full h-[30%] py-4 overflow-y-scroll">
+      <div id="blog-info" className="w-full h-[30%] xl:h-auto py-4 overflow-y-hidden">
         <p className="number text-gray-400">{date}</p>
         <h3 className="text-xl  my-2 hover:text-gray-500 cursor-pointer">
           {title}
@@ -36,7 +36,7 @@ const BlogCard = ({ img, title, date, description, isBlogsPage = false }) => {
           {isBlogsPage ? descriptionTxt : description}
         </p>
       </div>
-      <div id="blog-action" className="w-full h-[20%]">
+      <div id="blog-action" className="w-full h-auto my-5">
         {isBlogsPage && (
           <button
             id="btn-read-more"

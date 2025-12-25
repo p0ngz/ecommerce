@@ -40,10 +40,7 @@ const NavbarComponent = () => {
     >
       <div id="left" className="">
         {/* sm and md screen */}
-        <div
-          id="left-md-screen"
-          className="w-full h-full sm:flex sm:justify-center sm:items-center sm:gap-2 xl:hidden"
-        >
+        <div id="left-md-screen" className="w-full h-full sm:flex sm:justify-center sm:items-center sm:gap-2 xl:hidden">
           <DensityMediumIcon
             onClick={() => toggleSidebarHandler()}
             className="hover:cursor-pointer me-2 sm:me-4sm:scale-80  hover:scale-100"
@@ -78,18 +75,12 @@ const NavbarComponent = () => {
         </div>
 
         {/* xl screen */}
-        <div
-          id="center-xl-screen"
-          className="w-full xl:flex xl:items-center gap-4 hidden "
-        >
+        <div id="center-xl-screen" className="w-full xl:flex xl:items-center gap-4 hidden ">
           <div id="home-btn" className="hover:cursor-pointer">
             <Link to="/">
               <p>
                 Home
-                <KeyboardArrowDownIcon
-                  fontSize="small"
-                  className="text-gray-400"
-                />
+                <KeyboardArrowDownIcon fontSize="small" className="text-gray-400" />
               </p>
             </Link>
           </div>
@@ -97,21 +88,15 @@ const NavbarComponent = () => {
             <Link to="/products">
               <p>
                 Products
-                <KeyboardArrowDownIcon
-                  fontSize="small"
-                  className="text-gray-400"
-                />
+                <KeyboardArrowDownIcon fontSize="small" className="text-gray-400" />
               </p>
             </Link>
           </div>
           <div id="blog-btn" className="hover:cursor-pointer">
-            <Link to="/blog">
+            <Link to="/blogs">
               <p>
                 Blogs
-                <KeyboardArrowDownIcon
-                  fontSize="small"
-                  className="text-gray-400"
-                />
+                <KeyboardArrowDownIcon fontSize="small" className="text-gray-400" />
               </p>
             </Link>
           </div>
@@ -128,10 +113,7 @@ const NavbarComponent = () => {
               />
             </Link>
           ) : (
-            <PersonOutlineIcon
-              className="hover:cursor-pointer"
-              onMouseEnter={() => setOnHoverProfile(true)}
-            />
+            <PersonOutlineIcon className="hover:cursor-pointer" onMouseEnter={() => setOnHoverProfile(true)} />
           )}
           {onHoverFavorite ? (
             <Link to="/wishlist">
@@ -141,10 +123,7 @@ const NavbarComponent = () => {
               />
             </Link>
           ) : (
-            <FavoriteBorderIcon
-              className="hover:cursor-pointer"
-              onMouseEnter={() => setOnHoverFavorite(true)}
-            />
+            <FavoriteBorderIcon className="hover:cursor-pointer" onMouseEnter={() => setOnHoverFavorite(true)} />
           )}
           {onHoverShopping ? (
             <Link to="/shipping">
@@ -154,18 +133,12 @@ const NavbarComponent = () => {
               />
             </Link>
           ) : (
-            <ShoppingBagOutlinedIcon
-              className="hover:cursor-pointer"
-              onMouseEnter={() => setOnHoverShopping(true)}
-            />
+            <ShoppingBagOutlinedIcon className="hover:cursor-pointer" onMouseEnter={() => setOnHoverShopping(true)} />
           )}
         </div>
 
         {/* xl screen */}
-        <div
-          id="right-xl-screen"
-          className="hidden md:hidden xl:flex xl:items-center xl:gap-3"
-        >
+        <div id="right-xl-screen" className="hidden md:hidden xl:flex xl:items-center xl:gap-3">
           <SearchIcon
             className="hover:cursor-pointer hover:text-emerald-800"
             onClick={() => activeSearchModalHandler()}
@@ -178,10 +151,7 @@ const NavbarComponent = () => {
               />
             </Link>
           ) : (
-            <PersonOutlineIcon
-              className="hover:cursor-pointer"
-              onMouseEnter={() => setOnHoverProfile(true)}
-            />
+            <PersonOutlineIcon className="hover:cursor-pointer" onMouseEnter={() => setOnHoverProfile(true)} />
           )}
           {onHoverFavorite ? (
             <Link to="/wishlist">
@@ -191,10 +161,7 @@ const NavbarComponent = () => {
               />
             </Link>
           ) : (
-            <FavoriteBorderIcon
-              className="hover:cursor-pointer"
-              onMouseEnter={() => setOnHoverFavorite(true)}
-            />
+            <FavoriteBorderIcon className="hover:cursor-pointer" onMouseEnter={() => setOnHoverFavorite(true)} />
           )}
           {onHoverShopping ? (
             <Link to="/shipping">
@@ -204,21 +171,12 @@ const NavbarComponent = () => {
               />
             </Link>
           ) : (
-            <ShoppingBagOutlinedIcon
-              className="hover:cursor-pointer"
-              onMouseEnter={() => setOnHoverShopping(true)}
-            />
+            <ShoppingBagOutlinedIcon className="hover:cursor-pointer" onMouseEnter={() => setOnHoverShopping(true)} />
           )}
         </div>
       </div>
-      <SidebarComponent
-        toggleSidebar={activeSidebar}
-        sendStatusToParent={receiveStatusSidebar}
-      />
-      <SearchModalComponent
-        searchModalState={activeSearchModal}
-        sendStateToParent={receiveSearchState}
-      />
+      <SidebarComponent toggleSidebar={activeSidebar} sendStatusToParent={receiveStatusSidebar} />
+      <SearchModalComponent searchModalState={activeSearchModal} sendStateToParent={receiveSearchState} />
     </div>
   );
 };

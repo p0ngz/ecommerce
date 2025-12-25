@@ -9,11 +9,11 @@ const PromoteSection = () => {
   return (
     <div
       id="promote-container"
-      className="my-10 w-full h-screen flex flex-col sm:flex-row bg-[#F6F3EF]"
+      className="my-10 w-full h-screen flex flex-col md:flex-row bg-[#F6F3EF]"
     >
       <div
         id="left-promoted-container"
-        className="w-full sm:w-[50%] h-full flex justify-center items-center"
+        className="w-full md:w-[50%] h-1/2 md:h-full flex justify-center items-center"
       >
         <div
           id="promote-text"
@@ -49,7 +49,7 @@ const PromoteSection = () => {
           </div>
         </div>
       </div>
-      <div id="right-promoted-container" className="w-full sm:w-[50%] h-full">
+      <div id="right-promoted-container" className="w-full md:w-[50%] h-1/2 md:h-full">
         <img
           src="https://wpbingo-adena.myshopify.com/cdn/shop/files/banner-11.jpg?v=1730109301&width=1200"
           alt="promoted-img"

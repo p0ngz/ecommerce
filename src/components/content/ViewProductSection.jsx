@@ -1,4 +1,4 @@
-import React, {} from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 const imgData = [
@@ -27,16 +27,17 @@ const imgData = [
     imgSrc:
       "https://wpbingo-adena.myshopify.com/cdn/shop/files/insta-5.jpg?crop=center&height=411&v=1729743596&width=411",
   },
-
 ];
 const ViewProductSection = () => {
-
   return (
-    <div id="testimonial-container" className="w-full h-[50vh]">
+    <div
+      id="testimonial-container"
+      className="w-full h-full min-h-[35vh] md:min-h-[40vh] pb-10 overflow-hidden"
+    >
       <div id="new-product-header" className="py-10 text-center">
         <h2 className="text-5xl sm:text-3xl capitalize">Our Instagram</h2>
       </div>
-      <div id="img-instagram-container" className="w-full h-full relative">
+      <div id="img-instagram-container" className="w-full h-[30vh] sm:min-h-[30vh] xl:h-[50vh] relative overflow-hidden">
         <motion.div
           className="absolute flex whitespace-nowrap"
           initial={{ x: "100%" }}
@@ -48,10 +49,7 @@ const ViewProductSection = () => {
             repeatType: "loop",
           }}
         >
-          <div
-            id="img-instagram-container"
-            className="min-w-screen h-[20%] flex flex-nowrap gap-5 overflow-x-auto"
-          >
+          <div id="img-instagram-container" className="min-w-screen h-[20%] flex flex-nowrap gap-5 overflow-x-auto">
             {imgData.map((img) => (
               <CardInstagram key={img.id} imgSrc={img.imgSrc} id={img.id} />
             ))}
@@ -87,15 +85,8 @@ export default ViewProductSection;
 
 const CardInstagram = ({ imgSrc, id }) => {
   return (
-    <div
-      id="card-instagram"
-      className="w-[50vw] sm:w-[30vw] h-full flex-shrink-0 rounded-md"
-    >
-      <img
-        src={imgSrc}
-        alt={`instagram-${id}`}
-        className="w-full h-full object-cover rounded-md"
-      />
+    <div id="card-instagram" className="w-[50vw] sm:w-[30vw] h-full flex-shrink-0 rounded-md">
+      <img src={imgSrc} alt={`instagram-${id}`} className="w-full h-full object-cover rounded-md" />
     </div>
   );
 };

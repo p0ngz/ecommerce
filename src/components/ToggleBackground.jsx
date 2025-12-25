@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react";
 
 const ToggleBackground = ({ countElements, activeBackground, sendToggleBackgroundIndex }) => {
   const [currentActive, setCurrentActive] = useState(0);
-  const [toggleBackgroundIndex, setToggleBackgroundIndex] = useState()
+  const [toggleBackgroundIndex, setToggleBackgroundIndex] = useState();
 
   const toggleBackgroundIndexHandler = (index) => {
-    setToggleBackgroundIndex(index)
-  }
+    setToggleBackgroundIndex(index);
+  };
   useEffect(() => {
     setCurrentActive(activeBackground);
   }, [activeBackground, currentActive]);
   useEffect(() => {
-    sendToggleBackgroundIndex(toggleBackgroundIndex)
-  }, [toggleBackgroundIndex, sendToggleBackgroundIndex])
+    sendToggleBackgroundIndex(toggleBackgroundIndex);
+  }, [toggleBackgroundIndex, sendToggleBackgroundIndex]);
   return (
     <div
       id="toggle-bg"
-      className=" flex lg:flex-col justify-center items-center gap-3 sm:absolute sm:bottom-10 sm:left-1/2 sm:-translate-x-1/2 sm:top-auto sm:right-auto lg:bottom-auto lg:left-auto lg:right-10 lg:top-1/2 lg:translate-x-0 lg:-translate-y-1/2 z-3"
+      className=" flex  lg:flex-col justify-center items-center gap-3 mt-15 sm:absolute sm:bottom-10 sm:left-1/2 sm:-translate-x-1/2 sm:top-auto sm:right-auto lg:bottom-auto lg:left-auto lg:right-10 lg:top-1/2 lg:translate-x-0 lg:-translate-y-1/2 z-3"
     >
       {Array.from({ length: countElements }).map((_, index) => {
         return (

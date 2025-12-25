@@ -105,7 +105,7 @@ const BlogComponent = () => {
           </Typography>
         </Breadcrumbs>
       </div>
-      <div id="main-blog" className="w-full min-h-full" >
+      <div id="main-blog" className="w-full min-h-full px-10" >
         <BlogCard
           img={blogState.img}
           title={blogState.title}

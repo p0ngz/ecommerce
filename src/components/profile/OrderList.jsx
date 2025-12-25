@@ -61,7 +61,9 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
   return (
     <div
       id="order-list"
-      className={`w-full ${isView ? "h-screen" : "h-full"} text-sm rounded-md border border-gray-300  p-5 relative`}
+      className={`w-full ${
+        isView ? "h-screen" : "h-full"
+      } text-sm rounded-md border border-gray-300  p-5 relative overflow-y-scroll`}
     >
       {!trackingStatus?.cancel &&
         trackingStatus?.currentStatus !== "Delivered" &&

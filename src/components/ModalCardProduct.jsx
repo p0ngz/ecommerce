@@ -32,7 +32,7 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <div className="p-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[70%] sm:min-w-[45rem] min-h-[25rem] max-h-[80vh] sm:min-h-[25rem] flex flex-col sm:flex-row sm:justify-center sm:items-center rounded-md ">
+        <div className="p-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[70%] sm:min-w-[45rem] min-h-[25rem] max-h-[80vh] sm:min-h-[25rem] 2xl:h-full flex flex-col sm:flex-row sm:justify-center sm:items-center rounded-md ">
           <div id="left-modal" className="w-full sm:w-1/2 h-[20%] sm:h-full">
             <img
               src={dataModal.imgSrc}
