@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import BlogCard from "./BlogCard";
 import PropTypes from "prop-types";
 

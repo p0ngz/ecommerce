@@ -11,7 +11,7 @@ const LoginComponent = () => {
   };
   const { values, handleChange, handleBlur, handleSubmit } = useFormik({
     initialValues: {
-      email: "",
+      emailUsername: "",
       password: "",
     },
   });
@@ -27,20 +27,18 @@ const LoginComponent = () => {
       >
         <div
           id="login-container"
-          className="w-full max-w-md rounded-xl shadow-lg p-8 flex flex-col gap-6 bg-white/60 backdrop-blur-md"
+          className="w-[80%] sm:w-full max-w-md rounded-xl shadow-lg p-8 flex flex-col gap-6 bg-white/60 backdrop-blur-md"
         >
-          <h2 className="text-3xl font-bold text-center text-[#3E2C23] mb-2">
-            Sign In
-          </h2>
+          <h2 className="text-3xl font-bold text-center text-[#3E2C23] mb-2">Sign In</h2>
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email"
+              id="email-username"
+              name="email-username"
+              type="text"
+              placeholder="email/username"
               className="px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300  focus:outline-none focus:ring-2 focus:ring-[#F4B350]"
               required
-              value={values.email}
+              value={values.emailUsername}
               onBlur={handleBlur}
               onChange={handleChange}
             />
@@ -56,10 +54,7 @@ const LoginComponent = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
               />
-              <span
-                id="toggle-password"
-                className="absolute right-3 top-1/2 -translate-y-1/2 hover:cursor-pointer"
-              >
+              <span id="toggle-password" className="absolute right-3 top-1/2 -translate-y-1/2 hover:cursor-pointer">
                 {showPassword ? (
                   <VisibilityOffIcon
                     fontSize="small"
@@ -80,9 +75,9 @@ const LoginComponent = () => {
 
             <button
               type="submit"
-              disabled={!!values.email && !!values.password}
+              disabled={!!values.emailUsername && !!values.password}
               className={`${
-                !(!!values.email && !!values.password)
+                !(!!values.emailUsername && !!values.password)
                   ? "bg-[#F5F5F5] text-gray-400 cursor-not-allowed"
                   : "bg-[#d6c3b1] text-gray-600 hover:text-gray-900 hover:cursor-pointer hover:bg-[#b8a48a] transition"
               } w-full py-3 rounded-lg  font-semibold shadow`}
@@ -95,21 +90,12 @@ const LoginComponent = () => {
             type="button"
             className="w-full py-3 rounded-lg flex items-center justify-center gap-3 bg-white border border-gray-300 shadow hover:bg-gray-300 transition hover:cursor-pointer"
           >
-            <img
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              alt="Google"
-              className="w-6 h-6"
-            />
-            <span className="font-medium text-gray-700">
-              Sign in with Google
-            </span>
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-6 h-6" />
+            <span className="font-medium text-gray-700">Sign in with Google</span>
           </button>
           <div className="text-center mt-6 text-sm text-gray-600 flex gap-2 justify-center items-center">
             No account?
-            <Link
-              to="/register"
-              className="ml-1 text-[#b8a48a] font-semibold hover:underline"
-            >
+            <Link to="/register" className="ml-1 text-[#b8a48a] font-semibold hover:underline">
               Go register
             </Link>
           </div>

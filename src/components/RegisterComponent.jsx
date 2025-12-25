@@ -18,18 +18,11 @@ const RegisterComponent = () => {
   //   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const {
-    values,
-    errors,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    dirty,
-    isValid,
-  } = useFormik({
+  const { values, errors, handleBlur, handleChange, handleSubmit, dirty, isValid } = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -38,6 +31,7 @@ const RegisterComponent = () => {
     validateOnChange: true,
     //   validateOnBlur: true,
     onSubmit: async (values, action) => {
+      console.log("values: ", values);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       action.resetForm();
     },
@@ -57,62 +51,88 @@ const RegisterComponent = () => {
       >
         <div
           id="register-container"
-          className="w-full max-w-mid rounded-xl shadow-lg p-8 flex flex-col gap-6 bg-white/60 backdrop-blur-sm backdrop-blur-md"
+          className="w-full sm:w-[80%] my-5  rounded-xl shadow-lg p-5 sm:p-8 flex flex-col gap-6 bg-white/60 backdrop-blur-sm backdrop-blur-md"
         >
-          <h2 className="text-3xl font-bold text-center text-[#3E2C23] mb-2">
-            Register
-          </h2>
-          <form
-            id="register-form"
-            className="flex flex-col gap-4"
-            autoComplete="off"
-            onSubmit={handleSubmit}
-          >
-            <input
-              id="firstName"
-              name="firstName"
-              type="text"
-              placeholder="FirstName"
-              className={`${
-                !!values.firstName && errors.firstName
-                  ? "ring-2 ring-red-400 focus:bg-red-200"
-                  : "focus:ring-2 focus:ring-[#F4B350]"
-              } px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none`}
-              required
-              value={values.firstName}
-              onBlur={handleBlur}
-              onChange={handleChange}
-            />
-            <input
-              id="lastName"
-              name="lastName"
-              type="text"
-              placeholder="LastName"
-              className={`${
-                !!values.lastName && errors.lastName
-                  ? "ring-2 ring-red-400 focus:bg-red-200"
-                  : "focus:ring-2 focus:ring-[#F4B350]"
-              } px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none focus:ring-2`}
-              required
-              value={values.lastName}
-              onBlur={handleBlur}
-              onChange={handleChange}
-            />
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email"
-              className={`${
-                !!values.email && errors.email
-                  ? "ring-2 ring-red-400 focus:bg-red-200"
-                  : "focus:ring-2 focus:ring-[#F4B350]"
-              } px-4 py-3 rounded-lg border border-gray-600  mid:border-gray-300 focus:outline-none focus:ring-2`}
-              required
-              value={values.email}
-              onBlur={handleBlur}
-              onChange={handleChange}
-            />
+          <h2 className="text-3xl font-bold text-center text-[#3E2C23] mb-2">Register</h2>
+          <form id="register-form" className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit}>
+            <div>
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                placeholder="FirstName"
+                className={`${
+                  !!values.firstName && errors.firstName
+                    ? "ring-2 ring-red-400 focus:bg-red-200"
+                    : "focus:ring-2 focus:ring-[#F4B350]"
+                } w-full px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none`}
+                required
+                value={values.firstName}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              {errors.firstName && values.firstName && (
+                <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.firstName}</p>
+              )}
+            </div>
+            <div>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                placeholder="LastName"
+                className={`${
+                  !!values.lastName && errors.lastName
+                    ? "ring-2 ring-red-400 focus:bg-red-200"
+                    : "focus:ring-2 focus:ring-[#F4B350]"
+                } w-full px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none focus:ring-2`}
+                required
+                value={values.lastName}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              {errors.lastName && values.lastName && (
+                <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.lastName}</p>
+              )}
+            </div>
+            <div>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Username"
+                className={`${
+                  !!values.username && errors.username
+                    ? "ring-2 ring-red-400 focus:bg-red-200"
+                    : "focus:ring-2 focus:ring-[#F4B350]"
+                } w-full px-4 py-3 rounded-lg border border-gray-600  mid:border-gray-300 focus:outline-none focus:ring-2`}
+                required
+                value={values.username}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              {errors.username && values.username && (
+                <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.username}</p>
+              )}
+            </div>
+            <div>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                className={`${
+                  !!values.email && errors.email
+                    ? "ring-2 ring-red-400 focus:bg-red-200"
+                    : "focus:ring-2 focus:ring-[#F4B350]"
+                } w-full px-4 py-3 rounded-lg border border-gray-600  mid:border-gray-300 focus:outline-none focus:ring-2`}
+                required
+                value={values.email}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              {errors.email && values.email && <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.email}</p>}
+            </div>
             <div id="password-container" className="relative w-full">
               <input
                 id="password"
@@ -129,10 +149,7 @@ const RegisterComponent = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
               />
-              <span
-                id="toggle-password"
-                className="absolute right-3 top-1/2 -translate-y-1/2 hover:cursor-pointer"
-              >
+              <span id="toggle-password" className="absolute right-3 top-1/2 -translate-y-1/2 hover:cursor-pointer">
                 {showPassword ? (
                   <VisibilityOffIcon
                     fontSize="small"
@@ -150,6 +167,9 @@ const RegisterComponent = () => {
                 )}
               </span>
             </div>
+            {errors.password && values.password && (
+              <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.password}</p>
+            )}
             <div id="password-container" className="relative w-full">
               <input
                 id="confirmPassword"
@@ -187,6 +207,9 @@ const RegisterComponent = () => {
                 )}
               </span>
             </div>
+            {errors.confirmPassword && values.confirmPassword && (
+              <p className="text-red-500  text-xs sm:text-sm mt-1 ml-1">{errors.confirmPassword}</p>
+            )}
             <button
               type="submit"
               disabled={!(isValid && dirty)}
@@ -201,10 +224,7 @@ const RegisterComponent = () => {
           </form>
           <div className="text-center mt-6 text-sm text-gray-600">
             Already have an account?
-            <Link
-              to="/login"
-              className="ml-1 text-[#b8a48a] font-semibold hover:underline"
-            >
+            <Link to="/login" className="ml-1 text-[#b8a48a] font-semibold hover:underline">
               Go login
             </Link>
           </div>
