@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { registerSchema } from "../utility/validate/registerValidate";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
+import { privateAxiosClient } from "../config/axios";
 const RegisterComponent = () => {
   //   const formik = useFormik({
   //     // in formik we match value from name attribute
@@ -16,6 +17,7 @@ const RegisterComponent = () => {
   //       confirmPassword: "",
   //     },
   //   });
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { values, errors, handleBlur, handleChange, handleSubmit, dirty, isValid } = useFormik({
@@ -28,12 +30,21 @@ const RegisterComponent = () => {
       confirmPassword: "",
     },
     validationSchema: registerSchema,
-    validateOnChange: true,
+    // validateOnChange: true,
+    validationOnBlur: true,
     //   validateOnBlur: true,
     onSubmit: async (values, action) => {
-      console.log("values: ", values);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      action.resetForm();
+      try {
+        console.log("Submitting values: ", values);
+        const response = await privateAxiosClient.post("/register", values);
+        console.log("Registration successful: ", response.data);
+        action.resetForm();
+        if (response.data) {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Registration error: ", error.response?.data || error.message);
+      }
     },
   });
   const togglePasswordHandler = (state) => {
@@ -47,14 +58,14 @@ const RegisterComponent = () => {
     <div id="register-component" className="w-full h-full flex">
       <div
         id="left"
-        className="w-[100%] mid:w-[50%] 2xl:w-[40%] px-15 py-25 flex justify-center items-center mid:bg-gradient-to-br mid:from-[#e7dccb] mid:via-[#d6c3b1] mid:to-[#b8a48a] bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover"
+        className="w-full md:w-[50%] 2xl:w-[40%] px-15 py-25 flex justify-center items-center md:bg-gradient-to-br md:from-[#e7dccb] md:via-[#d6c3b1] md:to-[#b8a48a] bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover"
       >
         <div
           id="register-container"
-          className="w-full sm:w-[80%] my-5  rounded-xl shadow-lg p-5 sm:p-8 flex flex-col gap-6 bg-white/60 backdrop-blur-sm backdrop-blur-md"
+          className="w-full sm:w-[80%] md:w-full my-5  rounded-xl shadow-lg p-5 sm:p-8 flex flex-col gap-6 bg-white/60 backdrop-blur-sm backdrop-blur-md"
         >
           <h2 className="text-3xl font-bold text-center text-[#3E2C23] mb-2">Register</h2>
-          <form id="register-form" className="flex flex-col gap-4" autoComplete="off" onSubmit={handleSubmit}>
+          <form id="register-form" className="flex flex-col gap-4" autoComplete="on" onSubmit={handleSubmit}>
             <div>
               <input
                 id="firstName"
@@ -65,7 +76,7 @@ const RegisterComponent = () => {
                   !!values.firstName && errors.firstName
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
-                } w-full px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none`}
+                } w-full px-4 py-3 rounded-lg border border-gray-600 md:border-gray-300 focus:outline-none`}
                 required
                 value={values.firstName}
                 onBlur={handleBlur}
@@ -85,7 +96,7 @@ const RegisterComponent = () => {
                   !!values.lastName && errors.lastName
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
-                } w-full px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none focus:ring-2`}
+                } w-full px-4 py-3 rounded-lg border border-gray-600 md:border-gray-300 focus:outline-none focus:ring-2`}
                 required
                 value={values.lastName}
                 onBlur={handleBlur}
@@ -105,7 +116,7 @@ const RegisterComponent = () => {
                   !!values.username && errors.username
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
-                } w-full px-4 py-3 rounded-lg border border-gray-600  mid:border-gray-300 focus:outline-none focus:ring-2`}
+                } w-full px-4 py-3 rounded-lg border border-gray-600  md:border-gray-300 focus:outline-none focus:ring-2`}
                 required
                 value={values.username}
                 onBlur={handleBlur}
@@ -125,13 +136,15 @@ const RegisterComponent = () => {
                   !!values.email && errors.email
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
-                } w-full px-4 py-3 rounded-lg border border-gray-600  mid:border-gray-300 focus:outline-none focus:ring-2`}
+                } w-full px-4 py-3 rounded-lg border border-gray-600  md:border-gray-300 focus:outline-none focus:ring-2`}
                 required
                 value={values.email}
                 onBlur={handleBlur}
                 onChange={handleChange}
               />
-              {errors.email && values.email && <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.email}</p>}
+              {errors.email && values.email && (
+                <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.email}</p>
+              )}
             </div>
             <div id="password-container" className="relative w-full">
               <input
@@ -143,7 +156,7 @@ const RegisterComponent = () => {
                   !!values.password && errors.password
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
-                } w-full px-4 py-3 rounded-lg border border-gray-600 mid:border-gray-300 focus:outline-none focus:ring-2`}
+                } w-full px-4 py-3 rounded-lg border border-gray-600 md:border-gray-300 focus:outline-none focus:ring-2`}
                 required
                 value={values.password}
                 onBlur={handleBlur}
@@ -180,7 +193,7 @@ const RegisterComponent = () => {
                   !!values.confirmPassword && errors.confirmPassword
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
-                } w-full px-4 py-3 rounded-lg border border-gray-600  mid:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4B350]`}
+                } w-full px-4 py-3 rounded-lg border border-gray-600  md:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4B350]`}
                 required
                 value={values.confirmPassword}
                 onBlur={handleBlur}
@@ -232,7 +245,7 @@ const RegisterComponent = () => {
       </div>
       <div
         id="right"
-        className="hidden  mid:block mid:w-[50%] 2xl:w-[60%] flex justify-center items-center mid:bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] mid:bg-cover mid:bg-center aspect-[4/3]"
+        className="hidden  w-full md:block md:w-[50%] 2xl:w-[60%] flex justify-center items-center md:bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] md:bg-cover md:bg-center aspect-[4/3]"
       ></div>
     </div>
   );
