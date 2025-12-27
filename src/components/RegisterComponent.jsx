@@ -7,20 +7,10 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { privateAxiosClient } from "../config/axios";
 const RegisterComponent = () => {
-  //   const formik = useFormik({
-  //     // in formik we match value from name attribute
-  //     initialValues: {
-  //       firstName: "",
-  //       lastName: "",
-  //       email: "",
-  //       password: "",
-  //       confirmPassword: "",
-  //     },
-  //   });
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { values, errors, handleBlur, handleChange, handleSubmit, dirty, isValid } = useFormik({
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit, dirty, isValid } = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
@@ -30,14 +20,11 @@ const RegisterComponent = () => {
       confirmPassword: "",
     },
     validationSchema: registerSchema,
-    // validateOnChange: true,
-    validationOnBlur: true,
-    //   validateOnBlur: true,
+    validateOnChange: false,
+    validateOnBlur: true,
     onSubmit: async (values, action) => {
       try {
-        console.log("Submitting values: ", values);
         const response = await privateAxiosClient.post("/register", values);
-        console.log("Registration successful: ", response.data);
         action.resetForm();
         if (response.data) {
           navigate("/login");
@@ -73,7 +60,7 @@ const RegisterComponent = () => {
                 type="text"
                 placeholder="FirstName"
                 className={`${
-                  !!values.firstName && errors.firstName
+                  touched.firstName && errors.firstName
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
                 } w-full px-4 py-3 rounded-lg border border-gray-600 md:border-gray-300 focus:outline-none`}
@@ -82,7 +69,7 @@ const RegisterComponent = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
               />
-              {errors.firstName && values.firstName && (
+              {touched.firstName && errors.firstName && (
                 <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.firstName}</p>
               )}
             </div>
@@ -93,7 +80,7 @@ const RegisterComponent = () => {
                 type="text"
                 placeholder="LastName"
                 className={`${
-                  !!values.lastName && errors.lastName
+                  touched.lastName && errors.lastName
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
                 } w-full px-4 py-3 rounded-lg border border-gray-600 md:border-gray-300 focus:outline-none focus:ring-2`}
@@ -102,7 +89,7 @@ const RegisterComponent = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
               />
-              {errors.lastName && values.lastName && (
+              {touched.lastName && errors.lastName && (
                 <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.lastName}</p>
               )}
             </div>
@@ -113,7 +100,7 @@ const RegisterComponent = () => {
                 type="text"
                 placeholder="Username"
                 className={`${
-                  !!values.username && errors.username
+                  touched.username && errors.username
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
                 } w-full px-4 py-3 rounded-lg border border-gray-600  md:border-gray-300 focus:outline-none focus:ring-2`}
@@ -122,7 +109,7 @@ const RegisterComponent = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
               />
-              {errors.username && values.username && (
+              {touched.username && errors.username && (
                 <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.username}</p>
               )}
             </div>
@@ -133,7 +120,7 @@ const RegisterComponent = () => {
                 type="email"
                 placeholder="Email"
                 className={`${
-                  !!values.email && errors.email
+                  touched.email && errors.email
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
                 } w-full px-4 py-3 rounded-lg border border-gray-600  md:border-gray-300 focus:outline-none focus:ring-2`}
@@ -142,7 +129,7 @@ const RegisterComponent = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
               />
-              {errors.email && values.email && (
+              {touched.email && errors.email && (
                 <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.email}</p>
               )}
             </div>
@@ -153,7 +140,7 @@ const RegisterComponent = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 className={`${
-                  !!values.password && errors.password
+                  touched.password && errors.password
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
                 } w-full px-4 py-3 rounded-lg border border-gray-600 md:border-gray-300 focus:outline-none focus:ring-2`}
@@ -180,7 +167,7 @@ const RegisterComponent = () => {
                 )}
               </span>
             </div>
-            {errors.password && values.password && (
+            {touched.password && errors.password && (
               <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.password}</p>
             )}
             <div id="password-container" className="relative w-full">
@@ -190,7 +177,7 @@ const RegisterComponent = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm Password"
                 className={`${
-                  !!values.confirmPassword && errors.confirmPassword
+                  touched.confirmPassword && errors.confirmPassword
                     ? "ring-2 ring-red-400 focus:bg-red-200"
                     : "focus:ring-2 focus:ring-[#F4B350]"
                 } w-full px-4 py-3 rounded-lg border border-gray-600  md:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4B350]`}
@@ -220,7 +207,7 @@ const RegisterComponent = () => {
                 )}
               </span>
             </div>
-            {errors.confirmPassword && values.confirmPassword && (
+            {touched.confirmPassword && errors.confirmPassword && (
               <p className="text-red-500  text-xs sm:text-sm mt-1 ml-1">{errors.confirmPassword}</p>
             )}
             <button

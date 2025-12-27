@@ -11,7 +11,7 @@ import ProductsPage from "./pages/ProductsPage";
 import ProductPage from "./pages/ProductPage";
 import BlogsPage from "./pages/BlogsPage";
 import BlogPage from "./pages/BlogPage";
-import FeaturePage from "./pages/FeaturePage";
+// import FeaturePage from "./pages/FeaturePage";
 import TrackingStatusOrderPage from "./pages/TrackingStatusOrderPage";
 import QRpaymentPage from "./pages/QRpaymentPage";
 import ProductTypePage from "./pages/ProductTypePage";
@@ -20,37 +20,44 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import OrdersPage from "./pages/OrdersPage";
 import OrderPage from "./pages/OrderPage";
+
+// context
+import { AuthProvider } from "./utility/context/authContext";
+import RequireAuth from "./utility/requireAuth";
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<HomePage />} />
-        {/* sub-page will have breadcrumb ex. Home / Wishlists */}
-        <Route path="/wishlist" element={<WishlistPage />} />
-        <Route path="/shipping" element={<ShippingPage />} />
-        <Route path="/tracking" element={<TrackingStatusOrderPage />} />
-        <Route path="/payment" element={<QRpaymentPage />} />
-        <Route path="/products">
-          <Route index element={<ProductsPage />} />
-          <Route path=":typeProduct">
-            <Route index element={<ProductTypePage />} />
-            <Route path=":productName" element={<ProductPage />} />
+      <Route element={<RequireAuth />}>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
+          {/* sub-page will have breadcrumb ex. Home / Wishlists */}
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/shipping" element={<ShippingPage />} />
+          <Route path="/tracking" element={<TrackingStatusOrderPage />} />
+          <Route path="/payment" element={<QRpaymentPage />} />
+          <Route path="/products">
+            <Route index element={<ProductsPage />} />
+            <Route path=":typeProduct">
+              <Route index element={<ProductTypePage />} />
+              <Route path=":productName" element={<ProductPage />} />
+            </Route>
           </Route>
-        </Route>
-        <Route path="/blogs">
-          <Route index element={<BlogsPage />} />
-          <Route path=":blog" element={<BlogPage />} />
-        </Route>
-        <Route path="/profile">
-          <Route index element={<ProfilePage />} />
-          <Route path="orders">
-            <Route index element={<OrdersPage />} />
-            <Route path=":orderId" element={<OrderPage />} />
+          <Route path="/blogs">
+            <Route index element={<BlogsPage />} />
+            <Route path=":blog" element={<BlogPage />} />
           </Route>
-        </Route>
+          <Route path="/profile">
+            <Route index element={<ProfilePage />} />
+            <Route path="orders">
+              <Route index element={<OrdersPage />} />
+              <Route path=":orderId" element={<OrderPage />} />
+            </Route>
+          </Route>
 
-        <Route path="*" element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
       </Route>
+
       <Route path="/" element={<RegisterLoginLayout />}>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -59,7 +66,11 @@ const routes = createBrowserRouter(
   )
 );
 function App() {
-  return <RouterProvider router={routes} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={routes} />
+    </AuthProvider>
+  );
 }
 
 export default App;

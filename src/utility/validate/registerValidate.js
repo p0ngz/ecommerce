@@ -23,12 +23,11 @@ export const registerSchema = yup.object().shape({
   email: yup.string().email("Invalid Email").required("Email is required"),
   password: yup
     .string()
-    .matches(passwordRegex, {
-      message:
-        "Invalid Password (must start with an uppercase letter and include letters, numbers, @, _, -)",
-    })
     .min(5, "Password must be at least 5 characters")
-    .max(10, "Password must be at most 10 characters"),
+    .max(10, "Password must be at most 10 characters")
+    .matches(passwordRegex, {
+      message: "Invalid Password (must start with an uppercase letter and include letters, numbers, @, _, -)",
+    }),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("password"), null], "Password not match")

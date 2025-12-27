@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { privateAxiosClient } from "../config/axios";
+import { useAuth } from "../utility/context/authContext";
 
 const LoginComponent = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordHandler = (state) => {
     setShowPassword(state);
   };
+  const { login } = useAuth();
   const { values, handleChange, handleBlur, handleSubmit } = useFormik({
     initialValues: {
       username: "",
@@ -20,12 +19,8 @@ const LoginComponent = () => {
     onSubmit: async (values, action) => {
       try {
         console.log("Login values: ", values);
-        const response = await privateAxiosClient.post("/auth", values);
-        console.log("Login response: ", response.data);
+        await login(values);
         action.resetForm();
-        if (response.data) {
-          navigate("/");
-        }
       } catch (err) {
         console.error("Login error: ", err.response?.data || err.message);
       }
