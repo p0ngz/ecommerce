@@ -1,15 +1,14 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { devtools, persist } from "zustand/middleware";
-import { createUserSlice } from "./user/userSlice";
-
-export const useUserStore = create()(
+import { createProductSlice} from "./productSlice"
+export const useProductStore = create()(
   devtools(
     persist(
       immer((set, get) => ({
-        ...createUserSlice(set, get),
+        ...createProductSlice(set, get),
       })),
-      { name: "user-store"}
+      { name: "product-store" }
     )
   )
 );
