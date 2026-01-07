@@ -20,8 +20,8 @@ export const createBlogSlice = (set, get) => ({
       } else {
         response = await axiosClient.get("/blog");
       }
-      const blogs = response?.data?.blogs;
-      if (!blogs || blogs.length === 0) {
+      const blogs = response?.data;
+      if (!blogs || blogs.count === 0) {
         console.error("No blogs found");
       }
 

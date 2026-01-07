@@ -23,8 +23,8 @@ export const createOrderSlice = (set, get) => ({
         response = await axiosClient.get("/order");
       }
 
-      const orders = response?.data?.orders;
-      if (!orders || orders.length === 0) {
+      const orders = response?.data;
+      if (!orders || orders.count === 0) {
         console.error("No orders found");
       }
 

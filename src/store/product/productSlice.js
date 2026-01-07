@@ -40,7 +40,7 @@ export const createProductSlice = (set, get) => ({
 
       console.log("response products: ", response);
       const products = response?.data;
-      if (!products || products.length === 0) {
+      if (!products || products.count === 0) {
         console.error("No products found");
       }
 

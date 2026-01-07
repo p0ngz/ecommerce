@@ -20,9 +20,9 @@ export const createCartSlice = (set, get) => ({
       } else {
         response = await axiosClient.get("/cartlist");
       }
-      const cartLists = response?.data?.cartLists;
+      const cartLists = response?.data;
 
-      if (!cartLists || cartLists.length === 0) {
+      if (!cartLists || cartLists.count === 0) {
         console.error("No carts found");
       }
 

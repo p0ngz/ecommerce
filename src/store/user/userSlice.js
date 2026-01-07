@@ -33,8 +33,7 @@ export const createUserSlice = (set, get) => ({
     try {
       const response = await axiosClient.get("/user");
       const users = response?.data;
-      console.log("users: ", users);
-      if (!users || users.length === 0) { //default find is array
+      if (!users || users.count === 0) { //default find is array
         console.error("No users data found");
       }
       return users;

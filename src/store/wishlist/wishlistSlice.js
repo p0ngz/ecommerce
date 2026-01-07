@@ -20,8 +20,8 @@ export const createWishlistSlice = (set, get) => ({
       } else {
         response = await axiosClient.get("/wishlist");
       }
-      const wishlists = response?.data?.wishlists;
-      if (!wishlists || wishlists.length === 0) {
+      const wishlists = response?.data;
+      if (!wishlists || wishlists.count === 0) {
         console.error("No wishlists found");
       }
 
