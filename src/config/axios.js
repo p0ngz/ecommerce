@@ -2,16 +2,9 @@ import axios from "axios";
 
 // axios instance
 // public route api
-export const axiosClient = axios.create({
-  baseURL: `${import.meta.env.VITE_ECOMMERCE_API_ENDPOINT}` || "http://localhost:3000/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
-});
 
-export const axiosClientWithApiKey = axios.create({
-  baseURL: `${import.meta.env.VITE_ECOMMERCE_API_ENDPOINT}` || "http://localhost:3000/api",
+export const axiosClient = axios.create({
+  baseURL: `${import.meta.env.VITE_ECOMMERCE_API_ENDPOINT}`,
   headers: {
     "Content-Type": "application/json",
     "x-api-key": `${import.meta.env.VITE_ECOMMERCE_API_KEY}`,
@@ -27,6 +20,20 @@ export const privateAxiosClient = axios.create({
   withCredentials: true,
 });
 
+axiosClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken");
+  if (token && !config.headers["Authorization"]) {
+    try {
+      const tokenData = JSON.parse(token);
+      const actualToken = tokenData.token || token;
+      config.headers["Authorization"] = `Bearer ${actualToken}`;
+      console.log("config headers: ", config.headers);
+    } catch {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
 privateAxiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
@@ -59,7 +66,7 @@ privateAxiosClient.interceptors.response.use(
 
       try {
         // try to refresh token
-        const refreshResponse = await axiosClientWithApiKey.post("/refresh");
+        const refreshResponse = await axiosClient.post("/refresh");
         console.log("refreshResponse: ", refreshResponse);
         const newAccessToken = refreshResponse?.data?.accessToken;
 
