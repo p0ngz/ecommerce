@@ -15,6 +15,7 @@ import { useWishlistStore } from "../store/wishlist/wishlistStore";
 import { useShallow } from "zustand/shallow";
 
 const CardNewProduct = ({
+  productId,
   imgSrc,
   discount,
   rating,
@@ -71,8 +72,16 @@ const CardNewProduct = ({
     });
   };
   const setFavoriteProductHandler = async () => {
+    const userId = localStorage.getItem("userId");
+    const wishlistBody = {
+      userID: userId,
+      detail: {
+        productId,
+      },
+    };
 
-  }
+    await createWishlist(wishlistBody);
+  };
   const goToProduct = () => {
     const typeProductLower = type.toLowerCase();
     const titleProductLower = titleProduct.split(" ").join("-").toLowerCase();
@@ -169,6 +178,7 @@ const CardNewProduct = ({
                 <FavoriteBorderIcon
                   fontSize="small"
                   className="text-inherit group-hover:text-white transition-colors duration-200"
+                  onClick={() => setFavoriteProductHandler()}
                 />
               </div>
             </motion.div>

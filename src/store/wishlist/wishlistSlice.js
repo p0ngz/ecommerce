@@ -48,10 +48,8 @@ export const createWishlistSlice = (set, get) => ({
     try {
       const { userID, detail } = wishlistData;
       const response = await axiosClient.post("/wishlist", {
-        bodyData: {
-          userID,
-          detail,
-        },
+        userID,
+        detail,
       });
       const createdWishlist = response?.data?.wishlist;
       if (!createdWishlist) {

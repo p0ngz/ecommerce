@@ -44,6 +44,7 @@ const TopProductsSection = memo(() => {
             return (
               <CardTopProduct
                 key={index}
+                productId={product._id}
                 imgSrc={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${product.productImg}`}
                 discount={product.discount}
                 titleProduct={product.productName}

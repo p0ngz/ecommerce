@@ -4,52 +4,6 @@ import ModalCardProduct from "../ModalCardProduct";
 import { useProductStore } from "../../store/product/productStore";
 import { useShallow } from "zustand/shallow";
 
-// const productData = [
-//   {
-//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro.jpg?v=1714967262&width=600",
-//     discount: 40,
-//     rating: 5,
-//     titleProduct: "Apollop Coin Necklace",
-//     type: "necklace",
-//     price: 100,
-//   },
-//   {
-//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-3.jpg?v=1714967344&width=600",
-//     discount: 0,
-//     rating: 4,
-//     titleProduct: "Butterfly Ring",
-//     type: "rings",
-//     price: 65,
-//   },
-//   {
-//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-5.jpg?v=1714968850&width=600%22",
-//     discount: 20,
-//     rating: 4.5,
-//     titleProduct: "Cuban Link Chain Bracelet",
-//     type: "bracelets",
-//     price: 90,
-//   },
-//   {
-//     imgSrc:
-//       "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59_18c1dec3-e10e-466f-9f6d-0960696ecbbf.jpg?v=1714980909&width=600",
-//     discount: 0,
-//     rating: 4.5,
-//     titleProduct: "Pearl Earring",
-//     type: "earring",
-//     description:
-//       "5 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum",
-//     price: 78,
-//   },
-//   // {
-//   //   imgSrc:
-//   //     "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
-//   //   discount: 0,
-//   //   rating: 3,
-//   //   titleProduct: "Dainty Chain Bracelet",
-//   //   type: "bracelets",
-//   //   price: 80,
-//   // },
-// ];
 
 const NewProductSection = memo(() => {
   const [activeModel, setActiveModal] = useState(false);
@@ -66,11 +20,14 @@ const NewProductSection = memo(() => {
     setDataModal(data.data);
     setActiveModal(data.open);
   };
-  const getNewestProductsHandler = useCallback(async (limit) => {
-    const response = await getNewestProducts(limit);
-    const products = response?.data
-    setNewestProduct(() => products);
-  }, [getNewestProducts]);
+  const getNewestProductsHandler = useCallback(
+    async (limit) => {
+      const response = await getNewestProducts(limit);
+      const products = response?.data;
+      setNewestProduct(() => products);
+    },
+    [getNewestProducts]
+  );
   useEffect(() => {
     getNewestProductsHandler(4);
   }, [getNewestProductsHandler]);
@@ -90,6 +47,7 @@ const NewProductSection = memo(() => {
             return (
               <CardNewProduct
                 key={index}
+                productId={product._id}
                 imgSrc={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${product.productImg}`}
                 discount={product.discount}
                 rating={product.rating}
