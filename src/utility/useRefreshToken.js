@@ -25,6 +25,7 @@ const useRefreshToken = () => {
       setAuth({});
       localStorage.removeItem("accessToken");
       localStorage.removeItem("username");
+      localStorage.removeItem("userId");
       localStorage.removeItem("roles");
     }
   };

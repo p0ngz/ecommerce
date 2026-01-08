@@ -9,11 +9,13 @@ const AuthProvider = ({ children }) => {
   const login = async (userData) => {
     const response = await privateAxiosClient.post("/auth", userData);
     setAuth({
+      userId: response.data.user.id,
       username: response.data.user.username,
       roles: response.data.user.roles,
       accessToken: response.data.accessToken,
     });
     if (response.data?.user && response.data?.accessToken) {
+      localStorage.setItem("userId", response?.data?.user.id,);
       localStorage.setItem("username", response.data?.user?.username);
       localStorage.setItem("roles", JSON.stringify(response.data?.user?.roles));
       localStorage.setItem("accessToken", response.data?.accessToken);
@@ -23,7 +25,9 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     await privateAxiosClient.post("/logout");
     setAuth({});
-    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("username");
+    localStorage.removeItem("roles");
     localStorage.removeItem("accessToken");
     window.location.href = "/login";
   };

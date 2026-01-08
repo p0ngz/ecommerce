@@ -11,6 +11,8 @@ import Divider from "@mui/material/Divider";
 import { setProduct } from "../store/productSlice";
 import { useDispatch } from "react-redux";
 import { themeColor } from "../utility/color";
+import { useWishlistStore } from "../store/wishlist/wishlistStore";
+import { useShallow } from "zustand/shallow";
 
 const CardNewProduct = ({
   imgSrc,
@@ -33,6 +35,13 @@ const CardNewProduct = ({
   const [openModal, setOpenModal] = useState(false);
   const [dataToModal, setDataToModal] = useState(null);
   const [productCount, setProductCount] = useState(0);
+  const { createWishlist } = useWishlistStore(
+    useShallow((state) => {
+      return {
+        createWishlist: state.createWishlist,
+      };
+    })
+  );
   const colors = useMemo(() => {
     if (variants && variants.length > 0) {
       return [...new Set(variants.map((variant) => variant.color))];
@@ -61,6 +70,9 @@ const CardNewProduct = ({
       description: description,
     });
   };
+  const setFavoriteProductHandler = async () => {
+
+  }
   const goToProduct = () => {
     const typeProductLower = type.toLowerCase();
     const titleProductLower = titleProduct.split(" ").join("-").toLowerCase();
