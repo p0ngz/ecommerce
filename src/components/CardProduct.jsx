@@ -250,7 +250,7 @@ const CardNewProduct = ({
                 ${price}
               </div>
               <div className="text-md sm:text-xl">
-                ${price - (price * discount) / 100}
+                ${(price - (price * discount) / 100).toFixed(2)}
               </div>
             </>
           ) : (
