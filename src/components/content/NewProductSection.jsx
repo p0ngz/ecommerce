@@ -66,13 +66,13 @@ const NewProductSection = memo(() => {
     setDataModal(data.data);
     setActiveModal(data.open);
   };
-  const getNewestProductsHandler = useCallback(async () => {
-    const response = await getNewestProducts(4);
+  const getNewestProductsHandler = useCallback(async (limit) => {
+    const response = await getNewestProducts(limit);
     const products = response?.data
     setNewestProduct(() => products);
   }, [getNewestProducts]);
   useEffect(() => {
-    getNewestProductsHandler();
+    getNewestProductsHandler(4);
   }, [getNewestProductsHandler]);
   return (
     <div id="new-product-container" className="py-20 w-full min-h-[10rem]">
@@ -96,6 +96,7 @@ const NewProductSection = memo(() => {
                 titleProduct={product.productName}
                 price={product.price}
                 type={product.typeProduct}
+                variants={product.variants}
                 viewState={true}
                 sendDataToModal={receiveData}
               />

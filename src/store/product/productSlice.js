@@ -112,7 +112,7 @@ export const createProductSlice = (set, get) => ({
       if (!limit || limit <= 0) {
         response = await axiosClient.get("/product/top");
       } else {
-        response = await axiosClient.get("/product/top", { params: limit });
+        response = await axiosClient.get("/product/top", { params: { limit } });
       }
       const topProducts = response?.data;
       if (!topProducts || topProducts.length === 0) {

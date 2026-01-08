@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
@@ -10,6 +10,8 @@ import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBag";
 import Divider from "@mui/material/Divider";
 import { setProduct } from "../store/productSlice";
 import { useDispatch } from "react-redux";
+import { themeColor } from "../utility/color";
+
 const CardNewProduct = ({
   imgSrc,
   discount,
@@ -18,6 +20,7 @@ const CardNewProduct = ({
   price,
   type,
   description,
+  variants,
   viewState = false,
   sendDataToModal,
   isProductsPage = false,
@@ -30,6 +33,11 @@ const CardNewProduct = ({
   const [openModal, setOpenModal] = useState(false);
   const [dataToModal, setDataToModal] = useState(null);
   const [productCount, setProductCount] = useState(0);
+  const colors = useMemo(() => {
+    if (variants && variants.length > 0) {
+      return [...new Set(variants.map((variant) => variant.color))];
+    }
+  }, [variants]);
   const decreaseHandler = () => {
     if (productCount > 0) {
       setProductCount((prev) => prev - 1);
@@ -49,6 +57,8 @@ const CardNewProduct = ({
       price: price,
       discount: discount,
       rating: rating,
+      variants: variants,
+      description: description,
     });
   };
   const goToProduct = () => {
@@ -73,7 +83,7 @@ const CardNewProduct = ({
       sendDataToModal({ data: dataToModal, open: openModal });
     }
   }, [openModal]);
-  useEffect(() => {}, [imgSrc]);
+
   return (
     <div
       id="card-new-product"
@@ -87,13 +97,11 @@ const CardNewProduct = ({
     >
       <div
         id="img-card-product"
-        className={`h-[100%] ${
-          isRelateProduct ? "w-full h-full sm:h-[50%]" : ""
-        }${isProductPage ? "h-full lg:w-[90%] lg:col-span-4" : ""}  ${
-          isProductsPage || isProductPage
-            ? "sm:w-full lg:w-[100%] sm:h-full sm:col-span-4 lg:col-span-6"
-            : ""
-        }sm:h-[70%] bg-gray-200 rounded-t-xl relative overflow-hidden`}
+        className={`h-full ${isRelateProduct ? "w-full h-full sm:h-[50%]" : ""}${
+          isProductPage ? "h-full lg:w-[90%] lg:col-span-4" : ""
+        }  ${
+          isProductsPage || isProductPage ? "sm:w-full lg:w-[100%] sm:h-full sm:col-span-4 lg:col-span-6" : ""
+        }sm:h-[70%] xl:h-[60%] bg-gray-200 rounded-t-xl relative overflow-hidden`}
       >
         {imgSrc && (
           <img
@@ -101,14 +109,8 @@ const CardNewProduct = ({
             alt={titleProduct}
             className={`${
               isProductsPage || isProductPage ? "sm:aspect-[3/2]" : ""
-            } w-full h-full object-cover rounded-t-xl z-1 ${
-              viewState || isProductsPage ? "hover:cursor-pointer" : ""
-            }`}
-            onClick={
-              viewState || isProductsPage || isRelateProduct
-                ? () => goToProduct()
-                : null
-            }
+            } w-full h-full object-cover rounded-t-xl z-1 ${viewState || isProductsPage ? "hover:cursor-pointer" : ""}`}
+            onClick={viewState || isProductsPage || isRelateProduct ? () => goToProduct() : null}
           />
         )}
         {discount !== 0 && (
@@ -137,12 +139,8 @@ const CardNewProduct = ({
           {cardHover && (
             <motion.div
               className={`${
-                isRelateProduct
-                  ? "hidden sm:flex sm:justify-center sm:gap-3"
-                  : "flex justify-center gap-3"
-              } absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2  ${
-                viewState ? "" : "hidden"
-              }`}
+                isRelateProduct ? "hidden sm:flex sm:justify-center sm:gap-3" : "flex justify-center gap-3"
+              } absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2  ${viewState ? "" : "hidden"}`}
               // animate={{ opacity: 1, scale: 1 }}
               whileHover={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
@@ -188,9 +186,7 @@ const CardNewProduct = ({
         className={`$ ${isRelateProduct ? "h-auto" : ""} ${
           isProductPage ? "min-h-auto lg:w-[90%] lg:col-span-5" : ""
         } ${
-          isProductsPage || isProductPage
-            ? "visibility sm:w-full sm:h-full  sm:col-span-6 lg:col-span-6"
-            : "hidden"
+          isProductsPage || isProductPage ? "visibility sm:w-full sm:h-full  sm:col-span-6 lg:col-span-6" : "hidden"
         } sm:min-h-[30%] py-10 sm:flex sm:flex-col sm:items-center sm:justify-center`}
       >
         <div id="rating-container" className="mb-2 flex justify-center">
@@ -234,36 +230,37 @@ const CardNewProduct = ({
               );
             })}
         </div>
-        <div
-          id="title-card-product"
-          className="mb-2 title-product uppercase text-center "
-        >
+        <div id="title-card-product" className="mb-2 title-product uppercase text-center ">
           {titleProduct}
         </div>
-        <div
-          id="price-product"
-          className="mb-2 text-xl flex justify-center gap-3"
-        >
+        <div id="price-product" className="mb-2 text-xl flex justify-center gap-3">
           {discount > 0 ? (
             <>
-              <div className="text-md sm:text-xl  text-red-400 line-through">
-                ${price}
-              </div>
-              <div className="text-md sm:text-xl">
-                ${(price - (price * discount) / 100).toFixed(2)}
-              </div>
+              <div className="text-md sm:text-xl  text-red-400 line-through">${price.toFixed(2)}</div>
+              <div className="text-md sm:text-xl">${(price - (price * discount) / 100).toFixed(2)}</div>
             </>
           ) : (
             <div className="text-md sm:text-xl">${price}</div>
           )}
         </div>
         <div id="color-product" className="flex justify-center gap-3">
-          <div className="rounded-full w-5 h-5 sm:w-6 sm:h-6 bg-gray-300 hover:cursor-pointer"></div>
-          <div className="rounded-full w-5 h-5 sm:w-6 sm:h-6 bg-orange-200 hover:cursor-pointer"></div>
+          {colors &&
+            colors.map((color) => {
+              const colorFormat = themeColor[color.toLowerCase()];
+              return (
+                <div
+                  key={color}
+                  className="rounded-full w-5 h-5 sm:w-6 sm:h-6 hover:cursor-pointer hover:scale-110 transition-transform duration-200"
+                  style={{
+                    backgroundColor: colorFormat?.bg || "#cccccc",
+                    border: `1px solid ${colorFormat?.border || "#999999"}`,
+                  }}
+                  title={color}
+                ></div>
+              );
+            })}
         </div>
-        {(isProductsPage || isProductPage) && (
-          <Divider sx={{ mx: 2, my: 2, borderColor: "#e5e7eb" }} />
-        )}
+        {(isProductsPage || isProductPage) && <Divider sx={{ mx: 2, my: 2, borderColor: "#e5e7eb" }} />}
         <div id="description-card-product" className={`my-5 p-4 ${isRelateProduct ? "hidden" : "block"}`}>
           <p className="text-xs text-gray-500">{description}</p>
         </div>
@@ -272,10 +269,7 @@ const CardNewProduct = ({
             id="action-card-product"
             className={`w-full px-3 grid grid-cols-5  ${isProductPage ? "gap-7 sm:gap-3" : "gap-3"}`}
           >
-            <div
-              id="amount-product"
-              className="col-span-2  min-w-30 h-10 grid grid-cols-3 border border-gray-300"
-            >
+            <div id="amount-product" className="col-span-2  min-w-30 h-10 grid grid-cols-3 border border-gray-300">
               <div
                 id="decrease-product"
                 className={`flex justify-center items-center hover:cursor-pointer ${
@@ -285,10 +279,7 @@ const CardNewProduct = ({
               >
                 -
               </div>
-              <div
-                id="show-amount-product"
-                className="flex justify-center items-center  border-x-1 border-gray-300"
-              >
+              <div id="show-amount-product" className="flex justify-center items-center  border-x-1 border-gray-300">
                 {productCount}
               </div>
               <div
@@ -300,10 +291,7 @@ const CardNewProduct = ({
                 +
               </div>
             </div>
-            <div
-              id="add-to-cart"
-              className="col-span-3  min-w-35 h-10 flex justify-center items-center rounded-sm"
-            >
+            <div id="add-to-cart" className="col-span-3  min-w-35 h-10 flex justify-center items-center rounded-sm">
               <button className="w-full h-full bg-gray-500 hover:bg-black text-white rounded-sm hover:cursor-pointer transition-color duration-300">
                 Add to Cart
               </button>
