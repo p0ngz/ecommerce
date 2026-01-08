@@ -32,7 +32,7 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <div className="p-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[70%] sm:min-w-[45rem] min-h-[25rem] max-h-[80vh] sm:min-h-[25rem] 2xl:h-full flex flex-col sm:flex-row sm:justify-center sm:items-center rounded-md ">
+        <div className="p-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[70%] sm:min-w-[45rem] min-h-[25rem] max-h-[80vh] sm:min-h-[25rem]  2xl:w-[50%] 2xl:h-[60%] flex flex-col sm:flex-row sm:justify-center sm:items-center rounded-md ">
           <div id="left-modal" className="w-full sm:w-1/2 h-[20%] sm:h-full">
             <img
               src={dataModal.imgSrc}
@@ -42,11 +42,11 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
           </div>
           <div
             id="right-modal"
-            className="scrollbar-x-custom scrollbar-y-custom p-4 sm:ps-10 sm:pe-3  w-full sm:w-1/2 sm:h-full flex flex-col items-start overflow-scroll scroll-smooth"
+            className="scrollbar-x-custom scrollbar-y-custom p-4 sm:ps-10 sm:pe-3  w-full sm:w-1/2 sm:h-full flex flex-col items-start 2xl:justify-center 2xl:gap-5 overflow-scroll scroll-smooth"
           >
             <div
               id="title-product"
-              className="mb-5 title-product uppercase text-xl whitespace-nowrap"
+              className="mb-5 title-product uppercase text-xl whitespace-nowrap 2xl:mb-0"
             >
               {dataModal.titleProduct}
             </div>
