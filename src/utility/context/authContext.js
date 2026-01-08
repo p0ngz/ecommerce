@@ -1,4 +1,4 @@
-import { createContext, createElement, useContext, useState } from "react";
+import { createContext, createElement, useContext, useState, useEffect } from "react";
 import { privateAxiosClient } from "../../config/axios";
 const AuthContext = createContext();
 
@@ -20,12 +20,21 @@ const AuthProvider = ({ children }) => {
       window.location.href = "/";
     }
   };
-  const logout = () => {
+  const logout = async () => {
+    await privateAxiosClient.post("/logout");
     setAuth({});
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
+    window.location.href = "/login";
   };
-
+  // useEffect(() => {
+  //   const accessToken = auth?.accessToken || localStorage.getItem("accessToken");
+  //   if (accessToken) {
+  //     window.location.href = "/";
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, [auth]);
   const value = {
     auth,
     setAuth,

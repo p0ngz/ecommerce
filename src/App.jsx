@@ -24,6 +24,7 @@ import OrderPage from "./pages/OrderPage";
 // context
 import { AuthProvider } from "./utility/context/authContext";
 import RequireAuth from "./utility/requireAuth";
+
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -56,11 +57,10 @@ const routes = createBrowserRouter(
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>
-      </Route>
-
-      <Route path="/" element={<RegisterLoginLayout />}>
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<RegisterLoginLayout />}>
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Route>
       </Route>
     </>
   )
