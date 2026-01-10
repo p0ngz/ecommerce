@@ -4,7 +4,6 @@ import ModalCardProduct from "../ModalCardProduct";
 import { useProductStore } from "../../store/product/productStore";
 import { useShallow } from "zustand/shallow";
 
-
 const NewProductSection = memo(() => {
   const [activeModel, setActiveModal] = useState(false);
   const [dataModal, setDataModal] = useState(null);
@@ -48,7 +47,7 @@ const NewProductSection = memo(() => {
               <CardNewProduct
                 key={index}
                 productId={product._id}
-                imgSrc={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${product.productImg}`}
+                productImg={product.productImg}
                 discount={product.discount}
                 rating={product.rating}
                 titleProduct={product.productName}

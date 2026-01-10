@@ -1,6 +1,7 @@
 import React from "react";
 import UserInfo from "./UserInfo";
 import UserActivity from "./UserActivity";
+import { ToastContainer } from "react-toastify";
 
 const userData = {
   name: {
@@ -42,6 +43,7 @@ const ProfileComponent = () => {
       />
 
       <UserActivity />
+      <ToastContainer position="top-right" autoClose={2000} closeOnClick />
     </div>
   );
 };

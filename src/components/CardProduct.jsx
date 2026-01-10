@@ -13,10 +13,12 @@ import { useDispatch } from "react-redux";
 import { themeColor } from "../utility/color";
 import { useWishlistStore } from "../store/wishlist/wishlistStore";
 import { useShallow } from "zustand/shallow";
+import { toast } from "react-toastify";
+import CustomToast from "../utility/CustomToast";
 
 const CardNewProduct = ({
   productId,
-  imgSrc,
+  productImg,
   discount,
   rating,
   titleProduct,
@@ -43,6 +45,34 @@ const CardNewProduct = ({
       };
     })
   );
+  const toastHandler = (status, statusTxt, descriptionTxt, productImg, productName) => {
+    if (status === "success") {
+      toast.success(
+        <CustomToast
+          statusTxt={statusTxt}
+          descriptionTxt={descriptionTxt}
+          productName={productName}
+          productImg={productImg}
+        />,
+        {
+          position: "top-right",
+        }
+      );
+    }
+    if (status === "error") {
+      toast.error(
+        <CustomToast
+          statusTxt={statusTxt}
+          descriptionTxt={descriptionTxt}
+          productName={productName}
+          productImg={productImg}
+        />,
+        {
+          position: "top-right",
+        }
+      );
+    }
+  };
   const colors = useMemo(() => {
     if (variants && variants.length > 0) {
       return [...new Set(variants.map((variant) => variant.color))];
@@ -62,7 +92,7 @@ const CardNewProduct = ({
   const setOpenModalHandler = () => {
     setOpenModal((prev) => !prev);
     setDataToModal({
-      imgSrc: imgSrc,
+      productImg: productImg,
       titleProduct: titleProduct,
       price: price,
       discount: discount,
@@ -79,14 +109,24 @@ const CardNewProduct = ({
         productId,
       },
     };
-
-    await createWishlist(wishlistBody);
+    try {
+      const response = await createWishlist(wishlistBody);
+      console.log(response);
+      if (response) {
+        toastHandler("success", "Added", "to wishlists successfully", productImg, titleProduct);
+      } else {
+        toastHandler("error", "Added", "to wishlists failed", productImg, titleProduct);
+      }
+    } catch (err) {
+      console.error("add to wishlist error: ", err);
+      toastHandler("error", "Added", "to wishlists failed", productImg, titleProduct);
+    }
   };
   const goToProduct = () => {
     const typeProductLower = type.toLowerCase();
     const titleProductLower = titleProduct.split(" ").join("-").toLowerCase();
     const productData = {
-      imgSrc,
+      productImg,
       discount,
       rating,
       titleProduct,
@@ -119,14 +159,14 @@ const CardNewProduct = ({
       <div
         id="img-card-product"
         className={`h-full ${isRelateProduct ? "w-full h-full sm:h-[50%]" : ""}${
-          isProductPage ? "h-full lg:w-[90%] lg:col-span-4" : ""
+          isProductPage ? "w-full h-full lg:w-[90%] lg:col-span-4 xl:h-full" : ""
         }  ${
           isProductsPage || isProductPage ? "sm:w-full lg:w-[100%] sm:h-full sm:col-span-4 lg:col-span-6" : ""
         }sm:h-[70%] xl:h-[60%] bg-gray-200 rounded-t-xl relative overflow-hidden`}
       >
-        {imgSrc && (
+        {productImg && (
           <img
-            src={imgSrc}
+            src={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${productImg}`}
             alt={titleProduct}
             className={`${
               isProductsPage || isProductPage ? "sm:aspect-[3/2]" : ""

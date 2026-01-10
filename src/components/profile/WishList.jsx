@@ -3,35 +3,35 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
-
-const WishList = ({ wishlistInfo = {} }) => {
-  const {
-    imgSrc,
-    discount,
-    rating = 4.5,
-    titleProduct = "Wireless Headphones",
-    price = 129.99,
-    amount
-  } = wishlistInfo;
-
-  const removeFromWishlistHandler = () => {
-    console.log("Removing from wishlist:", titleProduct);
+import { useCartStore } from "../../store/cart/cartsStore";
+import { useShallow } from "zustand/shallow";
+const WishList = ({ wishlistInfo = {}, removeWProductFromWishlist }) => {
+  const { _id, productImg, discount, rating, productName, price, amount } = wishlistInfo.product;
+  const { createAndUpdateCartListByUserId } = useCartStore(
+    useShallow((state) => {
+      return {
+        createAndUpdateCartListByUserId: state.createAndUpdateCartListByUserId,
+      };
+    })
+  );
+  const removeFromWishlistHandler = (productId) => {
+    removeWProductFromWishlist(true, productId, productImg, productName);
   };
 
   const addToCartHandler = () => {
-    console.log("Adding to cart:", titleProduct);
+    console.log("Adding to cart:", productName);
   };
 
   return (
     <div
       id="wish-list"
-      className="w-full bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
+      className="relative w-full bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
     >
       <div className="h-60 sm:min-h-60 bg-gray-100 overflow-hidden group">
         <img
-          src={imgSrc}
-          alt={titleProduct}
-          className="relative w-full h-full object-cover scale-80  transform transition-transform duration-300 ease-in-out group-hover:scale-90"
+          src={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${productImg}`}
+          alt={productName}
+          className="relative w-full h-full object-cover aspect-[4/3] scale-90 transform transition-transform duration-300 ease-in-out group-hover:scale-100"
         />
         {discount && (
           <span className="base absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded z-10">
@@ -39,7 +39,7 @@ const WishList = ({ wishlistInfo = {} }) => {
           </span>
         )}
         <button
-          onClick={removeFromWishlistHandler}
+          onClick={() => removeFromWishlistHandler(_id)}
           className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow-sm hover:bg-gray-50 transition-colors duration-200 z-10 hover:cursor-pointer"
           title="Remove from wishlist"
         >
@@ -49,9 +49,7 @@ const WishList = ({ wishlistInfo = {} }) => {
 
       <div className="p-4 flex flex-col items-center">
         {/* Product Title */}
-        <h3 className="font-medium text-gray-900 text-md mb-2 line-clamp-2">
-          {titleProduct}
-        </h3>
+        <h3 className="font-medium text-gray-900 text-md mb-2 line-clamp-2">{productName}</h3>
 
         {/* Rating */}
         <div className="flex items-center gap-1 mb-3">
@@ -103,26 +101,22 @@ const WishList = ({ wishlistInfo = {} }) => {
         <div className="flex items-center gap-2 mb-4">
           {discount > 0 ? (
             <>
-              <div className="text-md sm:text-xl  text-red-400 line-through">
-                ${price}
-              </div>
-              <div className="text-md sm:text-xl">
-                ${price - (price * discount) / 100}
-              </div>
+              <div className="text-md sm:text-xl  text-red-400 line-through">${price.toFixed(2)}</div>
+              <div className="text-md sm:text-xl">${(price - (price * discount) / 100).toFixed(2)}</div>
             </>
           ) : (
-            <div className="text-md sm:text-xl">${price}</div>
+            <div className="text-md sm:text-xl">${price.toFixed(2)}</div>
           )}
         </div>
 
         <button
           onClick={addToCartHandler}
           disabled={amount === 0}
-          className={`w-full bg-gray-900 text-white py-2.5 px-4 rounded-md font-medium text-sm hover:bg-gray-800 transition-colors duration-200  ${amount === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:cursor-pointer'}`}
+          className={`w-full bg-gray-900 text-white py-2.5 px-4 rounded-md font-medium text-sm hover:bg-gray-800 transition-colors duration-200  ${
+            amount === 0 ? "opacity-50 cursor-not-allowed" : "hover:cursor-pointer"
+          }`}
         >
-          {
-            amount !== 0 ? 'Add to Cart' : 'Out of Stock'
-          }
+          {amount !== 0 ? "Add to Cart" : "Out of Stock"}
         </button>
       </div>
     </div>

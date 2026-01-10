@@ -76,7 +76,7 @@ const CardBreadcrumb = ({ relatedProducts }) => {
             <SwiperSlide key={index}>
               <CardNewProduct
                 key={index}
-                imgSrc={product.imgSrc}
+                productImg={product.productImg}
                 discount={product.discount}
                 rating={product.rating}
                 titleProduct={product.titleProduct}

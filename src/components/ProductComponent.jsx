@@ -57,7 +57,7 @@ const topRateProductData = [
 ];
 const relateProductData = [
   {
-    imgSrc:
+    productImg:
       "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro.jpg?v=1714967262&width=600",
     discount: 40,
     rating: 5,
@@ -68,7 +68,7 @@ const relateProductData = [
     price: 100,
   },
   {
-    imgSrc:
+    productImg:
       "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-3.jpg?v=1714967344&width=600",
     discount: 0,
     rating: 4,
@@ -79,7 +79,7 @@ const relateProductData = [
     price: 65,
   },
   {
-    imgSrc:
+    productImg:
       "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-5.jpg?v=1714968850&width=600%22",
     discount: 20,
     rating: 4.5,
@@ -91,7 +91,7 @@ const relateProductData = [
     price: 90,
   },
   {
-    imgSrc:
+    productImg:
       "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
     discount: 0,
     rating: 3,
@@ -103,7 +103,7 @@ const relateProductData = [
     price: 80,
   },
   {
-    imgSrc:
+    productImg:
       "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
     discount: 0,
     rating: 3,
@@ -268,7 +268,7 @@ const ProductComponent = () => {
       >
         <div
           id="top-rate-product"
-          className="hidden lg:block lg:col-span-3 lg:max-h-[50vh]"
+          className="hidden lg:block lg:col-span-3 lg:max-h-[50vh] "
         >
           <h3 className="text-2xl mb-5">Top Rate Product</h3>
           <div
@@ -290,7 +290,7 @@ const ProductComponent = () => {
         <div id="main-product" className="flex justify-center lg:col-span-9">
           <CardProduct
             key={product.titleProduct}
-            imgSrc={product.imgSrc}
+            productImg={product.productImg}
             discount={product.discount}
             rating={product.rating}
             titleProduct={product.titleProduct}

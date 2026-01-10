@@ -6,6 +6,7 @@ import DescriptionSection from "../components/content/DescriptionSection";
 import TopProductsSection from "../components/content/TopProductsSection";
 import PromoteSection from "../components/content/PromoteSection";
 import ViewProductSection from "../components/content/ViewProductSection";
+import { ToastContainer } from "react-toastify";
 
 const HomePage = () => {
   return (
@@ -17,6 +18,7 @@ const HomePage = () => {
       <TopProductsSection />
       <ViewProductSection />
       <PromoteSection />
+      <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>
   );
 };

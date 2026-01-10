@@ -17,7 +17,7 @@ const productSlice = createSlice({
   reducers: {
     setProduct: (state, action) => {
       const {
-        imgSrc,
+        productImg,
         discount,
         rating,
         titleProduct,
@@ -26,7 +26,7 @@ const productSlice = createSlice({
         description,
       } = action.payload;
       const newProduct = {
-        imgSrc,
+        productImg,
         discount,
         rating,
         titleProduct,

@@ -1,3 +1,4 @@
+import WishList from "../../components/profile/WishList";
 import { axiosClient } from "../../config/axios";
 const initialWishlistState = [];
 export const createWishlistSlice = (set, get) => ({
@@ -33,8 +34,7 @@ export const createWishlistSlice = (set, get) => ({
   getWishlistByUserId: async (userId) => {
     try {
       const response = await axiosClient.get("/wishlist/user/" + userId);
-      const wishlistByUserId = response?.data;
-
+      const wishlistByUserId = response?.data?.wishlist[0];
       if (!wishlistByUserId || wishlistByUserId.length === 0) {
         console.error("No wishlist data found for User ID: ", userId);
       }

@@ -9,6 +9,8 @@ import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
 import { ShippingProvider } from "../../contexts/shippingContext";
 import { useIsMobileScreen } from "../../utility/isMobile";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
   return (
