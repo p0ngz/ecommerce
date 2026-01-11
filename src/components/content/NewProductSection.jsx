@@ -50,7 +50,8 @@ const NewProductSection = memo(() => {
                 productImg={product.productImg}
                 discount={product.discount}
                 rating={product.rating}
-                titleProduct={product.productName}
+                productName={product.productName}
+                description={product.description}
                 price={product.price}
                 type={product.typeProduct}
                 variants={product.variants}

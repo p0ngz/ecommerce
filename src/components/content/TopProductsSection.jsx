@@ -46,7 +46,8 @@ const TopProductsSection = memo(() => {
                 productId={product._id}
                 productImg={product.productImg}
                 discount={product.discount}
-                titleProduct={product.productName}
+                productName={product.productName}
+                description={product.description}
                 price={product.price}
                 type={product.typeProduct}
                 variants={product.variants}

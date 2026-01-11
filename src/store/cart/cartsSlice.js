@@ -55,7 +55,7 @@ export const createCartSlice = (set, get) => ({
       console.error("Error getCartListByUserId data: ", err);
     }
   },
-  createAndUpdateCartListByUserId: async (userId, cartListData) => {
+  createOrUpdateCartListByUserId: async (userId, cartListData) => {
     try {
       const response = await axiosClient.post("/cartlist/user/" + userId, cartListData); // wait fix create and delete separately
       const updatedCartList = response?.data?.cartList;

@@ -21,7 +21,7 @@ const CardNewProduct = ({
   productImg,
   discount,
   rating,
-  titleProduct,
+  productName,
   price,
   type,
   description,
@@ -45,6 +45,7 @@ const CardNewProduct = ({
       };
     })
   );
+  
   const toastHandler = (status, statusTxt, descriptionTxt, productImg, productName) => {
     if (status === "success") {
       toast.success(
@@ -93,7 +94,7 @@ const CardNewProduct = ({
     setOpenModal((prev) => !prev);
     setDataToModal({
       productImg: productImg,
-      titleProduct: titleProduct,
+      productName: productName,
       price: price,
       discount: discount,
       rating: rating,
@@ -111,32 +112,39 @@ const CardNewProduct = ({
     };
     try {
       const response = await createWishlist(wishlistBody);
-      console.log(response);
       if (response) {
-        toastHandler("success", "Added", "to wishlists successfully", productImg, titleProduct);
+        toastHandler("success", "Added", "to wishlists successfully", productImg, productName);
       } else {
-        toastHandler("error", "Added", "to wishlists failed", productImg, titleProduct);
+        toastHandler("error", "Added", "to wishlists failed", productImg, productName);
       }
     } catch (err) {
       console.error("add to wishlist error: ", err);
-      toastHandler("error", "Added", "to wishlists failed", productImg, titleProduct);
+      toastHandler("error", "Added", "to wishlists failed", productImg, productName);
     }
+  };
+  const setCartListHandler = (quantity) => {
+    const userId = localStorage.getItem("userId");
+    const cartListData = {
+      userID: userId,
+      productId,
+      quantity,
+    };
   };
   const goToProduct = () => {
     const typeProductLower = type.toLowerCase();
-    const titleProductLower = titleProduct.split(" ").join("-").toLowerCase();
+    const productNameLower = productName.split(" ").join("-").toLowerCase();
     const productData = {
       productImg,
       discount,
       rating,
-      titleProduct,
+      productName,
       price,
       type,
       description,
     };
     dispatch(setProduct(productData));
 
-    navigate(`/products/${typeProductLower}/${titleProductLower}`);
+    navigate(`/products/${typeProductLower}/${productNameLower}`);
   };
   useEffect(() => {
     if (openModal && viewState) {
@@ -167,7 +175,7 @@ const CardNewProduct = ({
         {productImg && (
           <img
             src={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${productImg}`}
-            alt={titleProduct}
+            alt={productName}
             className={`${
               isProductsPage || isProductPage ? "sm:aspect-[3/2]" : ""
             } w-full h-full object-cover rounded-t-xl z-1 ${viewState || isProductsPage ? "hover:cursor-pointer" : ""}`}
@@ -212,6 +220,7 @@ const CardNewProduct = ({
                 <ShoppingBagOutlinedIcon
                   fontSize="small"
                   className="text-inherit group-hover:text-white transition-colors duration-200"
+                  onClick={() => setOpenModalHandler()}
                 />
               </div>
               <div className="w-10 h-10 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-red-500 group transition-colors duration-200">
@@ -293,7 +302,7 @@ const CardNewProduct = ({
             })}
         </div>
         <div id="title-card-product" className="mb-2 title-product uppercase text-center ">
-          {titleProduct}
+          {productName}
         </div>
         <div id="price-product" className="mb-2 text-xl flex justify-center gap-3">
           {discount > 0 ? (
