@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
-import { useShipping } from "../../contexts/shippingContext";
+import { useShipping } from "../../utility/context/shippingContext";
 import QuantityColumn from "../shippingTable/QuantityColumn";
 
 const colorData = [

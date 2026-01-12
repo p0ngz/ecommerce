@@ -7,7 +7,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
-import { ShippingProvider } from "../../contexts/shippingContext";
+import { ShippingProvider } from "../../utility/context/shippingContext";
 import { useIsMobileScreen } from "../../utility/isMobile";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -61,7 +61,10 @@ const UserActivity = () => {
     setValueTab(newValue);
   };
   return (
-    <div id="user-activity-container" className="w-full min-h-full px-3 lg:px-5 xl:px-10 2xl:px-15 flex flex-col gap-5 items-center">
+    <div
+      id="user-activity-container"
+      className="w-full min-h-full px-3 lg:px-5 xl:px-10 2xl:px-15 flex flex-col gap-5 items-center"
+    >
       <div id="activity-tab-container" className="mx-3 w-full flex justify-center">
         <Tabs
           ref={tabRef}
@@ -94,10 +97,7 @@ const UserActivity = () => {
           }}
         >
           {tabMenuArray.map((item, index) => (
-            <Tab
-              label={item}
-              key={index}
-            />
+            <Tab label={item} key={index} />
           ))}
         </Tabs>
       </div>

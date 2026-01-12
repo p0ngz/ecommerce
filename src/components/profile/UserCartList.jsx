@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CartList from "./CartList";
-import { useShipping } from "../../contexts/shippingContext";
+import { useShipping } from "../../utility/context/shippingContext";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -32,9 +32,7 @@ const UserCartList = () => {
       const match = matchCouponCode(couponCode);
       if (match.length > 0) {
         setIsMatchCoupon(true);
-        match[0]?.discountType === "percent"
-          ? setDiscountPercentage(match[0]?.discount)
-          : setDiscountPercentage(null);
+        match[0]?.discountType === "percent" ? setDiscountPercentage(match[0]?.discount) : setDiscountPercentage(null);
       } else {
         setIsMatchCoupon(false);
         setDiscountPercentage(null);
@@ -65,12 +63,7 @@ const UserCartList = () => {
           })}
           <div id="coupon-code" className="my-5">
             <p className="mb-5 font-semibold text-xl">Coupon Code</p>
-            <Box
-              component="form"
-              sx={{ width: "100%", display: "flex" }}
-              noValidate
-              autoComplete="off"
-            >
+            <Box component="form" sx={{ width: "100%", display: "flex" }} noValidate autoComplete="off">
               <TextField
                 id="outlined-basic"
                 label=""
@@ -133,9 +126,7 @@ const UserCartList = () => {
           </div>
           <div className="mt-5 flex justify-between">
             <span className="base font-semibold text-xl">Total</span>
-            <span className="base font-semibold">
-              ${getTotalSummary().toFixed(2)}
-            </span>
+            <span className="base font-semibold">${getTotalSummary().toFixed(2)}</span>
           </div>
         </>
       ) : (
