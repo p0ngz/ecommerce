@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useUserInfo } from "../contexts/userInfoContext";
+import { useUserInfo } from "../utility/context/userInfoContext";
 const AddressShipping = () => {
   const [address, setAddress] = useState("");
   const [zipCode, setZipCode] = useState("");
@@ -37,15 +37,12 @@ const AddressShipping = () => {
       tel,
       email,
     };
-    setFormDataUser(userInfo)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setFormDataUser(userInfo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, zipCode, tel, email]);
 
   return (
-    <div
-      id="address-tel-shipping"
-      className="mb-10 p-10 w-full h-auto  bg-[#f6f6f6] "
-    >
+    <div id="address-tel-shipping" className="mb-10 p-10 w-full h-auto  bg-[#f6f6f6] ">
       <div id="address">
         <p className="mb-5 font-semibold text-xl">Address:</p>
         <Box
@@ -86,12 +83,7 @@ const AddressShipping = () => {
       </div>
       <div id="tel">
         <p className="my-5 font-semibold text-xl">Phone Number:</p>
-        <Box
-          component="form"
-          sx={{ width: "100%" }}
-          noValidate
-          autoComplete="off"
-        >
+        <Box component="form" sx={{ width: "100%" }} noValidate autoComplete="off">
           <TextField
             id="outlined-basic"
             label=""
@@ -106,12 +98,7 @@ const AddressShipping = () => {
       </div>
       <div id="email">
         <p className="my-5 font-semibold text-xl">Email:</p>
-        <Box
-          component="form"
-          sx={{ width: "100%" }}
-          noValidate
-          autoComplete="off"
-        >
+        <Box component="form" sx={{ width: "100%" }} noValidate autoComplete="off">
           <TextField
             id="outlined-basic"
             label=""

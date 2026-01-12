@@ -4,7 +4,8 @@ import { useShipping } from "../../utility/context/shippingContext";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
+import { useCartStore } from "../../store/cart/cartsStore";
+import { useShallow } from "zustand/shallow";
 const UserCartList = () => {
   const {
     shippingData,
@@ -21,7 +22,17 @@ const UserCartList = () => {
 
   const [discountPercentage, setDiscountPercentage] = useState(null);
   const [discountTotal, setDiscountTotal] = useState(0);
-
+  const { getCartListByUserId, createOrUpdateCartListByUserId, deleteCartListByUserId, deleteCartListByCartListId } =
+    useCartStore(
+      useShallow((state) => {
+        return {
+          getCartListByUserId: state.getCartListByUserId,
+          createOrUpdateCartListByUserId: state.createOrUpdateCartListByUserId,
+          deleteCartListByUserId: state.deleteCartListByUserId,
+          deleteCartListByCartListId: state.deleteCartListByCartListId,
+        };
+      })
+    );
   const setCouponCodeHandler = (value) => {
     setCouponCode(value);
   };

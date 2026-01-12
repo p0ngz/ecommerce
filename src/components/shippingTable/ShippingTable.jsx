@@ -11,7 +11,7 @@ import QuantityColumn from "./QuantityColumn";
 import TotalColumn from "./TotalColumn";
 import ActionColumn from "./ActionColumn";
 import Card from "@mui/material/Card";
-import { useShipping } from "../../contexts/shippingContext";
+import { useShipping } from "../../utility/context/shippingContext";
 const ShippingTable = () => {
   const { shippingData } = useShipping();
   return (

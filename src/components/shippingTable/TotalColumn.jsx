@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useShipping } from "../../contexts/shippingContext";
+import { useShipping } from "../../utility/context/shippingContext";
 const TotalColumn = ({ id }) => {
   const { getTotal } = useShipping();
   const [total, setTotal] = useState(0);

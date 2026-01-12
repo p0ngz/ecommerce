@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useFilteredProducts } from "../../contexts/filterProductsContext";
+import { useFilteredProducts } from "../../utility/context/filterProductsContext";
 
 const availData = [
   {

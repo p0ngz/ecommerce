@@ -1,6 +1,6 @@
 import React from "react";
 import TypeProductsComponent from "../components/TypeProductsComponent";
-import { FilteredProductsProvider } from "../contexts/filterProductsContext";
+import { FilteredProductsProvider } from "../utility/context/filterProductsContext";
 
 const ProductTypePage = () => {
   return (

@@ -10,8 +10,8 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useShipping } from "../contexts/shippingContext";
-import { useUserInfo } from "../contexts/userInfoContext";
+import { useShipping } from "../utility/context/shippingContext";
+import { useUserInfo } from "../utility/context/userInfoContext";
 
 const ShippingComponent = () => {
   const { shippingData, formDataOrder } = useShipping();
@@ -75,7 +75,7 @@ const ShippingComponent = () => {
         className="w-full h-full grid grid-cols-1 sm:grid-cols-8 md:grid-col-8 xl:grid-col-8 lg:grid-col-8gap-5 "
       >
         <div id="left-shipping-container" className="sm:col-span-8 md:col-span-8 lg:col-span-5">
-        {/* <div id="left-shipping-container" className=""> */}
+          {/* <div id="left-shipping-container" className=""> */}
           {/* <ShippingTable /> */}
           {shippingData.map((cart, index) => {
             return <CartList cartInfo={cart} key={index} />;

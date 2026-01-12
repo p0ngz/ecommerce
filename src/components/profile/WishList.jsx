@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import CustomToast from "../../utility/CustomToast";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 
-const WishList = ({ wishlistInfo = {}, removeWProductFromWishlist }) => {
+const WishList = memo(({ wishlistInfo = {}, removeWProductFromWishlist }) => {
   const { _id: productId, productImg, discount, rating, productName, price, amount } = wishlistInfo.product;
   const [chooseColor, setChooseColor] = useState(null);
   const [chooseSize, setChooseSize] = useState(null);
@@ -354,6 +354,6 @@ const WishList = ({ wishlistInfo = {}, removeWProductFromWishlist }) => {
       </div>
     </div>
   );
-};
+});
 
 export default WishList;

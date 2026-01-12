@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
-import { useFilteredProducts } from "../../contexts/filterProductsContext";
+import { useFilteredProducts } from "../../utility/context/filterProductsContext";
 
 function valuetext(value) {
   return <span className="description">{value}°C</span>;
@@ -32,10 +32,7 @@ const PriceTopic = () => {
     <>
       <Box sx={{ width: "90%", color: "gray", margin: "0 auto" }}>
         <Typography>
-          <span
-            className="text-gray-400 text-sm underline hover:cursor-pointer"
-            onClick={() => resetHandler()}
-          >
+          <span className="text-gray-400 text-sm underline hover:cursor-pointer" onClick={() => resetHandler()}>
             Reset
           </span>
         </Typography>
@@ -62,8 +59,7 @@ const PriceTopic = () => {
           }}
         />
         <Typography>
-          Price:{" "}
-          <span className="number text-red-400">$ {value[0].toFixed(2)}</span> -{" "}
+          Price: <span className="number text-red-400">$ {value[0].toFixed(2)}</span> -{" "}
           <span className="number text-red-400">$ {value[1].toFixed(2)}</span>
         </Typography>
       </Box>

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
-import { useFilteredProducts } from "../../contexts/filterProductsContext";
+import { useFilteredProducts } from "../../utility/context/filterProductsContext";
 
 import ColorElement from "./colorElement";
 const colorData = [

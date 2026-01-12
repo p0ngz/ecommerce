@@ -1,6 +1,6 @@
 import React from "react";
 import ProductsComponent from "../components/ProductsComponent";
-import { FilteredProductsProvider } from "../contexts/filterProductsContext";
+import { FilteredProductsProvider } from "../utility/context/filterProductsContext";
 
 const ProductsPage = () => {
   return (

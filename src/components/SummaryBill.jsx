@@ -11,7 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import QrCode2Icon from "@mui/icons-material/QrCode2";
 import Divider from "@mui/material/Divider";
-import { useShipping } from "../contexts/shippingContext";
+import { useShipping } from "../utility/context/shippingContext";
 import LoadingSpinner from "../utility/components/LoadingSpinner";
 
 // for real if use couponCode need user click APPLY first then go check no auto check like this => w8 to refactor
