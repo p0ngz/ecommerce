@@ -8,6 +8,7 @@ const NewProductSection = memo(() => {
   const [activeModel, setActiveModal] = useState(false);
   const [dataModal, setDataModal] = useState(null);
   const [newestProduct, setNewestProduct] = useState([]);
+  const [color, setColor] = useState(null);
   const { getNewestProducts } = useProductStore(
     useShallow((state) => {
       return {
@@ -16,8 +17,9 @@ const NewProductSection = memo(() => {
     })
   );
   const receiveData = (data) => {
-    setDataModal(data.data);
-    setActiveModal(data.open);
+    setDataModal(data?.data);
+    setActiveModal(data?.open);
+    setColor(data?.data?.chooseColor);
   };
   const getNewestProductsHandler = useCallback(
     async (limit) => {
@@ -61,7 +63,7 @@ const NewProductSection = memo(() => {
             );
           })}
       </div>
-      {activeModel ? <ModalCardProduct toggleState={activeModel} dataModal={dataModal} /> : null}
+      {activeModel ? <ModalCardProduct toggleState={activeModel} dataModal={dataModal} colorProps={color} /> : null}
     </div>
   );
 });

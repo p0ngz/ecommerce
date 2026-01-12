@@ -45,7 +45,7 @@ const CardNewProduct = ({
       };
     })
   );
-  
+
   const toastHandler = (status, statusTxt, descriptionTxt, productImg, productName) => {
     if (status === "success") {
       toast.success(
@@ -90,9 +90,10 @@ const CardNewProduct = ({
   const cardHoverHandler = (state) => {
     setCardHover(state);
   };
-  const setOpenModalHandler = () => {
+  const setOpenModalHandler = (chooseColor) => {
     setOpenModal((prev) => !prev);
     setDataToModal({
+      productId: productId,
       productImg: productImg,
       productName: productName,
       price: price,
@@ -100,6 +101,7 @@ const CardNewProduct = ({
       rating: rating,
       variants: variants,
       description: description,
+      chooseColor: chooseColor || null,
     });
   };
   const setFavoriteProductHandler = async () => {
@@ -121,14 +123,6 @@ const CardNewProduct = ({
       console.error("add to wishlist error: ", err);
       toastHandler("error", "Added", "to wishlists failed", productImg, productName);
     }
-  };
-  const setCartListHandler = (quantity) => {
-    const userId = localStorage.getItem("userId");
-    const cartListData = {
-      userID: userId,
-      productId,
-      quantity,
-    };
   };
   const goToProduct = () => {
     const typeProductLower = type.toLowerCase();
@@ -327,14 +321,15 @@ const CardNewProduct = ({
                     border: `1px solid ${colorFormat?.border || "#999999"}`,
                   }}
                   title={color}
+                  onClick={() => setOpenModalHandler(color)}
                 ></div>
               );
             })}
         </div>
         {(isProductsPage || isProductPage) && <Divider sx={{ mx: 2, my: 2, borderColor: "#e5e7eb" }} />}
-        <div id="description-card-product" className={`my-5 p-4 ${isRelateProduct ? "hidden" : "block"}`}>
+        {/* <div id="description-card-product" className={`my-5 p-4 ${isRelateProduct ? "hidden" : "block"}`}>
           <p className="text-xs text-gray-500">{description}</p>
-        </div>
+        </div> */}
         {(isProductsPage || isProductPage) && (
           <div
             id="action-card-product"

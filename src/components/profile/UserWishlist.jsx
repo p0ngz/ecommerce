@@ -4,6 +4,8 @@ import { useWishlistStore } from "../../store/wishlist/wishlistStore";
 import { useShallow } from "zustand/shallow";
 import CustomToast from "../../utility/CustomToast";
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+
 const UserWishlist = memo(() => {
   const [wishlist, setWishlist] = useState([]);
   const [isPending, startTransition] = useTransition();
@@ -44,6 +46,7 @@ const UserWishlist = memo(() => {
       };
     })
   );
+
   const getWishlistByUserIdHandler = useCallback(async () => {
     const userId = localStorage.getItem("userId");
     const wishlists = await getWishlistByUserId(userId);
@@ -84,6 +87,7 @@ const UserWishlist = memo(() => {
           <h2 className="text-lg font-semibold">Wishlist</h2>
           <div id="wishlist-container" className="sm:grid grid-cols-2 lg:grid-cols-4 gap-4">
             {wishlistOptimistic.map((item) => {
+              console.log("item: ", item);
               return (
                 <WishList
                   key={item.product._id}

@@ -5,12 +5,16 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { themeColor } from "../utility/color";
 import { useCartStore } from "../store/cart/cartsStore";
 import { useShallow } from "zustand/shallow";
+import { toast } from "react-toastify";
+import CustomToast from "../utility/CustomToast";
 
-const ModalCardProduct = ({ toggleState, dataModal }) => {
+const ModalCardProduct = ({ toggleState, dataModal, colorProps }) => {
+  console.log("ModalCardProduct dataModal: ", dataModal);
   const [openModal, setOpenModal] = useState(false);
   const [chooseColor, setChooseColor] = useState(null);
   const [chooseSize, setChooseSize] = useState(null);
   const [quantityProduct, setQuantityProduct] = useState(0);
+  const [inStock, setInStock] = useState(0);
 
   const sizes = useMemo(() => {
     const filterFromColor = dataModal.variants.filter((variant) => variant.color === chooseColor);
@@ -24,7 +28,6 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
       return quantityFromSizeAndColor.inStock;
     }
   }, [chooseSize, chooseColor, dataModal.variants]);
-  const [inStock, setInStock] = useState(0);
   const { createOrUpdateCartListByUserId } = useCartStore(
     useShallow((state) => {
       return {
@@ -32,6 +35,56 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
       };
     })
   );
+  const addToCartListHandler = async () => {
+    const userId = localStorage.getItem("userId");
+    // cartListData => productId, color, size, quantity and total
+    const cartListData = {
+      productId: dataModal.productId,
+      color: chooseColor,
+      size: chooseSize,
+      quantity: quantityProduct,
+      total: quantityProduct * (dataModal.price - (dataModal.price * dataModal.discount) / 100),
+    };
+    try {
+      const response = await createOrUpdateCartListByUserId(userId, cartListData);
+      if (response) {
+        toastHandler("success", "Added", "to cartLists successfully", dataModal.productImg, dataModal.productName);
+      } else {
+        toastHandler("error", "Added", "to cartLists failed", dataModal.productImg, dataModal.productName);
+      }
+    } catch (err) {
+      console.error("Error addToCartListHandler: ", err);
+      toastHandler("error", "Added", "to cartLists failed", dataModal.productImg, dataModal.productName);
+    }
+  };
+  const toastHandler = (status, statusTxt, descriptionTxt, productImg, productName) => {
+    if (status === "success") {
+      toast.success(
+        <CustomToast
+          statusTxt={statusTxt}
+          descriptionTxt={descriptionTxt}
+          productName={productName}
+          productImg={productImg}
+        />,
+        {
+          position: "top-right",
+        }
+      );
+    }
+    if (status === "error") {
+      toast.error(
+        <CustomToast
+          statusTxt={statusTxt}
+          descriptionTxt={descriptionTxt}
+          productName={productName}
+          productImg={productImg}
+        />,
+        {
+          position: "top-right",
+        }
+      );
+    }
+  };
   const colors = useMemo(() => {
     if (dataModal.variants && dataModal.variants.length > 0) {
       // setChooseColor(dataModal.variants[0].color);
@@ -58,17 +111,24 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
   const colorPickerHandler = (color) => {
     setChooseColor(color);
 
-    // check stock from color
     const quantity = dataModal.variants.find((variant) => variant.color === color).inStock;
     setInStock(quantity);
   };
   const chooseSizeHandler = (size) => {
-    setChooseSize(() => size);
+    setChooseSize(size);
   };
   useEffect(() => {
     setOpenModal(toggleState);
   }, [toggleState, dataModal]);
-  useEffect(() => {}, [quantityProduct]);
+  useEffect(() => {
+    setChooseColor(colorProps);
+  }, [colorProps]);
+  useEffect(() => {
+    if (chooseColor) {
+      const quantity = dataModal.variants.find((variant) => variant.color === chooseColor).inStock;
+      setInStock(quantity);
+    }
+  }, [chooseColor, dataModal.variants]);
   return (
     <div>
       <Modal
@@ -77,7 +137,7 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <div className="p-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[70%] sm:min-w-[45rem] min-h-[25rem] max-h-[80vh] sm:min-h-[25rem]  2xl:w-[50%] 2xl:h-[60%] flex flex-col sm:flex-row sm:justify-center sm:items-center rounded-md ">
+        <div className="p-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-[80%] sm:min-w-[45rem] min-h-[25rem] max-h-[80vh] sm:min-h-[25rem]  2xl:w-[50%] 2xl:h-[60%] flex flex-col sm:flex-row sm:justify-center sm:items-center rounded-md ">
           <div id="left-modal" className="w-full sm:w-1/2 h-[20%] sm:h-full">
             <img
               src={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${dataModal.productImg}`}
@@ -127,7 +187,7 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
                     return (
                       <div
                         key={color}
-                        className="rounded-full w-6 h-6 md:w-8 md:h-6 hover:cursor-pointer hover:scale-110 transition-transform duration-200"
+                        className="rounded-full w-6 h-6 md:w-8 md:h-8 hover:cursor-pointer hover:scale-110 transition-transform duration-200"
                         style={{
                           backgroundColor: colorFormat?.bg || "#cccccc",
                           border: `1px solid ${colorFormat?.border || "#999999"}`,
@@ -201,7 +261,7 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
                 <div
                   id="decrease-product"
                   className={`flex justify-center items-center  ${
-                    quantityProduct <= 0 ? "pointer-events-none opacity-25" : "hover:cursor-pointer"
+                    quantityProduct <= 0 || !chooseColor || !chooseSize ? "pointer-events-none opacity-25" : "hover:cursor-pointer"
                   }`}
                   onClick={() => decreaseHandler()}
                 >
@@ -213,7 +273,7 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
                 <div
                   id="increase-product"
                   className={`flex justify-center items-center  ${
-                    sizes && quantityProduct >= quantity ? "pointer-events-none opacity-25" : "hover:cursor-pointer"
+                    sizes && quantityProduct >= quantity || !chooseColor || !chooseSize ? "pointer-events-none opacity-25" : "hover:cursor-pointer"
                   }`}
                   onClick={() => increaseHandler()}
                 >
@@ -224,7 +284,14 @@ const ModalCardProduct = ({ toggleState, dataModal }) => {
                 id="add-to-cart"
                 className="col-span-3 p-0 min-w-35 h-10 flex justify-center items-center rounded-sm"
               >
-                <button className="w-full h-full bg-black text-white rounded-sm">Add to Cart</button>
+                <button
+                  className={`w-full h-full bg-black text-white rounded-sm ${
+                    chooseColor && chooseSize && quantityProduct ? "" : "opacity-50 pointer-events-none"
+                  } hover:cursor-pointer hover:bg-gray-800 transition-colors duration-200`}
+                  onClick={() => addToCartListHandler()}
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           </div>

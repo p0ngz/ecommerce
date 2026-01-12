@@ -7,6 +7,8 @@ const TopProductsSection = memo(() => {
   const [activeModel, setActiveModal] = useState(false);
   const [dataModal, setDataModal] = useState(null);
   const [topProduct, setTopProduct] = useState([]);
+  const [color, setColor] = useState(null);
+
   const { getTopProducts } = useProductStore(
     useShallow((state) => {
       return {
@@ -24,6 +26,7 @@ const TopProductsSection = memo(() => {
   const receiveData = (data) => {
     setDataModal(data.data);
     setActiveModal(data.open);
+    setColor(data?.data?.chooseColor);
   };
 
   useEffect(() => {
@@ -57,7 +60,7 @@ const TopProductsSection = memo(() => {
             );
           })}
       </div>
-      {activeModel ? <ModalCardTopProduct toggleState={activeModel} dataModal={dataModal} /> : null}
+      {activeModel ? <ModalCardTopProduct toggleState={activeModel} dataModal={dataModal} colorProps={color} /> : null}
     </div>
   );
 });
