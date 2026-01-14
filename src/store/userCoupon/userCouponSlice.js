@@ -46,14 +46,14 @@ export const createUserCouponSlice = (set, get) => ({
       console.error("Error fetching userCoupon by userCouponId: ", err);
     }
   },
-  getUserCouponByUserId: async (userId, populate = "all") => {
+  getUserCouponByUserId: async (userId) => {
     try {
-      const response = await axiosClient.get("/user-coupon/user/" + userId, { params: { populate } });
-      const userCouponByUserId = response?.data;
+      const response = await axiosClient.get("/user-coupon/user/" + userId);
+      const userCouponByUserId = response?.data?.userCouponByUserId[0]?.coupons;
       if (!userCouponByUserId || userCouponByUserId.count === 0) {
         console.error("No userCoupon data found for userId: ", userId);
       }
-
+      console.log("userCouponByUserId: ", userCouponByUserId);
       return userCouponByUserId;
     } catch (err) {
       console.error("Error fetching userCoupon by userId: ", err);

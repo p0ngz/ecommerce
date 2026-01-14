@@ -46,7 +46,7 @@ export const createCartSlice = (set, get) => ({
   getCartListByUserId: async (userId) => {
     try {
       const response = await axiosClient.get("/cartlist/user/" + userId);
-      const cartListByUserId = response?.data;
+      const cartListByUserId = response?.data[0]?.cartLists;
       if (!cartListByUserId || cartListByUserId.length === 0) {
         console.error("No cart list data found for User ID: ", userId);
       }
@@ -57,6 +57,7 @@ export const createCartSlice = (set, get) => ({
   },
   createOrUpdateCartListByUserId: async (userId, cartListData) => {
     try {
+      // const { productId, color, size, quantity, total } = req.body;
       const response = await axiosClient.post("/cartlist/user/" + userId, cartListData); // wait fix create and delete separately
       const updatedCartList = response?.data?.cartList;
       if (!updatedCartList || Object.keys(updatedCartList).length === 0) {
@@ -66,6 +67,24 @@ export const createCartSlice = (set, get) => ({
       return updatedCartList;
     } catch (err) {
       console.error("Error createAndUpdateCartListByUserId data: ", err);
+    }
+  },
+  updateCartListByCartListId: async (cartListId, updateData) => {
+    try {
+      const { quantity, total } = updateData;
+      const response = await axiosClient.put("/cartlist/cart-list/" + cartListId, {
+        quantity,
+        total,
+      });
+
+      const updatedCartList = response?.data?.cartList;
+      if (!updatedCartList || Object.keys(updatedCartList).length === 0) {
+        console.error("Failed to update cart list for Cart List ID: ", cartListId);
+      }
+
+      return updatedCartList;
+    } catch (err) {
+      console.error("Error updateCartListByCartListId data: ", err);
     }
   },
   //   delete all cartlist by user id

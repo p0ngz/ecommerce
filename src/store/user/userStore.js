@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { devtools, persist } from "zustand/middleware";
-import { createUserSlice } from "./user/userSlice";
+import { createUserSlice } from "./userSlice";
 
 export const useUserStore = create()(
   devtools(

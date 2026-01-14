@@ -1,4 +1,4 @@
-import { axiosClient } from "../../utility/axiosInstance";
+import { axiosClient } from "../../config/axios";
 
 const initialUserState = {
   userName: "",
@@ -33,7 +33,7 @@ export const createUserSlice = (set, get) => ({
     try {
       const response = await axiosClient.get("/user");
       const users = response?.data;
-      if (!users || users.count === 0) { //default find is array
+      if (!users || users.count === 0) {
         console.error("No users data found");
       }
       return users;
@@ -45,7 +45,7 @@ export const createUserSlice = (set, get) => ({
     try {
       const response = await axiosClient.get("/user/" + userId);
       const user = response?.data;
-      if (!user) { //default findOne is document or null
+      if (!user) {
         console.error("No user data found for ID: ", userId);
       }
       return user;
@@ -58,7 +58,7 @@ export const createUserSlice = (set, get) => ({
       const response = await axiosClient.post("/user", userData);
       const newUser = response.data;
 
-      if (!newUser) { // default create is document 
+      if (!newUser) {
         console.error("No user data returned from server");
       }
       return newUser;

@@ -1,4 +1,5 @@
-import { axiosClient } from "../../utils/axiosClient";
+import { axiosClient } from "../../config/axios";
+
 // const initialOrderState = {}
 export const createOrderSlice = (set, get) => ({
   //   order: initialOrderState,
@@ -60,11 +61,14 @@ export const createOrderSlice = (set, get) => ({
       console.error("Error fetching orders by user ID: ", err);
     }
   },
+  // CPN-EXPIREDJAN10
   createOrder: async (orderData) => {
     try {
+      console.log("orderData in createOrder: ", orderData);
       const response = await axiosClient.post("/order", orderData);
       const createdOrder = response?.data?.order;
 
+      console.log("createdOrder: ", createdOrder);
       if (!createdOrder) {
         console.error("Failed to create new order");
       }
