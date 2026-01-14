@@ -2,19 +2,25 @@ import React, { useMemo } from "react";
 import ChipCard from "../../utility/components/ChipCard";
 import RedeemSharpIcon from "@mui/icons-material/RedeemSharp";
 import { colorChipCardFromStatusCoupon } from "../../utility/colorChipCard";
+import { format } from "date-fns";
 
 const CouponList = ({ couponInfo }) => {
-  const { id, code, title, description, expiresAt, status, minOrder, discount, discountType } = couponInfo;
-
+  const { id, code, title, description, expiresAt, status, minTotalPrice, discount, discountType, validFrom } =
+    couponInfo;
   const checkDisabled = useMemo(() => {
     return status !== "Available";
   }, [status]);
+  const checkValidFrom = useMemo(() => {
+    const todayDate = new Date();
+    const validFromDate = new Date(validFrom);
+    return validFromDate > todayDate;
+  }, [validFrom]);
   const checkExpired = useMemo(() => {
-    const todayDate = new Date()
-    const expireDate = new Date(expiresAt)
+    const todayDate = new Date();
+    const expireDate = new Date(expiresAt);
 
-    return expireDate < todayDate
-  }, [expiresAt])
+    return expireDate < todayDate;
+  }, [expiresAt]);
   const styleActionButtonHandler = (status) => {
     if (status === "Available") {
       return "bg-white text-black  border-gray-300  hover:bg-gray-300 hover:text-white  hover:cursor-pointer transition ";
@@ -25,10 +31,7 @@ const CouponList = ({ couponInfo }) => {
   const applyCouponHandler = () => {
     console.log("Apply coupon!");
   };
-  // const today = new Date()
-  // const expireDate = new Date(expiresAt)
-  // console.log(expireDate)
-  // console.log(expireDate > today)
+
   return (
     <div
       id="coupon-list"
@@ -59,15 +62,22 @@ const CouponList = ({ couponInfo }) => {
       </div>
       <div className="hidden lg:block my-4 w-full  border-t border-gray-200"></div>
       <div id="coupon-action" className="flex justify-between items-center">
-        <p className={`base text-xs  ${checkExpired ? "text-gray-500" : ""}`}>Expires: {expiresAt}</p>
+        <div id="valid-container" className="">
+          {checkValidFrom && (
+            <p className={`base text-xs  ${checkExpired ? "text-gray-500" : ""}`}>
+              Can be used: {format(new Date(validFrom), "MMM dd, yyyy")}
+            </p>
+          )}
+          <p className={`base text-xs  ${checkExpired ? "text-gray-500" : ""}`}>
+            Expires: {format(new Date(expiresAt), "MMM dd, yyyy")}
+          </p>
+        </div>
         <button
           disabled={checkDisabled}
           className={`bg-white px-4 py-1 rounded-md text-xs border ${styleActionButtonHandler(status)}`}
           onClick={applyCouponHandler}
         >
-          {
-            checkDisabled || checkExpired? "Cannot Use" : "Apply"
-          }
+          {checkDisabled || checkExpired ? "Cannot Use" : "Apply"}
         </button>
       </div>
     </div>

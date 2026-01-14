@@ -49,9 +49,9 @@ const routes = createBrowserRouter(
           </Route>
           <Route path="/profile">
             <Route index element={<ProfilePage />} />
-            <Route path="orders">
+            <Route path=":username/orders">
               <Route index element={<OrdersPage />} />
-              <Route path=":orderId" element={<OrderPage />} />
+              <Route path=":orderID" element={<OrderPage />} />
             </Route>
           </Route>
 

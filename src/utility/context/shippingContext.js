@@ -3,169 +3,243 @@ import React, {
   createContext,
   useContext,
   useState,
+  useEffect,
+  useOptimistic,
+  useTransition,
+  useMemo,
+  useCallback,
 } from "react";
+import { useCartStore } from "../../store/cart/cartsStore";
+import { useUserCouponStore } from "../../store/userCoupon/userCouponStore";
+import { useShallow } from "zustand/shallow";
 
-// Example initial data (you can import or fetch this)
-const initialShippingData = [
-  {
-    id: 1,
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro.jpg?v=1714967262&width=600",
-    discount: 40,
-    color: "silver",
-    rating: 5,
-    titleProduct: "Apollop Coin Necklace",
-    price: 100,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-3.jpg?v=1714967344&width=600",
-    discount: 0,
-    color: "gold",
-    rating: 4,
-    titleProduct: "Butterfly Ring",
-    price: 65,
-    quantity: 2,
-  },
-  {
-    id: 3,
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-5.jpg?v=1714968850&width=600%22",
-    discount: 20,
-    color: "gold",
-    rating: 4.5,
-    titleProduct: "Cuban Link Chain Bracelet",
-    price: 90,
-    quantity: 1,
-  },
-  {
-    id: 4,
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
-    discount: 0,
-    color: "rainbow",
-    rating: 3,
-    titleProduct: "Dainty Chain Bracelet",
-    price: 80,
-    quantity: 3,
-  },
-  //   setDiscountPercentage
-];
-const couponList = [
-  { code: "NEA-7KQ4", discountType: "percent", discount: 15 },
-  { code: "NEA-2M9X", discountType: "percent", discount: 20 },
-  { code: "NEA-PL8C", discountType: "percent", discount: 30 },
-  { code: "NEA-Z1RT", discountType: "percent", discount: 40 },
-];
 export const ShippingContext = createContext();
 
 export const ShippingProvider = ({ children }) => {
+  const [isPending, startTransition] = useTransition();
   const shippingPrice = 9.99; // now constant for real need to adapt to each shipping method
-  const tax = 0.085; // 8.5% tax
-  const [shippingData, setShippingData] = useState(initialShippingData);
+  const tax = 8.5;
+  const [shippingData, setShippingData] = useState(null);
+  const [couponList, setCouponList] = useState([]);
+  const [shippingAddress, setShippingAddress] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [couponCode, setCouponCode] = useState(null);
+  const [couponId, setCouponId] = useState(null);
   const [isMatchCoupon, setIsMatchCoupon] = useState(false);
-  const [formDataOrder, setFormDataOrder] = useState({
-    shippingData: {},
-    paymentMethod: "",
-    couponCode: "",
-    beforeDiscountTotal: 0,
-    total: 0,
-  });
+
   const [isDisabledConfirm, setIsDisabledConfirm] = useState(true);
+  const [optimisticShippingData, setOptimisticShippingData] = useOptimistic(shippingData, (state, action) => {
+    switch (action.type) {
+      case "increase":
+        return state.map((item) => (item._id === action.cartListId ? { ...item, quantity: item.quantity + 1 } : item));
+      case "decrease":
+        return state.map((item) =>
+          item._id === action.cartListId && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+        );
+      case "remove":
+        return state.filter((item) => item._id !== action.cartListId);
+      default:
+        return state;
+    }
+  });
+  const { updateCartListByCartListId, deleteCartListByCartListId } = useCartStore(
+    useShallow((state) => {
+      return {
+        updateCartListByCartListId: state.updateCartListByCartListId,
+        deleteCartListByCartListId: state.deleteCartListByCartListId,
+      };
+    })
+  );
+  const { getUserCouponByUserId } = useUserCouponStore(
+    useShallow((state) => {
+      return {
+        getUserCouponByUserId: state.getUserCouponByUserId,
+      };
+    })
+  );
+  const getUserCouponByUserIdHandler = useCallback(async () => {
+    const userId = localStorage.getItem("userId");
+    const userCouponData = await getUserCouponByUserId(userId);
+    const availableCouponList = userCouponData.filter(({ coupon, status, userUsageLimit, used }) => {
+      const curDate = new Date();
+      return (
+        new Date(coupon?.validFrom) <= curDate &&
+        new Date(coupon?.validUntil) >= curDate &&
+        status?.toLowerCase() === "claimed" &&
+        userUsageLimit > used.length &&
+        coupon?.isActive &&
+        !coupon?.isDeleted
+      );
+    });
+
+    setCouponList(availableCouponList);
+  }, [getUserCouponByUserId]);
   // Increase quantity
-  const increaseQuantity = (id) => {
-    console.log("id to increase: ", id);
-    setShippingData((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+  const increaseQuantity = async (cartListId) => {
+    const previousData = shippingData;
+    const currentItem = shippingData?.find((item) => item._id === cartListId);
+    if (!currentItem) return;
+
+    const newQuantity = currentItem.quantity + 1;
+    const price = currentItem.product?.price || currentItem.price;
+    const discount = currentItem.product?.discount || currentItem.discount || 0;
+    const total = price * (1 - discount / 100) * newQuantity;
+
+    startTransition(() => {
+      setOptimisticShippingData({ type: "increase", cartListId });
+    });
+
+    try {
+      const result = await updateCartListByCartListId(cartListId, { quantity: newQuantity, total: total });
+      if (result) {
+        setShippingData((prev) =>
+          prev.map((item) => (item._id === cartListId ? { ...item, quantity: newQuantity } : item))
+        );
+      }
+    } catch (error) {
+      console.error("Failed to increase quantity:", error);
+      setShippingData(previousData); //rollback
+    }
   };
 
   // Decrease quantity
-  const decreaseQuantity = (id) => {
-    console.log("id to decrease: ", id);
-    setShippingData((prev) =>
-      prev.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
+  const decreaseQuantity = async (cartListId) => {
+    const previousData = shippingData;
+    const currentItem = shippingData?.find((item) => item._id === cartListId);
+    if (!currentItem || currentItem.quantity <= 1) return;
+
+    const newQuantity = currentItem.quantity - 1;
+    const price = currentItem.product?.price || currentItem.price;
+    const discount = currentItem.product?.discount || currentItem.discount || 0;
+    const total = price * (1 - discount / 100) * newQuantity;
+
+    startTransition(() => {
+      setOptimisticShippingData({ type: "decrease", cartListId });
+    });
+
+    try {
+      // Make API call here
+      const result = await updateCartListByCartListId(cartListId, { quantity: newQuantity, total: total });
+      if (result) {
+        setShippingData((prev) =>
+          prev.map((item) => (item._id === cartListId && item.quantity > 1 ? { ...item, quantity: newQuantity } : item))
+        );
+      }
+    } catch (error) {
+      console.error("Failed to decrease quantity:", error);
+      setShippingData(previousData); //rollback
+    }
   };
 
   //   get Quantity each shipping
   const getQuantity = (id) => {
     if (id) {
-      const item = shippingData.find((item) => item.id === id);
+      const item = optimisticShippingData?.find((item) => item.id === id);
       return item ? item.quantity : 0;
     }
     throw new Error("ID is required to get quantity");
   };
 
   //   get Total each shipping
-  const getTotal = (id) => {
-    if (id) {
-      const item = shippingData.find((item) => item.id === id);
-      return item
-        ? item.price * (1 - item.discount / 100) * item.quantity
-        : 0.0;
-    }
-  };
+  const getTotal = useCallback(
+    (cartListId) => {
+      const item = optimisticShippingData?.find((item) => item._id === cartListId);
+      return item ? item.product.price * (1 - item.product.discount / 100) * item.quantity : 0.0;
+    },
+    [optimisticShippingData]
+  );
 
-  const beforeDiscountCouponTotal = () => {
-    return shippingData?.reduce((acc, item) => {
-      const priceTotal =
-        (item.price - (item.price * item.discount) / 100) * item.quantity;
+  const beforeDiscountCouponTotal = useCallback(() => {
+    const totalBeforeDiscountCoupon = optimisticShippingData?.reduce((acc, item) => {
+      const priceTotal = (item.product.price - (item.product.price * item.product.discount) / 100) * item.quantity;
       return acc + priceTotal;
     }, 0);
-  };
-  const getTotalSummary = () => {
-    const beforeCouponCodeTotal = shippingData?.reduce((acc, item) => {
-      const priceTotal =
-        (item.price - (item.price * item.discount) / 100) * item.quantity;
+    return Number(totalBeforeDiscountCoupon).toFixed(2);
+  }, [optimisticShippingData]);
+
+  const getTotalSummary = useCallback(() => {
+    const beforeCouponCodeTotal = optimisticShippingData?.reduce((acc, item) => {
+      const priceTotal = (item.product.price - (item.product.price * item.product.discount) / 100) * item.quantity;
       return acc + priceTotal;
     }, 0);
     if (isMatchCoupon) {
-      const matchCoupon = matchCouponCode(couponCode);
-      return (
-        beforeCouponCodeTotal *
-          (1 - matchCoupon[0]?.discount / 100) *
-          (1 + tax) +
-        shippingPrice
-      );
+      const coupon = matchCouponCode(couponCode)?.coupon;
+      // percentage and fixed
+      if (coupon?.discountType === "percentage") {
+        return beforeCouponCodeTotal * (1 - coupon?.discountValue / 100) * (1 - tax / 100) + shippingPrice;
+      } else if (coupon?.discountType === "fixed") {
+        return (beforeCouponCodeTotal - coupon?.discountValue) * (1 + tax / 100) + shippingPrice;
+      }
     }
-    return beforeCouponCodeTotal * (1 + tax) + shippingPrice;
-  };
+    return beforeCouponCodeTotal * (1 + tax / 100) + shippingPrice;
+  }, [optimisticShippingData, isMatchCoupon, couponCode, tax, shippingPrice]);
 
   // Remove item
-  const removeItem = (id) => {
-    setShippingData((prev) => prev.filter((item) => item.id !== id));
-  };
-  //   Match Coupon Code
-  const matchCouponCode = (couponCode) => {
-    return couponList.filter((code) => {
-      return code.code === couponCode;
+  const removeItem = async (cartListId) => {
+    const previousData = shippingData;
+
+    startTransition(() => {
+      setOptimisticShippingData({ type: "remove", cartListId });
     });
+
+    try {
+      // Make API call here
+      const result = await deleteCartListByCartListId(cartListId);
+
+      if (result) {
+        setShippingData((prev) => prev.filter((item) => item._id !== cartListId));
+      }
+    } catch (error) {
+      console.error("Failed to remove item:", error);
+      setShippingData(previousData);
+    }
   };
 
+  //   Match Coupon Code
+  const matchCouponCode = useCallback(
+    (couponCode) => {
+      return couponList.find((coupon) => {
+        return coupon.coupon.code === couponCode;
+      });
+    },
+    [couponList]
+  );
+  const discountValue = useMemo(() => {
+    if (isMatchCoupon) {
+      const coupon = matchCouponCode(couponCode)?.coupon;
+      if (coupon?.discountType === "percentage") {
+        return (beforeDiscountCouponTotal() * coupon?.discountValue) / 100;
+      } else if (coupon?.discountType === "fixed") {
+        return coupon?.discountValue;
+      }
+    } else {
+      return 0;
+    }
+  }, [isMatchCoupon, couponCode, beforeDiscountCouponTotal, matchCouponCode]);
+  useEffect(() => {
+    getUserCouponByUserIdHandler();
+  }, [getUserCouponByUserIdHandler]);
+
+  useEffect(() => {
+    console.log("couponList: ", couponList);
+  }, [couponList]);
   return createElement(
     ShippingContext.Provider,
     {
       value: {
         // state
-        shippingData,
+        shippingData: optimisticShippingData, // Use optimistic state for UI
         selectedPaymentMethod,
         couponCode,
         isMatchCoupon,
-        formDataOrder,
+        // formDataOrder,
         shippingPrice,
         tax,
-
+        isPending,
+        isDisabledConfirm,
+        shippingAddress,
+        discountValue,
+        couponId,
         // function
         setShippingData,
         increaseQuantity,
@@ -179,9 +253,10 @@ export const ShippingProvider = ({ children }) => {
         getTotalSummary,
         setIsMatchCoupon,
         beforeDiscountCouponTotal,
-        setFormDataOrder,
-        isDisabledConfirm,
+        // setFormDataOrder,
         setIsDisabledConfirm,
+        setShippingAddress,
+        setCouponId,
       },
     },
     children

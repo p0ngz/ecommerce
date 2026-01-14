@@ -6,13 +6,13 @@ import PlaceIcon from "@mui/icons-material/Place";
 import MailIcon from "@mui/icons-material/Mail";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-
+import { format } from "date-fns";
 const UserInfo = ({
   firstName,
   lastName,
   nickName,
   img,
-  status = "customer",
+  roles = "customer",
   address,
   zipCode,
   email,
@@ -35,7 +35,7 @@ const UserInfo = ({
       <div id="left-info" className="flex flex-col justify-center items-center gap-3 lg:w-[50%] lg:h-full">
         <div id="user-img" className="lg:flex justify-center items-center h-full">
           <img
-            src={img}
+            src={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${img}`}
             alt={fullName}
             className="w-35 h-35 md:w-50 md:h-50 lg:w-[80%] lg:h-[80%] 2xl:w-[75%] 2xl:h-[75%] rounded-full object-cover"
           />
@@ -52,23 +52,19 @@ const UserInfo = ({
           </h2>
         </div>
         <div id="user-status" className="flex justify-center items-center gap-2 xl:gap-3">
-          {status.length > 1 ? (
-            status.map((status, index) => {
+          {roles.length > 1 ? (
+            roles.map((role, index) => {
               return (
                 <ChipCard
-                  text={status}
+                  text={roles}
                   key={index}
-                  bgColor={colorChipCardFromRole(status)}
+                  bgColor={colorChipCardFromRole(roles)}
                   textSize={"text-xs sm:text-sm xl:text-lg"}
                 />
               );
             })
           ) : (
-            <ChipCard
-              text={status}
-              bgColor={colorChipCardFromRole(status)}
-              textSize={"text-xs sm:text-sm xl:text-lg"}
-            />
+            <ChipCard text={roles} bgColor={colorChipCardFromRole(roles)} textSize={"text-xs sm:text-sm xl:text-lg"} />
           )}
         </div>
         <div id="user-contact" className="mt-3 text-md text-gray-400 flex flex-col gap-3 justify-center items-center ">
@@ -82,7 +78,7 @@ const UserInfo = ({
             <LocalPhoneIcon fontSize="small" /> {phone}
           </p>
           <p className="number flex items-center gap-2">
-            <CalendarMonthIcon fontSize="small" /> {regisDate?.toLocaleDateString()}
+            <CalendarMonthIcon fontSize="small" /> {format(new Date(regisDate), "MMMM dd, yyyy")}
           </p>
         </div>
         <div id="user-actions" className="mt-3 w-full h-auto grid grid-cols-2 gap-3 lg:grid-cols-1">
@@ -104,7 +100,7 @@ UserInfo.propTypes = {
   lastName: PropTypes.string.isRequired,
   nickName: PropTypes.string,
   img: PropTypes.string.isRequired,
-  status: PropTypes.arrayOf(PropTypes.string),
+  roles: PropTypes.arrayOf(PropTypes.string),
   address: PropTypes.string.isRequired,
   zipCode: PropTypes.string.isRequired,
   email: PropTypes.string,

@@ -31,6 +31,8 @@ export const colorChipCardFromStatusCoupon = (status) => {
   switch (status) {
     case "Available":
       return "bg-green-400";
+    case "Waiting":
+      return "bg-yellow-400";
     case "Used":
       return "bg-gray-400";
     case "Expired":

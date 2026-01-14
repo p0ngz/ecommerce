@@ -15,7 +15,7 @@ const OrderByIdComponent = () => {
   const { orderByIdDetail } = useLocation().state;
   const {
     orderId: orderID,
-    date,
+    createdAt: date,
     status,
     order,
     trackingStatus,
@@ -23,19 +23,10 @@ const OrderByIdComponent = () => {
     tax,
     address,
     trackingNumber,
+    totalPrice,
   } = orderByIdDetail;
 
-  // Style variable for consistent icon sizing
-  //   const orderProcessIconStyle = {
-  //     fontSize: {
-  //       xs: "large",
-  //       sm: "large",
-  //       md: "large",
-  //       lg: "large",
-  //       xl: "large",
-  //     },
-  //   };
-  const formatDate = format(date, "MMMM d, yyyy");
+  const formatDate = format(date, "MMMM dd, yyyy");
   const findCurrentStatusDate = (curStatus, type) => {
     const currentStatus = curStatus;
 
@@ -60,9 +51,13 @@ const OrderByIdComponent = () => {
   };
   useEffect(() => {
     if (!orderByIdDetail) {
-      navigate("/profile/orders");
+      const username = localStorage.getItem("username");
+      navigate(`/profile/${username}/orders`);
     }
   }, []);
+  useEffect(() => {
+    console.log("orderByIdDetail in OrderByIdComponent: ", orderByIdDetail);
+  }, [orderByIdDetail]);
   return (
     <div id="order-component" className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]">
       <h2 id="orders-title" className="text-center mb-3 text-3xl lg:text-5xl">
@@ -160,7 +155,7 @@ const OrderByIdComponent = () => {
       >
         <div id="order-header" className="flex items-center justify-start gap-3">
           <div id="back-to-previous" className="hover:cursor-pointer" onClick={() => backToPreviousHandler()}>
-            <KeyboardBackspaceSharpIcon fontSIze="large" />
+            <KeyboardBackspaceSharpIcon fontSze="large" />
           </div>
           <div id="order-header-info">
             <h3 className="text-lg">
@@ -209,21 +204,21 @@ const OrderByIdComponent = () => {
                 <div id="left" className="flex gap-3 items-start">
                   <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-sm overflow-hidden">
                     <img
-                      src="https://images.unsplash.com/photo-1719427129638-3058a01c3a66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9kdWN0JTIwc2hvcHBpbmclMjBpdGVtc3xlbnwxfHx8fDE3NTg1NDc3NjF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                      src={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${item?.product?.productImg}`}
                       alt=""
                       className="w-full h-full object-cover rounded-sm"
                     />
                   </div>
                   <div id="order-item-list-info" className="flex-1 gap-2">
-                    <h3 className="base text-md font-semibold">{item.name}</h3>
-                    <p className="base text-sm text-gray-400">{item.productId}</p>
+                    <h3 className="base text-md font-semibold">{item?.product?.productName}</h3>
+                    <p className="base text-sm text-gray-400">{item?.product?.product}</p>
                     <p className="base text-sm text-gray-400">
-                      Quantity: {item.quantity} * ${item.price.toFixed(2)}
+                      Quantity: {item.quantity} * ${item?.price?.toFixed(2)}
                     </p>
                   </div>
                 </div>
                 <div id="right" className="flex-shrink-0">
-                  <span className="base font-semibold">${item.quantity * item.price.toFixed(2)}</span>
+                  <span className="base font-semibold">${(item.quantity * item?.price).toFixed(2)}</span>
                 </div>
               </div>
             );
@@ -234,7 +229,7 @@ const OrderByIdComponent = () => {
           <div id="order-summary-container" className="flex flex-col gap-1">
             <div className="flex justify-between">
               <span className="base">Subtotal</span>
-              <span className="base">${order.total}</span>
+              <span className="base">${order?.total}</span>
             </div>
             <div className="flex justify-between">
               <span className="base">Shipping</span>
@@ -247,7 +242,7 @@ const OrderByIdComponent = () => {
           </div>
           <div className="mt-5 flex justify-between">
             <span className="base font-semibold">Total</span>
-            <span className="base font-semibold">${(order.total * tax + shipping).toFixed(2)}</span>
+            <span className="base font-semibold">${totalPrice.toFixed(2)}</span>
           </div>
         </div>
         <div id="shipping info" className="mb-10 p-3 border border-gray-200 rounded-sm">

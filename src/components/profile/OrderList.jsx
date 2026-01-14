@@ -12,7 +12,23 @@ import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined
 
 // const styleOrderProcessIcon = { fontSize: { xs: "medium", md: "medium", lg: "large" } };
 const OrderList = ({ orderInfo, ProfilePage = false }) => {
-  const { orderId, date, status, order, trackingStatus, shipping, tax, address, trackingNumber } = orderInfo;
+  const {
+    _id,
+    orderId,
+    createdAt,
+    status,
+    order,
+    trackingStatus,
+    shipping,
+    tax,
+    address,
+    trackingNumber,
+    paymentMethod,
+    discount,
+    totalPrice,
+    coupon,
+    deliverAddress,
+  } = orderInfo;
 
   const [isCancel, setIsCancel] = useState(trackingStatus?.cancel || false);
   const [isView, setIsView] = useState(false);
@@ -46,9 +62,11 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
     }
   };
   const goToOrderHandler = (id) => {
+    const username = localStorage.getItem("username");
     const orderByIdDetail = { ...orderInfo };
+    console.log("orderInfo: ", orderInfo);
     console.log("orderByIdDetail: ", orderByIdDetail);
-    navigate(`/profile/orders/${id}`, { state: { orderByIdDetail } });
+    navigate(`/profile/${username}/orders/${id}`, { state: { orderByIdDetail } });
   };
   useEffect(() => {
     const statusOrderCycle = ["OrderPlaced", "Pending", "Processing", "Shipped", "Delivered"];
@@ -58,6 +76,7 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
     }
   }, [trackingStatus]);
   useEffect(() => {}, [isCancel]);
+
   return (
     <div
       id="order-list"
@@ -86,7 +105,7 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
               #{orderId}
             </span>
             <span className="base text-gray-400">
-              {format(date, "MMM dd, yyyy")} ~ {order.count} items
+              {format(createdAt, "MMM dd, yyyy")} ~ {order.count} items
             </span>
           </div>
         </div>
@@ -95,11 +114,20 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
             <span id="total" className="base font-semibold ">
               ${order.total}
             </span>
-            <ChipCard
-              text={currentStatus}
-              bgColor={colorChipCardFromStatusOrder(currentStatus)}
-              txtColor={colorChipCardFromStatusOrder(currentStatus)}
-            />
+
+            {trackingStatus?.cancel ? (
+              <ChipCard
+                text={"Cancelled"}
+                bgColor={colorChipCardFromStatusOrder("Cancelled")}
+                txtColor={colorChipCardFromStatusOrder("Cancelled")}
+              />
+            ) : (
+              <ChipCard
+                text={currentStatus}
+                bgColor={colorChipCardFromStatusOrder(currentStatus)}
+                txtColor={colorChipCardFromStatusOrder(currentStatus)}
+              />
+            )}
           </div>
           {ProfilePage && (
             <button
@@ -116,7 +144,7 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
             <button
               id="tracking-btn"
               className="w-full rounded-md py-2 bg-gray-900 text-gray-100 text-center sm:hover:cursor-pointer"
-              onClick={() => goToOrderHandler(orderId)}
+              onClick={() => goToOrderHandler(_id)}
             >
               Tracking
             </button>
@@ -128,27 +156,27 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
         <div id="order-view-container" className="w-full mt-3 p-3 border border-gray-300 rounded-sm">
           <div id="order-items" className="mb-10 p-3 border border-gray-200 rounded-sm">
             <h2 className="mb-5 text-lg font-semibold">Order Items</h2>
-            {order.items.map((item, index) => {
+            {order?.items?.map((item) => {
               return (
-                <div id="order-items-list" className="flex justify-between items-center mb-3" key={index}>
+                <div id="order-items-list" className="flex justify-between items-center mb-3" key={item?._id}>
                   <div id="left" className="flex gap-3 items-start">
                     <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-sm overflow-hidden">
                       <img
-                        src="https://images.unsplash.com/photo-1719427129638-3058a01c3a66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9kdWN0JTIwc2hvcHBpbmclMjBpdGVtc3xlbnwxfHx8fDE3NTg1NDc3NjF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                        src={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${item?.product?.productImg}`}
                         alt=""
                         className="w-full h-full object-cover rounded-sm"
                       />
                     </div>
                     <div id="order-item-list-info" className="flex-1 gap-2">
-                      <h3 className="base text-md font-semibold">{item.name}</h3>
-                      <p className="base text-sm text-gray-400">{item.productId}</p>
+                      <h3 className="base text-md font-semibold">{item?.product?.productName}</h3>
+                      <p className="base text-sm text-gray-400">{item?.product?.product}</p>
                       <p className="base text-sm text-gray-400">
-                        Quantity: {item.quantity} * ${item.price.toFixed(2)}
+                        Quantity: {item?.quantity} * ${item?.price?.toFixed(2)}
                       </p>
                     </div>
                   </div>
                   <div id="right" className="flex-shrink-0">
-                    <span className="base font-semibold">${item.quantity * item.price.toFixed(2)}</span>
+                    <span className="base font-semibold">${(item?.quantity * item?.price).toFixed(2)}</span>
                   </div>
                 </div>
               );
@@ -159,7 +187,7 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
             <div id="order-summary-container" className="flex flex-col gap-1">
               <div className="flex justify-between">
                 <span className="base">Subtotal</span>
-                <span className="base">${order.total}</span>
+                <span className="base">${order?.total}</span>
               </div>
               <div className="flex justify-between">
                 <span className="base">Shipping</span>
@@ -172,7 +200,7 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
             </div>
             <div className="mt-5 flex justify-between">
               <span className="base font-semibold">Total</span>
-              <span className="base font-semibold">${(order.total * tax + shipping).toFixed(2)}</span>
+              <span className="base font-semibold">${totalPrice.toFixed(2)}</span>
             </div>
           </div>
           <div id="shipping info" className="mb-10 p-3 border border-gray-200 rounded-sm">
@@ -200,7 +228,6 @@ const OrderList = ({ orderInfo, ProfilePage = false }) => {
 
             {trackingStatus?.statusHistory.map((statusItem, index) => {
               return (
-                // complete
                 <div
                   id="complete-progress-order"
                   className={`flex justify-start items-center gap-3 ${isCancel ? "line-through" : ""}`}
