@@ -32,7 +32,7 @@ export const createProductSlice = (set, get) => ({
       let response;
       if (filter && Object.keys(filter).length > 0) {
         response = await axiosClient.get("/product", { params: { ...filter } });
-        console.log("response: ", response)
+        console.log("response: ", response);
       } else {
         console.log("no filter");
         response = await axiosClient.get("/product");
@@ -85,9 +85,22 @@ export const createProductSlice = (set, get) => ({
         console.error("No max price product found");
       }
 
-      return maxPriceProduct
-    }catch(err) {
+      return maxPriceProduct;
+    } catch (err) {
       console.error("Error fetching max price product: ", err);
+    }
+  },
+  getAllColorsProduct: async () => {
+    try  {
+      const response = await axiosClient.get("/product/colors");
+      const colors = response?.data?.colors;
+      if (!colors || colors.length === 0) {
+        console.error("No colors found");
+      }
+
+      return colors;
+    } catch (err) {
+      console.error("Error fetching all colors from product: ", err);
     }
   },
   createProduct: async (productData) => {
