@@ -1,17 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo, useCallback, useRef } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import { useFilteredProducts } from "../../utility/context/filterProductsContext";
-
+import { useProductStore } from "../../store/product/productStore";
+import { useShallow } from "zustand/shallow";
 function valuetext(value) {
-  return <span className="description">{value}°C</span>;
+  return <span className="description">{value}$</span>;
 }
 
-const PriceTopic = () => {
-  const [value, setValue] = useState([0, 100]);
+const PriceTopic = memo(() => {
+  const [maxPrice, setMaxPrice] = useState(0);
+  const [value, setValue] = useState([0, maxPrice]);
   const { filteredProductsHandler } = useFilteredProducts();
-
+  const { getMaxPriceProduct } = useProductStore(
+    useShallow((state) => ({
+      getMaxPriceProduct: state.getMaxPriceProduct,
+    }))
+  );
+  const debounceRef = useRef(null);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -23,10 +30,24 @@ const PriceTopic = () => {
     filteredProductsHandler("price", data);
   };
   const resetHandler = () => {
-    setValue([0, 100]);
+    setValue([0, maxPrice]);
   };
+
+  const getMaxPriceHandler = useCallback(async () => {
+    const maxPriceProduct = await getMaxPriceProduct();
+    const maxPriceValue = maxPriceProduct ?? 100;
+    setMaxPrice(maxPriceValue);
+    setValue([0, maxPriceValue]);
+  }, [getMaxPriceProduct]);
   useEffect(() => {
-    filteredHandler(value);
+    getMaxPriceHandler();
+  }, [getMaxPriceHandler]);
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      filteredHandler(value);
+    }, 500);
+    return () => clearTimeout(debounceRef.current);
   }, [value]);
   return (
     <>
@@ -39,6 +60,8 @@ const PriceTopic = () => {
         <Slider
           getAriaLabel={() => "Temperature range"}
           value={value}
+          min={0}
+          max={maxPrice}
           onChange={handleChange}
           valueLabelDisplay="auto"
           valueLabelFormat={(val) => {
@@ -65,6 +88,6 @@ const PriceTopic = () => {
       </Box>
     </>
   );
-};
+});
 
 export default PriceTopic;

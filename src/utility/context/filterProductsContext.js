@@ -46,6 +46,9 @@ export const FilteredProductsProvider = ({ children }) => {
   useEffect(() => {
     fetchAllProducts();
   }, [fetchAllProducts]);
+  useEffect(() => {
+    console.log("filteredData: ", filteredData)
+  }, [filteredData])
   return createElement(
     FilteredProductsContext.Provider,
     { value: { productData, filteredData, setProductData, setFilteredData, filteredProductsHandler } },

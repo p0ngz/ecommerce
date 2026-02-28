@@ -77,11 +77,11 @@ export const createProductSlice = (set, get) => ({
       console.error("Error fetching type product: ", err);
     }
   },
-  getMAxPriceProduct: async () => {
+  getMaxPriceProduct: async () => {
     try {
-      const response = await axiosClient.get("/product//price/max");
-      const maxPriceProduct = response?.data?.maxPriceProduct;
-      if (!maxPriceProduct || Object.keys(maxPriceProduct).length === 0) {
+      const response = await axiosClient.get("/product/price/max");
+      const maxPriceProduct = response?.data?.maxPrice;
+      if (!maxPriceProduct) {
         console.error("No max price product found");
       }
 
