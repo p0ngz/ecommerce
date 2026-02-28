@@ -54,10 +54,13 @@ export const createWishlistSlice = (set, get) => ({
       const createdWishlist = response?.data?.wishlist;
       if (!createdWishlist) {
         console.error("Error creating wishlist");
+        console.log(response?.data?.message);
       }
-      return createdWishlist;
+      return { success: true, data: createdWishlist };
     } catch (err) {
       console.error("Error creating wishlist: ", err);
+      const message = err?.response?.data?.message || "Something went wrong";
+      return { success: false, message };
     }
   },
   deleteWishlistByUserId: async (userId) => {

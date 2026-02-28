@@ -12,6 +12,7 @@ import { setProduct } from "../store/productSlice";
 import { useDispatch } from "react-redux";
 import { themeColor } from "../utility/color";
 import { useWishlistStore } from "../store/wishlist/wishlistStore";
+import { useCartStore } from "../store/cart/cartsStore";
 import { useShallow } from "zustand/shallow";
 import { toast } from "react-toastify";
 import CustomToast from "../utility/CustomToast";
@@ -32,7 +33,6 @@ const CardNewProduct = ({
   isProductPage = false,
   isRelateProduct = false,
 }) => {
-  console.log("productImg: ", productImg);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [cardHover, setCardHover] = useState(false);
@@ -48,7 +48,11 @@ const CardNewProduct = ({
       };
     })
   );
-
+  const { createOrUpdateCartListByUserId } = useCartStore(
+    useShallow((state) => ({
+      createOrUpdateCartListByUserId: state.createOrUpdateCartListByUserId,
+    }))
+  );
   const toastHandler = (status, statusTxt, descriptionTxt, productImg, productName) => {
     if (status === "success") {
       toast.success(
@@ -135,10 +139,12 @@ const CardNewProduct = ({
     };
     try {
       const response = await createWishlist(wishlistBody);
-      if (response) {
+      console.log("response: ", response);
+      if (response?.success) {
         toastHandler("success", "Added", "to wishlists successfully", productImg, productName);
       } else {
-        toastHandler("error", "Added", "to wishlists failed", productImg, productName);
+        const errMsg = response?.message || "to wishlists failed";
+        toastHandler("error", "Failed", errMsg, productImg, productName);
       }
     } catch (err) {
       console.error("add to wishlist error: ", err);
@@ -160,6 +166,32 @@ const CardNewProduct = ({
     dispatch(setProduct(productData));
 
     navigate(`/products/${typeProductLower}/${productNameLower}`);
+  };
+  const addToCartListHandler = async () => {
+    const userId = localStorage.getItem("userId");
+    const cartListData = {
+      productId,
+      color: selectedColor,
+      size: selectedSize,
+      quantity: productCount,
+      total: productCount * (price - (price * discount) / 100),
+    };
+
+    try {
+      const response = await createOrUpdateCartListByUserId(userId, cartListData);
+      if (response) {
+        console.log("toast success");
+        toastHandler("success", "Added", "to cartLists successfully", productImg, productName);
+      } else {
+        console.log("toast error");
+        toastHandler("error", "Added", "to cartLists failed", productImg, productName);
+      }
+    } catch (err) {
+      console.error("Error addToCartListHandler: ", err);
+      console.log("toast error");
+
+      toastHandler("error", "Added", "to cartLists failed", productImg, productName);
+    }
   };
   useEffect(() => {
     if (openModal && viewState) {
@@ -216,7 +248,7 @@ const CardNewProduct = ({
   return (
     <div
       id="card-new-product"
-      className={`mb-4 ${isRelateProduct ? "h-[50%] " : ""} ${
+      className={`relative mb-4 ${isRelateProduct ? "h-[50%] " : ""} ${
         isProductsPage || isProductPage
           ? "sm:w-full sm:h-[90%] sm:grid sm:grid-cols-10 sm:gap-3 border-none rounded-sm"
           : "border rounded-xl"
@@ -276,17 +308,17 @@ const CardNewProduct = ({
               transition={{ duration: 0.3 }}
               key="icon-group"
             >
-              <div className="w-10 h-10 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-indigo-500 group transition-colors duration-200">
+              <div className="w-10 h-10 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-indigo-500 group/bag transition-colors duration-200">
                 <ShoppingBagOutlinedIcon
                   fontSize="small"
-                  className="text-inherit group-hover:text-white transition-colors duration-200"
+                  className="text-inherit group-hover/bag:text-white transition-colors duration-200"
                   onClick={() => setOpenModalHandler()}
                 />
               </div>
-              <div className="w-10 h-10 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-red-500 group transition-colors duration-200">
+              <div className="w-10 h-10 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-red-500 group/fav transition-colors duration-200">
                 <FavoriteBorderIcon
                   fontSize="small"
-                  className="text-inherit group-hover:text-white transition-colors duration-200"
+                  className="text-inherit group-hover/fav:text-white transition-colors duration-200"
                   onClick={() => setFavoriteProductHandler()}
                 />
               </div>
@@ -296,18 +328,18 @@ const CardNewProduct = ({
         <div
           className={`${
             isRelateProduct ? "sm:hidden" : "hidden"
-          } absolute right-3 top-3  flex justify-center flex flex-col gap-2`}
+          } absolute right-3 top-3  flex justify-center  flex-col gap-2`}
         >
-          <div className="w-8 h-8 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-indigo-500 group transition-colors duration-200">
+          <div className="w-8 h-8 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-indigo-500 group/bag transition-colors duration-200">
             <ShoppingBagOutlinedIcon
               fontSize="small"
-              className="text-inherit group-hover:text-white transition-colors duration-200"
+              className="text-inherit group-hover/bag:text-white transition-colors duration-200"
             />
           </div>
-          <div className="w-8 h-8 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-red-500 group transition-colors duration-200">
+          <div className="w-8 h-8 bg-gray-300 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-red-500 group/fav transition-colors duration-200">
             <FavoriteBorderIcon
               fontSize="small"
-              className="text-inherit group-hover:text-white transition-colors duration-200"
+              className="text-inherit group-hover/fav:text-white transition-colors duration-200"
             />
           </div>
         </div>
@@ -432,6 +464,15 @@ const CardNewProduct = ({
         {/* <div id="description-card-product" className={`my-5 p-4 ${isRelateProduct ? "hidden" : "block"}`}>
           <p className="text-xs text-gray-500">{description}</p>
         </div> */}
+        {isProductPage && (
+          <div className="absolute top-2 right-2 w-10 h-10 bg-gray-100 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-red-500 group/fav transition-colors duration-200">
+            <FavoriteBorderIcon
+              fontSize="small"
+              className="text-gray-400 group-hover/fav:text-white transition-colors duration-200 "
+              onClick={() => setFavoriteProductHandler()}
+            />
+          </div>
+        )}
         {(isProductsPage || isProductPage) && (
           <div
             id="action-card-product"
@@ -466,6 +507,7 @@ const CardNewProduct = ({
             <div id="add-to-cart" className="col-span-3  min-w-35 h-10 flex justify-center items-center rounded-sm">
               <button
                 className={`w-full h-full  hover:bg-black text-white rounded-sm  transition-color duration-300 ${!selectedColor || !selectedSize || productCount <= 0 ? "opacity-50 pointer-events-none bg-gray-300" : "opacity-100 bg-gray-500 hover:cursor-pointer"}`}
+                onClick={() => addToCartListHandler()}
               >
                 Add to Cart
               </button>

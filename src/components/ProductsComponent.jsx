@@ -122,15 +122,12 @@ const ProductsComponent = memo(() => {
   useEffect(() => {
     const fetchProduct = async () => {
       const products = await getAllProduct();
-      console.log("products in component: ", products);
       setProductData(products);
     };
 
     fetchProduct();
-  }, []);
-  useEffect(() => {
-    console.log("productData: ", productData);
-  }, [productData]);
+  }, [getAllProduct, setProductData]);
+ 
 
   return (
     <div id="products=page" className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]">
