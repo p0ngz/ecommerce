@@ -10,9 +10,7 @@ import SidebarMenu from "./sidebarProducts/SidebarMenu";
 import CardProduct from "./CardProduct";
 import TypeProducts from "./TypeProducts";
 // import { useFilteredProducts } from "../contexts/filterProductsContext";
-import { useProductStore } from "../store/product/productStore";
-import { useCartStore } from "../store/cart/cartsStore";
-import { useShallow } from "zustand/shallow";
+import { useFilteredProducts } from "../utility/context/filterProductsContext";
 const filterProduct = [
   {
     value: "featured",
@@ -103,13 +101,7 @@ const filterProduct = [
 //   },
 // ];
 const ProductsComponent = memo(() => {
-  const [productData, setProductData] = useState([]);
-  const { getAllProduct } = useProductStore(
-    useShallow((state) => ({
-      getAllProduct: state.getAllProduct,
-    }))
-  );
-  
+  const { productData } = useFilteredProducts();
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const navigate = useNavigate();
   const receiveStatusFromSidebar = (status) => {
@@ -118,16 +110,6 @@ const ProductsComponent = memo(() => {
   const sidebarToggleHandler = () => {
     setSidebarToggle(!sidebarToggle);
   };
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const products = await getAllProduct();
-      setProductData(products);
-    };
-
-    fetchProduct();
-  }, [getAllProduct, setProductData]);
- 
 
   return (
     <div id="products=page" className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]">

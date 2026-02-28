@@ -1,4 +1,4 @@
-import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Outlet } from "react-router-dom";
 // layout
 import MainLayout from "./layouts/MainLayout";
 import RegisterLoginLayout from "./layouts/RegisterLoginLayout";
@@ -23,6 +23,7 @@ import OrderPage from "./pages/OrderPage";
 
 // context
 import { AuthProvider } from "./utility/context/authContext";
+import { FilteredProductsProvider } from "./utility/context/filterProductsContext";
 import RequireAuth from "./utility/requireAuth";
 
 const routes = createBrowserRouter(
@@ -36,7 +37,14 @@ const routes = createBrowserRouter(
           <Route path="/shipping" element={<ShippingPage />} />
           <Route path="/tracking" element={<TrackingStatusOrderPage />} />
           <Route path="/payment" element={<QRpaymentPage />} />
-          <Route path="/products">
+          <Route
+            path="/products"
+            element={
+              <FilteredProductsProvider>
+                <Outlet />
+              </FilteredProductsProvider>
+            }
+          >
             <Route index element={<ProductsPage />} />
             <Route path=":typeProduct">
               <Route index element={<ProductTypePage />} />

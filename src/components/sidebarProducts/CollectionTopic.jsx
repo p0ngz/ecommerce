@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useFilteredProducts } from "../../utility/context/filterProductsContext";
-
+import { useProductStore } from "../../store/product/productStore";
+import { useShallow } from "zustand/shallow";
 const collectionData = [
   {
     type: "Earrings",
@@ -30,6 +31,11 @@ const collectionData = [
   },
 ];
 const CollectionTopic = () => {
+  const { getTypeProduct } = useProductStore(
+    useShallow((state) => ({
+      getTypeProduct: state.getTypeProduct,
+    }))
+  );
   const [collections, setCollections] = useState([]);
   const [showMoreOrLess, setShowMoreOrLess] = useState(true);
   const { filteredProductsHandler } = useFilteredProducts();
@@ -40,14 +46,21 @@ const CollectionTopic = () => {
   const filteredHandler = (filterData) => {
     filteredProductsHandler("collection", filterData);
   };
+  const getTypeProductDataHandler = useCallback(async () => {
+    const typeProducts = await getTypeProduct();
+    if (typeProducts && typeProducts.length > 0) {
+      setCollections(typeProducts);
+    }
+  }, [getTypeProduct]);
+
   useEffect(() => {
-    setCollections(collectionData);
-  }, []);
+    getTypeProductDataHandler();
+  }, [getTypeProductDataHandler]);
 
   return (
     <>
       <ul className="list-none p-0 m-0 leading-[2] ">
-        {collections?.length > 0 && collectionData.length <= 4
+        {collections?.length > 0 
           ? collections.map((collection, idx) => {
               return (
                 <li
@@ -55,33 +68,33 @@ const CollectionTopic = () => {
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
                   onClick={() => filteredHandler(collection.type)}
                 >
-                  {collection.type} ({collection.count})
+                  {collection.type} ({collection.total})
                 </li>
               );
             })
           : showMoreOrLess
-          ? collections.slice(0, 4).map((collection, idx) => {
-              return (
-                <li
-                  key={idx}
-                  className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler(collection.type)}
-                >
-                  {collection.type} ({collection.count})
-                </li>
-              );
-            })
-          : collections.map((collection, idx) => {
-              return (
-                <li
-                  key={idx}
-                  className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler(collection.type)}
-                >
-                  {collection.type} ({collection.count})
-                </li>
-              );
-            })}
+            ? collections.slice(0, 4).map((collection, idx) => {
+                return (
+                  <li
+                    key={idx}
+                    className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                    onClick={() => filteredHandler(collection.type)}
+                  >
+                    {collection.type} ({collection.count})
+                  </li>
+                );
+              })
+            : collections.map((collection, idx) => {
+                return (
+                  <li
+                    key={idx}
+                    className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                    onClick={() => filteredHandler(collection.type)}
+                  >
+                    {collection.type} ({collection.count})
+                  </li>
+                );
+              })}
         {collections.length > 4 ? (
           showMoreOrLess ? (
             <span

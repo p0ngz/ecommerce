@@ -55,10 +55,7 @@ const TypeProducts = ({ pageType, currentPage = "products" }) => {
       return findType;
     });
   }, []);
-  useEffect(() => {
-    // console.log("showTypeProductsMobile: ", showTypeProductsMobile);
-    // check index
-  }, [showTypeProductsMobile]);
+ 
   return (
     <div
       id="type-products-container"

@@ -32,6 +32,7 @@ export const createProductSlice = (set, get) => ({
       let response;
       if (filter && Object.keys(filter).length > 0) {
         response = await axiosClient.get("/product", { params: { ...filter } });
+        console.log("response: ", response)
       } else {
         console.log("no filter");
         response = await axiosClient.get("/product");
@@ -44,6 +45,9 @@ export const createProductSlice = (set, get) => ({
 
       return products;
     } catch (err) {
+      if (err?.response?.status === 404) {
+        return [];
+      }
       console.error("Error getProduct data: ", err);
     }
   },
@@ -58,6 +62,32 @@ export const createProductSlice = (set, get) => ({
       return product;
     } catch (err) {
       console.error("Error fetching product by ID: ", err);
+    }
+  },
+  getTypeProduct: async () => {
+    try {
+      const response = await axiosClient.get("/product/type");
+      const typeProducts = response?.data?.typeProducts;
+      if (!typeProducts || typeProducts.length === 0) {
+        console.error("No type products found");
+      }
+
+      return typeProducts;
+    } catch (err) {
+      console.error("Error fetching type product: ", err);
+    }
+  },
+  getMAxPriceProduct: async () => {
+    try {
+      const response = await axiosClient.get("/product//price/max");
+      const maxPriceProduct = response?.data?.maxPriceProduct;
+      if (!maxPriceProduct || Object.keys(maxPriceProduct).length === 0) {
+        console.error("No max price product found");
+      }
+
+      return maxPriceProduct
+    }catch(err) {
+      console.error("Error fetching max price product: ", err);
     }
   },
   createProduct: async (productData) => {
