@@ -15,7 +15,6 @@ const HeroBackground = ({
   };
   const navigate = useNavigate()
   const goToProducts = () => {
-    console.log("go to products")
     navigate('/products')
   }
   return (
