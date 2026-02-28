@@ -441,7 +441,7 @@ const CardNewProduct = ({
               <div
                 id="decrease-product"
                 className={`flex justify-center items-center  ${
-                  productCount <= 0 || (!selectedColor && !selectedSize)
+                  productCount <= 0 || !selectedColor || !selectedSize
                     ? "opacity-25 pointer-events-none"
                     : "hover:cursor-pointer"
                 }`}
@@ -451,13 +451,13 @@ const CardNewProduct = ({
               </div>
               <div
                 id="show-amount-product"
-                className={`flex justify-center items-center  border-x-1 border-gray-300 ${!selectedColor && !selectedSize ? "opacity-50" : ""}`}
+                className={`flex justify-center items-center  border-x-1 border-gray-300 ${!selectedColor || !selectedSize ? "opacity-50" : ""}`}
               >
                 {productCount}
               </div>
               <div
                 id="increase-product"
-                className={`flex justify-center items-center ${!selectedColor && !selectedSize ? "opacity-50 pointer-events-none" : "hover:cursor-pointer"} `}
+                className={`flex justify-center items-center ${!selectedColor || !selectedSize ? "opacity-50 pointer-events-none" : "hover:cursor-pointer"} `}
                 onClick={() => increaseHandler()}
               >
                 +
