@@ -25,6 +25,7 @@ const NewProductSection = memo(() => {
     async (limit) => {
       const response = await getNewestProducts(limit);
       const products = response?.data;
+      console.log("newest products: ", products);
       setNewestProduct(() => products);
     },
     [getNewestProducts]

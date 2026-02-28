@@ -312,8 +312,8 @@ const WishList = memo(({ wishlistInfo = {}, removeWProductFromWishlist }) => {
           </div>
         )}
         {/* action product */}
-        <div id="action-product" className="grid grid-cols-5 gap-10 sm:gap-5">
-          <div id="amount-product" className="col-span-2 p-0 min-w-30 h-10 grid grid-cols-3 border border-gray-300">
+        <div id="action-product" className="w-full flex lg:flex-col  gap-5 sm:gap-5">
+          <div id="amount-product" className="w-full p-0  h-10 grid grid-cols-3 border border-gray-300">
             <div
               id="decrease-product"
               className={`flex justify-center items-center  ${
@@ -340,7 +340,7 @@ const WishList = memo(({ wishlistInfo = {}, removeWProductFromWishlist }) => {
               +
             </div>
           </div>
-          <div id="add-to-cart" className="col-span-3 p-0 min-w-35 h-10 flex justify-center items-center rounded-sm">
+          <div id="add-to-cart" className="w-full p-0 min-w-35 h-10 flex justify-center items-center rounded-sm">
             <button
               className={`w-full h-full bg-black text-white rounded-sm ${
                 chooseColor && chooseSize && quantityProduct ? "" : "opacity-50 pointer-events-none"

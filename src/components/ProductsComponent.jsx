@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
@@ -10,7 +10,9 @@ import SidebarMenu from "./sidebarProducts/SidebarMenu";
 import CardProduct from "./CardProduct";
 import TypeProducts from "./TypeProducts";
 // import { useFilteredProducts } from "../contexts/filterProductsContext";
-
+import { useProductStore } from "../store/product/productStore";
+import { useCartStore } from "../store/cart/cartsStore";
+import { useShallow } from "zustand/shallow";
 const filterProduct = [
   {
     value: "featured",
@@ -45,79 +47,93 @@ const filterProduct = [
     label: "DATE, OLD-NEW",
   },
 ];
-const productData = [
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro.jpg?v=1714967262&width=600",
-    discount: 40,
-    rating: 5,
-    titleProduct: "Apollop Coin Necklace",
-    type: "necklace",
-    description:
-      "1 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
-    price: 100,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-3.jpg?v=1714967344&width=600",
-    discount: 0,
-    rating: 4,
-    titleProduct: "Butterfly Ring",
-    type: "rings",
-    description:
-      "2 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
-    price: 65,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-5.jpg?v=1714968850&width=600%22",
-    discount: 20,
-    rating: 4.5,
-    titleProduct: "Cuban Link Chain Bracelet",
-    type: "bracelets",
-    description:
-      "3 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+// const productData = [
+//   {
+//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro.jpg?v=1714967262&width=600",
+//     discount: 40,
+//     rating: 5,
+//     titleProduct: "Apollop Coin Necklace",
+//     type: "necklace",
+//     description:
+//       "1 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+//     price: 100,
+//   },
+//   {
+//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-3.jpg?v=1714967344&width=600",
+//     discount: 0,
+//     rating: 4,
+//     titleProduct: "Butterfly Ring",
+//     type: "rings",
+//     description:
+//       "2 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+//     price: 65,
+//   },
+//   {
+//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-5.jpg?v=1714968850&width=600%22",
+//     discount: 20,
+//     rating: 4.5,
+//     titleProduct: "Cuban Link Chain Bracelet",
+//     type: "bracelets",
+//     description:
+//       "3 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
 
-    price: 90,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
-    discount: 0,
-    rating: 3,
-    titleProduct: "Dainty Chain Bracelet",
-    type: "bracelets",
-    description:
-      "4 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+//     price: 90,
+//   },
+//   {
+//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
+//     discount: 0,
+//     rating: 3,
+//     titleProduct: "Dainty Chain Bracelet",
+//     type: "bracelets",
+//     description:
+//       "4 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
 
-    price: 80,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59_18c1dec3-e10e-466f-9f6d-0960696ecbbf.jpg?v=1714980909&width=600",
-    discount: 0,
-    rating: 4.5,
-    titleProduct: "Pearl Earring",
-    type: "earring",
-    description:
-      "5 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum",
-    price: 78,
-  },
-];
-const ProductsComponent = () => {
+//     price: 80,
+//   },
+//   {
+//     imgSrc:
+//       "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59_18c1dec3-e10e-466f-9f6d-0960696ecbbf.jpg?v=1714980909&width=600",
+//     discount: 0,
+//     rating: 4.5,
+//     titleProduct: "Pearl Earring",
+//     type: "earring",
+//     description:
+//       "5 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum",
+//     price: 78,
+//   },
+// ];
+const ProductsComponent = memo(() => {
+  const [productData, setProductData] = useState([]);
+  const { getAllProduct } = useProductStore(
+    useShallow((state) => ({
+      getAllProduct: state.getAllProduct,
+    }))
+  );
+  
   const [sidebarToggle, setSidebarToggle] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const receiveStatusFromSidebar = (status) => {
     setSidebarToggle(status);
   };
   const sidebarToggleHandler = () => {
     setSidebarToggle(!sidebarToggle);
   };
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const products = await getAllProduct();
+      console.log("products in component: ", products);
+      setProductData(products);
+    };
+
+    fetchProduct();
+  }, []);
+  useEffect(() => {
+    console.log("productData: ", productData);
+  }, [productData]);
+
   return (
-    <div
-      id="products=page"
-      className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]"
-    >
+    <div id="products=page" className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]">
       <h2 id="products-title" className="text-center mb-3 text-3xl lg:text-5xl">
         Products
       </h2>
@@ -212,41 +228,34 @@ const ProductsComponent = () => {
           </TextField>
         </div>
       </div>
-      <div
-        id="main-container"
-        className="mt-5 lg:grid lg:gap-5 lg:grid-cols-10 "
-      >
+      <div id="main-container" className="mt-5 lg:grid lg:gap-5 lg:grid-cols-10 ">
         <div id="sidebar-container" className="hidden lg:block lg:col-span-2">
           <SidebarMenu />
         </div>
-        <div
-          id="products-container"
-          className="flex flex-col items-center lg:col-span-8"
-        >
+        <div id="products-container" className="flex flex-col items-center lg:col-span-8">
           {productData &&
             productData.map((product, index) => {
               return (
                 <CardProduct
                   key={index}
-                  imgSrc={product.imgSrc}
-                  discount={product.discount}
-                  rating={product.rating}
-                  titleProduct={product.titleProduct}
-                  type={product.type}
-                  price={product.price}
-                  isProductsPage={true}
-                  description={product.description}
+                  productId={product?._id}
+                  productImg={product.productImg}
+                  discount={product?.discount}
+                  rating={product?.rating}
+                  productName={product?.productName}
+                  description={product?.description}
+                  price={product?.price}
+                  type={product?.typeProduct}
+                  variants={product?.variants}
+                  isProductPage={true}
                 />
               );
             })}
         </div>
       </div>
-      <SidebarProductsComponent
-        toggleSidebar={sidebarToggle}
-        sendStatusToParent={receiveStatusFromSidebar}
-      />
+      <SidebarProductsComponent toggleSidebar={sidebarToggle} sendStatusToParent={receiveStatusFromSidebar} />
     </div>
   );
-};
+});
 
 export default ProductsComponent;

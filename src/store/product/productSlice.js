@@ -31,15 +31,13 @@ export const createProductSlice = (set, get) => ({
     try {
       let response;
       if (filter && Object.keys(filter).length > 0) {
-        console.log("filtered");
         response = await axiosClient.get("/product", { params: { ...filter } });
       } else {
         console.log("no filter");
         response = await axiosClient.get("/product");
       }
 
-      console.log("response products: ", response);
-      const products = response?.data;
+      const products = response?.data?.products;
       if (!products || products.count === 0) {
         console.error("No products found");
       }

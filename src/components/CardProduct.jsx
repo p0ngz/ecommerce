@@ -32,12 +32,15 @@ const CardNewProduct = ({
   isProductPage = false,
   isRelateProduct = false,
 }) => {
+  console.log("productImg: ", productImg);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [cardHover, setCardHover] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [dataToModal, setDataToModal] = useState(null);
   const [productCount, setProductCount] = useState(0);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
   const { createWishlist } = useWishlistStore(
     useShallow((state) => {
       return {
@@ -78,7 +81,25 @@ const CardNewProduct = ({
     if (variants && variants.length > 0) {
       return [...new Set(variants.map((variant) => variant.color))];
     }
+    return [];
   }, [variants]);
+
+  const availableSizes = useMemo(() => {
+    if (!selectedColor || !variants || variants.length === 0) return [];
+    return variants
+      .filter((v) => v.color === selectedColor)
+      .map((v) => v.size)
+      .filter(Boolean);
+  }, [selectedColor, variants]);
+
+  const selectColorHandler = (color) => {
+    if (isProductPage) {
+      setSelectedColor((prev) => (prev === color ? null : color));
+      setSelectedSize(null);
+    } else {
+      setOpenModalHandler(color);
+    }
+  };
   const decreaseHandler = () => {
     if (productCount > 0) {
       setProductCount((prev) => prev - 1);
@@ -147,6 +168,51 @@ const CardNewProduct = ({
     }
   }, [openModal]);
 
+  // const addToCartListHandler = async () => {
+  //   const userId = localStorage.getItem("userId");
+  //   const cartListData = {
+  //     productId,
+  //     color: chooseColor,
+  //     size: chooseSize,
+  //     quantity: quantityProduct,
+  //     total:
+  //       quantityProduct *
+  //       (wishlistInfo.product.price - (wishlistInfo.product.price * wishlistInfo.product.discount) / 100),
+  //   };
+  //   try {
+  //     const response = await createOrUpdateCartListByUserId(userId, cartListData);
+  //     if (response) {
+  //       console.log("toast success");
+  //       toastHandler(
+  //         "success",
+  //         "Added",
+  //         "to cartLists successfully",
+  //         wishlistInfo.product.productImg,
+  //         wishlistInfo.product.productName
+  //       );
+  //     } else {
+  //       console.log("toast error");
+  //       toastHandler(
+  //         "error",
+  //         "Added",
+  //         "to cartLists failed",
+  //         wishlistInfo.product.productImg,
+  //         wishlistInfo.product.productName
+  //       );
+  //     }
+  //   } catch (err) {
+  //     console.error("Error addToCartListHandler: ", err);
+  //     console.log("toast error");
+
+  //     toastHandler(
+  //       "error",
+  //       "Added",
+  //       "to cartLists failed",
+  //       wishlistInfo.product.productImg,
+  //       wishlistInfo.product.productName
+  //     );
+  //   }
+  // };
   return (
     <div
       id="card-new-product"
@@ -308,23 +374,59 @@ const CardNewProduct = ({
             <div className="text-md sm:text-xl">${price}</div>
           )}
         </div>
-        <div id="color-product" className="flex justify-center gap-3">
-          {colors &&
-            colors.map((color) => {
-              const colorFormat = themeColor[color.toLowerCase()];
-              return (
-                <div
-                  key={color}
-                  className="rounded-full w-5 h-5 sm:w-6 sm:h-6 hover:cursor-pointer hover:scale-110 transition-transform duration-200"
-                  style={{
-                    backgroundColor: colorFormat?.bg || "#cccccc",
-                    border: `1px solid ${colorFormat?.border || "#999999"}`,
-                  }}
-                  title={color}
-                  onClick={() => setOpenModalHandler(color)}
-                ></div>
-              );
-            })}
+        <div id="color-product" className="flex flex-col items-center gap-2">
+          {isProductPage && selectedColor && (
+            <p className="text-xs text-gray-500 uppercase tracking-wide">
+              Color: <span className="font-semibold text-gray-700">{selectedColor}</span>
+            </p>
+          )}
+          <div className="flex justify-center gap-3">
+            {colors &&
+              colors.map((color) => {
+                const colorFormat = themeColor[color.toLowerCase()];
+                const isSelected = isProductPage && selectedColor === color;
+                return (
+                  <div
+                    key={color}
+                    className="rounded-full w-5 h-5 sm:w-6 sm:h-6 hover:cursor-pointer hover:scale-110 transition-transform duration-200"
+                    style={{
+                      backgroundColor: colorFormat?.bg || "#cccccc",
+                      border: isSelected ? `3px solid #111111` : `1px solid ${colorFormat?.border || "#999999"}`,
+                      outline: isSelected ? "2px solid white" : "none",
+                      outlineOffset: "-4px",
+                      transform: isSelected ? "scale(1.2)" : undefined,
+                    }}
+                    title={color}
+                    onClick={() => selectColorHandler(color)}
+                  ></div>
+                );
+              })}
+          </div>
+          {isProductPage && selectedColor && availableSizes.length > 0 && (
+            <div id="size-product" className="mt-2 flex flex-col items-center gap-2">
+              <p className="text-xs text-gray-500 uppercase tracking-wide">
+                Size: {selectedSize && <span className="font-semibold text-gray-700">{selectedSize}</span>}
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {availableSizes.map((size) => {
+                  const isSelectedSize = selectedSize === size;
+                  return (
+                    <div
+                      key={size}
+                      onClick={() => setSelectedSize((prev) => (prev === size ? null : size))}
+                      className={`px-3 py-1 text-xs border rounded-sm hover:cursor-pointer transition-colors duration-200 ${
+                        isSelectedSize
+                          ? "bg-black text-white border-black"
+                          : "bg-white text-gray-700 border-gray-300 hover:border-black"
+                      }`}
+                    >
+                      {size}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
         {(isProductsPage || isProductPage) && <Divider sx={{ mx: 2, my: 2, borderColor: "#e5e7eb" }} />}
         {/* <div id="description-card-product" className={`my-5 p-4 ${isRelateProduct ? "hidden" : "block"}`}>
@@ -338,27 +440,33 @@ const CardNewProduct = ({
             <div id="amount-product" className="col-span-2  min-w-30 h-10 grid grid-cols-3 border border-gray-300">
               <div
                 id="decrease-product"
-                className={`flex justify-center items-center hover:cursor-pointer ${
-                  productCount <= 0 ? "pointer-events-none opacity-50" : ""
+                className={`flex justify-center items-center  ${
+                  productCount <= 0 || (!selectedColor && !selectedSize)
+                    ? "opacity-25 pointer-events-none"
+                    : "hover:cursor-pointer"
                 }`}
                 onClick={() => decreaseHandler()}
               >
                 -
               </div>
-              <div id="show-amount-product" className="flex justify-center items-center  border-x-1 border-gray-300">
+              <div
+                id="show-amount-product"
+                className={`flex justify-center items-center  border-x-1 border-gray-300 ${!selectedColor && !selectedSize ? "opacity-50" : ""}`}
+              >
                 {productCount}
               </div>
               <div
                 id="increase-product"
-                className="flex justify-center items-center hover:cursor-pointer "
+                className={`flex justify-center items-center ${!selectedColor && !selectedSize ? "opacity-50 pointer-events-none" : "hover:cursor-pointer"} `}
                 onClick={() => increaseHandler()}
-                disabled={productCount <= 0}
               >
                 +
               </div>
             </div>
             <div id="add-to-cart" className="col-span-3  min-w-35 h-10 flex justify-center items-center rounded-sm">
-              <button className="w-full h-full bg-gray-500 hover:bg-black text-white rounded-sm hover:cursor-pointer transition-color duration-300">
+              <button
+                className={`w-full h-full  hover:bg-black text-white rounded-sm  transition-color duration-300 ${!selectedColor || !selectedSize || productCount <= 0 ? "opacity-50 pointer-events-none bg-gray-300" : "opacity-100 bg-gray-500 hover:cursor-pointer"}`}
+              >
                 Add to Cart
               </button>
             </div>
