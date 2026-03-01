@@ -83,11 +83,10 @@ export const FilteredProductsProvider = ({ children }) => {
   );
   const [productData, setProductData] = useState([]);
   const [filteredData, setFilteredData] = useState(initialFilteredData);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const debounceRef = useRef(null);
-  const isFirstRender = useRef(true);
-  const prevParamsRef = useRef("");
+  const prevParamsRef = useRef(null);
 
   // Stable handler — no unnecessary child re-renders
   const filteredProductsHandler = useCallback((type, newFilter) => {
@@ -111,20 +110,13 @@ export const FilteredProductsProvider = ({ children }) => {
     [getAllProduct]
   );
 
+  // use debounce for handle over fetch
   useEffect(() => {
-    fetchAllProducts();
-  }, [fetchAllProducts]);
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       const params = buildQueryParams(filteredData);
       const paramsKey = JSON.stringify(params);
-      if (paramsKey === prevParamsRef.current) return; // if params haven't changed, skip fetch
+      if (paramsKey === prevParamsRef.current) return;
       prevParamsRef.current = paramsKey;
       fetchAllProducts(params);
     }, 500);
