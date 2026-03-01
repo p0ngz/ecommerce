@@ -91,7 +91,7 @@ export const createProductSlice = (set, get) => ({
     }
   },
   getAllColorsProduct: async () => {
-    try  {
+    try {
       const response = await axiosClient.get("/product/colors");
       const colors = response?.data?.colors;
       if (!colors || colors.length === 0) {
@@ -172,14 +172,24 @@ export const createProductSlice = (set, get) => ({
       } else {
         response = await axiosClient.get("/product/rating", { params: limit });
       }
-      const topRatingProducts = response?.data;
+      const topRatingProducts = response?.data?.data;
+      console.log("topRatingProduct: ", topRatingProducts)
+
       if (!topRatingProducts || topRatingProducts.length === 0) {
         console.error("No top rating products found");
       }
-
       return topRatingProducts;
     } catch (err) {
       console.error("Error getting top rating products: ", err);
+    }
+  },
+  getRelateProduct: async (id) => {
+    try {
+      const response = await axiosClient.get(`/product/${id}/related`);
+      const relateProduct = response?.data?.products;
+      return relateProduct;
+    } catch (err) {
+      console.error("Error getting relate products: ", err);
     }
   },
   SoftDeleteProduct: async (productId, userId) => {

@@ -97,7 +97,7 @@ const CardNewProduct = ({
   }, [selectedColor, variants]);
 
   const selectColorHandler = (color) => {
-    if (isProductPage) {
+    if (isProductPage || isProductsPage) {
       setSelectedColor((prev) => (prev === color ? null : color));
       setSelectedSize(null);
     } else {
@@ -155,6 +155,7 @@ const CardNewProduct = ({
     const typeProductLower = type.toLowerCase();
     const productNameLower = productName.split(" ").join("-").toLowerCase();
     const productData = {
+      productID: productId,
       productImg,
       discount,
       rating,
@@ -200,57 +201,12 @@ const CardNewProduct = ({
     }
   }, [openModal]);
 
-  // const addToCartListHandler = async () => {
-  //   const userId = localStorage.getItem("userId");
-  //   const cartListData = {
-  //     productId,
-  //     color: chooseColor,
-  //     size: chooseSize,
-  //     quantity: quantityProduct,
-  //     total:
-  //       quantityProduct *
-  //       (wishlistInfo.product.price - (wishlistInfo.product.price * wishlistInfo.product.discount) / 100),
-  //   };
-  //   try {
-  //     const response = await createOrUpdateCartListByUserId(userId, cartListData);
-  //     if (response) {
-  //       console.log("toast success");
-  //       toastHandler(
-  //         "success",
-  //         "Added",
-  //         "to cartLists successfully",
-  //         wishlistInfo.product.productImg,
-  //         wishlistInfo.product.productName
-  //       );
-  //     } else {
-  //       console.log("toast error");
-  //       toastHandler(
-  //         "error",
-  //         "Added",
-  //         "to cartLists failed",
-  //         wishlistInfo.product.productImg,
-  //         wishlistInfo.product.productName
-  //       );
-  //     }
-  //   } catch (err) {
-  //     console.error("Error addToCartListHandler: ", err);
-  //     console.log("toast error");
-
-  //     toastHandler(
-  //       "error",
-  //       "Added",
-  //       "to cartLists failed",
-  //       wishlistInfo.product.productImg,
-  //       wishlistInfo.product.productName
-  //     );
-  //   }
-  // };
   return (
     <div
       id="card-new-product"
       className={`relative mb-4 ${isRelateProduct ? "h-[50%] " : ""} ${
         isProductsPage || isProductPage
-          ? "sm:w-full sm:h-[90%] sm:grid sm:grid-cols-10 sm:gap-3 border-none rounded-sm"
+          ? "sm:w-full sm:h-[90%] xl:h-full sm:grid sm:grid-cols-10 sm:gap-3 border-none rounded-sm"
           : "border rounded-xl"
       }  w-[90%] h-[90%] sm:w-full sm:h-full overflow-hidden group `}
       onMouseEnter={viewState ? () => cardHoverHandler(true) : null}
@@ -258,18 +214,20 @@ const CardNewProduct = ({
     >
       <div
         id="img-card-product"
-        className={`h-full ${isRelateProduct ? "w-full h-full sm:h-[50%]" : ""}${
+        className={`h-full ${isRelateProduct ? "w-full h-full sm:h-1/2 sm:w-1/2" : ""}${
           isProductPage ? "w-full h-full lg:w-[90%] lg:col-span-4 xl:h-full" : ""
         }  ${
-          isProductsPage || isProductPage ? "sm:w-full lg:w-[100%] sm:h-full sm:col-span-4 lg:col-span-6" : ""
-        }sm:h-[70%] xl:h-[60%] bg-gray-200 rounded-t-xl relative overflow-hidden`}
+          isProductsPage ? "sm:w-full lg:w-[85%] sm:h-full sm:col-span-4 sm:max-h-[350px] lg:max-h-[400px]" : ""
+        }${
+          isProductPage ? "sm:w-full lg:w-[100%] sm:h-full sm:col-span-4 lg:col-span-6" : ""
+        }sm:h-[70%] xl:h-[100%] bg-gray-200 rounded-t-xl relative overflow-hidden`}
       >
         {productImg && (
           <img
             src={`${import.meta.env.VITE_ECOMMERCE_DOMAIN}${productImg}`}
             alt={productName}
             className={`${
-              isProductsPage || isProductPage ? "sm:aspect-[3/2]" : ""
+              isProductsPage || isProductPage ? "sm:aspect-[3/2] xl:aspect-ratio-[16/9]" : ""
             } w-full h-full object-cover rounded-t-xl z-1 ${viewState || isProductsPage ? "hover:cursor-pointer" : ""}`}
             onClick={viewState || isProductsPage || isRelateProduct ? () => goToProduct() : null}
           />
@@ -407,7 +365,7 @@ const CardNewProduct = ({
           )}
         </div>
         <div id="color-product" className="flex flex-col items-center gap-2">
-          {isProductPage && selectedColor && (
+          {(isProductPage || isProductsPage) && selectedColor && (
             <p className="text-xs text-gray-500 uppercase tracking-wide">
               Color: <span className="font-semibold text-gray-700">{selectedColor}</span>
             </p>
@@ -416,7 +374,7 @@ const CardNewProduct = ({
             {colors &&
               colors.map((color) => {
                 const colorFormat = themeColor[color.toLowerCase()];
-                const isSelected = isProductPage && selectedColor === color;
+                const isSelected = (isProductPage || isProductsPage) && selectedColor === color;
                 return (
                   <div
                     key={color}
@@ -434,7 +392,7 @@ const CardNewProduct = ({
                 );
               })}
           </div>
-          {isProductPage && selectedColor && availableSizes.length > 0 && (
+          {(isProductPage || isProductsPage) && selectedColor && availableSizes.length > 0 && (
             <div id="size-product" className="mt-2 flex flex-col items-center gap-2">
               <p className="text-xs text-gray-500 uppercase tracking-wide">
                 Size: {selectedSize && <span className="font-semibold text-gray-700">{selectedSize}</span>}
@@ -464,7 +422,7 @@ const CardNewProduct = ({
         {/* <div id="description-card-product" className={`my-5 p-4 ${isRelateProduct ? "hidden" : "block"}`}>
           <p className="text-xs text-gray-500">{description}</p>
         </div> */}
-        {isProductPage && (
+        {(isProductPage || isProductsPage) && (
           <div className="absolute top-2 right-2 w-10 h-10 bg-gray-100 rounded-full z-3 flex items-center justify-center hover:cursor-pointer hover:bg-red-500 group/fav transition-colors duration-200">
             <FavoriteBorderIcon
               fontSize="small"
