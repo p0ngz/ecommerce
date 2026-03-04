@@ -37,7 +37,7 @@ axiosClient.interceptors.request.use((config) => {
 privateAxiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
-    ``;
+
     if (token && !config.headers["Authorization"]) {
       try {
         const tokenData = JSON.parse(token);

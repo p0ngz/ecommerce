@@ -14,7 +14,7 @@ export const registerSchema = yup.object().shape({
   lastName: yup
     .string()
     .matches(lastNameRegex, { message: "Invalid lastName (must be character or string)" })
-    .min(2, "lastName must be at least 2 character2")
+    .min(2, "lastName must be at least 2 characters")
     .required("lastName is required"),
   username: yup
     .string()

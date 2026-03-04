@@ -81,7 +81,7 @@ const ContentBlogs = ({ type }) => {
     </div>
   );
 };
-ContentBlogs.PropTypes = {
+ContentBlogs.propTypes = {
   type: PropTypes.string,
 };
 export default ContentBlogs;

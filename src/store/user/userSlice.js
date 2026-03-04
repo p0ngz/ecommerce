@@ -25,7 +25,7 @@ export const createUserSlice = (set, get) => ({
       userData,
     }));
   },
-  getUSer: () => {
+  getUser: () => {
     const user = get().user;
     return user;
   },

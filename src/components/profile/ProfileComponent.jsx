@@ -37,12 +37,9 @@ const ProfileComponent = () => {
     const userId = localStorage.getItem("userId");
     if (userId) {
       const fetchedUser = await getUserByUserId(userId);
+      console.log("user: ", fetchedUser);
       setUser(fetchedUser);
     }
-    const user = await getUserByUserId(userId);
-    console.log("user: ", user);
-    setUser(user);
-  }, [getUserByUserId]);
   useEffect(() => {
     getUserByUserIdHandler();
   }, [getUserByUserIdHandler]);
