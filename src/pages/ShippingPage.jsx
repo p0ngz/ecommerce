@@ -1,6 +1,6 @@
 import React from "react";
-import { ShippingProvider } from "../contexts/shippingContext";
-import { UserInfoProvider } from "../contexts/userInfoContext";
+import { ShippingProvider } from "../utility/context/shippingContext";
+import { UserInfoProvider } from "../utility/context/userInfoContext";
 import ShippingComponent from "../components/ShippingComponent";
 
 const ShippingPage = () => {

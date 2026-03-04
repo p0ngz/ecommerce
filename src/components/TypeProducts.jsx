@@ -9,17 +9,17 @@ const typeProducts = [
       "https://wpbingo-adena.myshopify.com/cdn/shop/collections/4.jpg?crop=center&height=450&v=1729845890&width=450",
   },
   {
-    type: "Necklace",
+    type: "Pendants",
     imgSrc:
       "https://wpbingo-adena.myshopify.com/cdn/shop/collections/2.jpg?crop=center&height=450&v=1729846016&width=450",
   },
   {
-    type: "Rings",
+    type: "Gold Jewels",
     imgSrc:
       "https://wpbingo-adena.myshopify.com/cdn/shop/collections/1.jpg?crop=center&height=450&v=1729845853&width=450",
   },
   {
-    type: "Bracelets",
+    type: "Bracelet",
     imgSrc:
       "https://wpbingo-adena.myshopify.com/cdn/shop/collections/cate-1.jpg?crop=center&height=450&v=1729845833&width=450",
   },
@@ -55,10 +55,7 @@ const TypeProducts = ({ pageType, currentPage = "products" }) => {
       return findType;
     });
   }, []);
-  useEffect(() => {
-    // console.log("showTypeProductsMobile: ", showTypeProductsMobile);
-    // check index
-  }, [showTypeProductsMobile]);
+ 
   return (
     <div
       id="type-products-container"

@@ -3,6 +3,7 @@ import DoneIcon from "@mui/icons-material/Done";
 
 const ColorElement = ({ item = {}, sendColorToParent }) => {
   const [choose, setChoose] = useState(false);
+  
   const chooseColorHandler = () => {
     setChoose((prev) => {
       const newState = !prev;
@@ -10,6 +11,7 @@ const ColorElement = ({ item = {}, sendColorToParent }) => {
       return newState;
     });
   };
+ 
 
   return (
     /*

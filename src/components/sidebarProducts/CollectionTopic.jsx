@@ -1,54 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useFilteredProducts } from "../../contexts/filterProductsContext";
+import { useProductStore } from "../../store/product/productStore";
+import { useShallow } from "zustand/shallow";
 
-const collectionData = [
-  {
-    type: "Earrings",
-    count: 8,
-  },
-  {
-    type: "Necklaces",
-    count: 6,
-  },
-  {
-    type: "Rings",
-    count: 8,
-  },
-  {
-    type: "Bracelets",
-    count: 17,
-  },
-  {
-    type: "Pendants",
-    count: 6,
-  },
-  {
-    type: "Platinum Jewels",
-    count: 8,
-  },
-];
 const CollectionTopic = () => {
+  const navigate = useNavigate();
+  const { getTypeProduct } = useProductStore(
+    useShallow((state) => ({
+      getTypeProduct: state.getTypeProduct,
+    }))
+  );
   const [collections, setCollections] = useState([]);
   const [showMoreOrLess, setShowMoreOrLess] = useState(true);
-  const { filteredProductsHandler } = useFilteredProducts();
 
   const showMoreCollectionHandler = (state) => {
     setShowMoreOrLess(state);
   };
   const filteredHandler = (filterData) => {
-    
-    filteredProductsHandler("collection", filterData);
+    const typeLower = filterData.toLowerCase();
+    navigate(`/products/${typeLower}`);
   };
+  const getTypeProductDataHandler = useCallback(async () => {
+    const typeProducts = await getTypeProduct();
+    if (typeProducts && typeProducts.length > 0) {
+      setCollections(typeProducts);
+    }
+  }, [getTypeProduct]);
+
   useEffect(() => {
-    setCollections(collectionData);
-  }, []);
+    getTypeProductDataHandler();
+  }, [getTypeProductDataHandler]);
 
   return (
     <>
       <ul className="list-none p-0 m-0 leading-[2] ">
-        {collections?.length > 0 && collectionData.length <= 4
+        {collections?.length > 0
           ? collections.map((collection, idx) => {
               return (
                 <li
@@ -56,33 +44,33 @@ const CollectionTopic = () => {
                   className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
                   onClick={() => filteredHandler(collection.type)}
                 >
-                  {collection.type} ({collection.count})
+                  {collection.type} ({collection.total})
                 </li>
               );
             })
           : showMoreOrLess
-          ? collections.slice(0, 4).map((collection, idx) => {
-              return (
-                <li
-                  key={idx}
-                  className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler(collection.type)}
-                >
-                  {collection.type} ({collection.count})
-                </li>
-              );
-            })
-          : collections.map((collection, idx) => {
-              return (
-                <li
-                  key={idx}
-                  className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
-                  onClick={() => filteredHandler(collection.type)}
-                >
-                  {collection.type} ({collection.count})
-                </li>
-              );
-            })}
+            ? collections.slice(0, 4).map((collection, idx) => {
+                return (
+                  <li
+                    key={idx}
+                    className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                    onClick={() => filteredHandler(collection.type)}
+                  >
+                    {collection.type} ({collection.count})
+                  </li>
+                );
+              })
+            : collections.map((collection, idx) => {
+                return (
+                  <li
+                    key={idx}
+                    className="text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                    onClick={() => filteredHandler(collection.type)}
+                  >
+                    {collection.type} ({collection.count})
+                  </li>
+                );
+              })}
         {collections.length > 4 ? (
           showMoreOrLess ? (
             <span

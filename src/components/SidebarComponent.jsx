@@ -9,8 +9,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-const sidebarData = ["Home", "Products", "Blog", "Featured"];
-const routerData = ["/", "/products", "/blog", "/feature"];
+import { useAuth } from "../utility/context/authContext";
+const sidebarData = ["Home", "Products", "Blogs"];
+const routerData = ["/", "/products", "/blogs"];
 const SidebarComponent = ({ toggleSidebar, sendStatusToParent }) => {
   const [open, setOpen] = useState(false);
   const toggleButtonRef = useRef(null);
@@ -19,6 +20,7 @@ const SidebarComponent = ({ toggleSidebar, sendStatusToParent }) => {
     setOpen(newOpen);
     sendStatusToParent(false);
   };
+  const { logout } = useAuth();
   useEffect(() => {
     setOpen(toggleSidebar);
   }, [toggleSidebar]);
@@ -62,20 +64,23 @@ const SidebarComponent = ({ toggleSidebar, sendStatusToParent }) => {
                   <ListItemButton sx={{ py: 2 }}>
                     <div className="w-full h-full flex justify-between items-center hover:text-[#63512D]">
                       <p>{text}</p>
-                      <KeyboardArrowRightIcon
-                        fontSize="medium"
-                        className="pt-1 text-gray-400"
-                      />
+                      <KeyboardArrowRightIcon fontSize="medium" className="pt-1 text-gray-400" />
                     </div>
                   </ListItemButton>
                 </ListItem>
               </Link>
 
-              {idx < sidebarData.length && (
-                <Divider sx={{ mx: 2, borderColor: "#e5e7eb" }} />
-              )}
+              {idx < sidebarData.length && <Divider sx={{ mx: 2, borderColor: "#e5e7eb" }} />}
             </React.Fragment>
           ))}
+          <ListItem disablePadding onClick={() => logout()}>
+            <ListItemButton sx={{ py: 2 }}>
+              <div className="w-full h-full flex justify-between items-center hover:text-[#63512D]">
+                <p>Logout</p>
+                <KeyboardArrowRightIcon fontSize="medium" className="pt-1 text-gray-400" />
+              </div>
+            </ListItemButton>
+          </ListItem>
         </List>
       </div>
     </Box>

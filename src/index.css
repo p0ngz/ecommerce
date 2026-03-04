@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@theme {
+  --breakpoint-mid: 850px;
+}
 @font-face {
   font-family: "CanelaText-Black";
   src: url("./assets/fonts/CanelaText-Black-Trial.otf") format("opentype");
@@ -46,13 +49,17 @@ span,
   font-family: "CanelaText-Light", serif;
 }
 .sub-header-text,
-.number {
+.number,
+.base {
   font-family: "sans-serif", serif;
 }
 body {
   font-family: "sans-serif", serif;
 }
 
+.MuiTabs-scrollButtons.Mui-disabled {
+  opacity: 1;
+}
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -189,12 +196,73 @@ body {
     display: none; /* Chrome/Safari */
   }
 
+  /* Y-axis only scrollbar utilities */
+  .scrollbar-y-none {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  .scrollbar-y-none::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .scrollbar-y-thin {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin; /* Firefox */
+  }
+
   .scrollbar-custom::-webkit-scrollbar {
-    width: 4px;
+    width: 4px; /* Vertical scrollbar only */
   }
   .scrollbar-custom::-webkit-scrollbar-thumb {
-    background: var(--sidebar-ring); 
-    border-radius: 9999px; 
+    background: var(--sidebar-ring);
+    border-radius: 9999px;
+  }
+
+  /* Custom Y-axis scrollbar */
+  .scrollbar-y-custom {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .scrollbar-y-custom::-webkit-scrollbar {
+    width: 3px;
+  }
+  .scrollbar-y-custom::-webkit-scrollbar-thumb {
+    background: var(--sidebar-ring);
+    border-radius: 9999px;
+  }
+  .scrollbar-y-custom::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* X-axis scrollbar utilities */
+  .scrollbar-x-none {
+    overflow-y: hidden;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  .scrollbar-x-none::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+
+
+  /* Custom X-axis scrollbar */
+  .scrollbar-x-custom {
+    overflow-x: auto;
+  }
+  .scrollbar-x-custom::-webkit-scrollbar {
+    height: 5px; /* Height for horizontal scrollbar */
+  }
+  .scrollbar-x-custom::-webkit-scrollbar-thumb {
+    background: var(--sidebar-ring);
+    border-radius: 9999px;
+  }
+  .scrollbar-x-custom::-webkit-scrollbar-track {
+    background: transparent;
   }
 
   .center-screen {

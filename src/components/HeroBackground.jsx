@@ -1,7 +1,7 @@
 import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
-// AnimatePresence for transition when mount or unmount
+import { useNavigate } from "react-router-dom";
 const HeroBackground = ({
   imgID,
   imgSrc,
@@ -13,18 +13,22 @@ const HeroBackground = ({
     initial: { width: 0 },
     hover: { width: "200%", borderWidth: "0px" },
   };
+  const navigate = useNavigate()
+  const goToProducts = () => {
+    navigate('/products')
+  }
   return (
     <div
       key={imgID}
       id={`bg-${imgID}`}
-      className="w-full h-full p-0 sm:relative mb-10 sm:mb-0 "
+      className="w-full h-[90%] sm:h-full p-0 sm:relative mb-10 sm:mb-0 "
     >
       <AnimatePresence mode="wait">
         <motion.img
           key={imgSrc}
           src={imgSrc}
           alt={`bg-${imgID}`}
-          className="w-full h-[50%] sm:w-full sm:h-full object-cover"
+          className="w-full h-[60%] sm:w-full sm:h-full object-cover"
           initial={{ opacity: 0 }} // initial
           animate={{ opacity: 1 }} // when mount
           exit={{ opacity: 0 }} // when unmount
@@ -35,7 +39,7 @@ const HeroBackground = ({
         <motion.div
           key={imgID}
           id={`bg${imgID}-text`}
-          className="mt-10 sm:mt-0 w-full min-h-20 flex flex-col items-center sm:items-start -translate-x-8 sm:-translate-x-0 sm:justify-start sm:absolute sm:left-10 lg:left-30 sm:top-1/2 sm:-translate-y-1/2 sm:min-w-20"
+          className="w-full h-auto py-5 sm:my-0 sm:min-h-20  flex flex-col items-center sm:items-start -translate-x-8 sm:-translate-x-0 sm:justify-start sm:absolute sm:left-10 lg:left-30 sm:top-1/2 sm:-translate-y-1/2 sm:min-w-20"
           initial="initial"
           animate="animate"
           exit="exit"
@@ -56,7 +60,7 @@ const HeroBackground = ({
             ))}
           </h2>
           
-          <p className="mb-5">{descriptionTxt}</p>
+          <p className="">{descriptionTxt}</p>
           {
             <motion.button
               className="relative overflow-hidden mt-5 px-10 py-3 border border-gray-800  max-w-[10rem] hover:cursor-pointer"
@@ -66,6 +70,7 @@ const HeroBackground = ({
                 initial: { color: "black" },
                 hover: { border: "none", color: "white" },
               }}
+              onClick={() => goToProducts()}
             >
               <motion.div
                 className="absolute top-0 left-1/2 h-full bg-[#63512D] z-0"

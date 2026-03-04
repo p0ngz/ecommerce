@@ -1,0 +1,247 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import { registerSchema } from "../utility/validate/registerValidate";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { privateAxiosClient } from "../config/axios";
+import { useAuth } from "../utility/context/authContext";
+const RegisterComponent = () => {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { isLoading } = useAuth();
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit, dirty, isValid } = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: registerSchema,
+    validateOnChange: false,
+    validateOnBlur: true,
+    onSubmit: async (values, action) => {
+      try {
+        const response = await privateAxiosClient.post("/register", values);
+        action.resetForm();
+        if (response.data) {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Registration error: ", error.response?.data || error.message);
+      }
+    },
+  });
+  const togglePasswordHandler = (state) => {
+    setShowPassword(state);
+  };
+  const toggleConfirmPasswordHandler = (state) => {
+    setShowConfirmPassword(state);
+  };
+
+  return (
+    <>
+      {!isLoading && (
+        <div id="register-component" className="w-full h-full flex">
+          <div
+            id="left"
+            className="w-full md:w-[50%] 2xl:w-[40%] px-15 py-25 flex justify-center items-center md:bg-gradient-to-br md:from-[#e7dccb] md:via-[#d6c3b1] md:to-[#b8a48a] bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover"
+          >
+            <div
+              id="register-container"
+              className="w-full sm:w-[80%] md:w-full my-5  rounded-xl shadow-lg p-5 sm:p-8 flex flex-col gap-6 bg-white/60 backdrop-blur-sm backdrop-blur-md"
+            >
+              <h2 className="text-3xl font-bold text-center text-[#3E2C23] mb-2">Register</h2>
+              <form id="register-form" className="flex flex-col gap-4" autoComplete="on" onSubmit={handleSubmit}>
+                <div>
+                  <input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    placeholder="FirstName"
+                    className={`${
+                      touched.firstName && errors.firstName
+                        ? "ring-2 ring-red-400 focus:bg-red-200"
+                        : "focus:ring-2 focus:ring-[#F4B350]"
+                    } w-full px-4 py-3 rounded-lg border border-gray-600 md:border-gray-300 focus:outline-none`}
+                    required
+                    value={values.firstName}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  {touched.firstName && errors.firstName && (
+                    <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.firstName}</p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    placeholder="LastName"
+                    className={`${
+                      touched.lastName && errors.lastName
+                        ? "ring-2 ring-red-400 focus:bg-red-200"
+                        : "focus:ring-2 focus:ring-[#F4B350]"
+                    } w-full px-4 py-3 rounded-lg border border-gray-600 md:border-gray-300 focus:outline-none focus:ring-2`}
+                    required
+                    value={values.lastName}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  {touched.lastName && errors.lastName && (
+                    <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.lastName}</p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="Username"
+                    className={`${
+                      touched.username && errors.username
+                        ? "ring-2 ring-red-400 focus:bg-red-200"
+                        : "focus:ring-2 focus:ring-[#F4B350]"
+                    } w-full px-4 py-3 rounded-lg border border-gray-600  md:border-gray-300 focus:outline-none focus:ring-2`}
+                    required
+                    value={values.username}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  {touched.username && errors.username && (
+                    <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.username}</p>
+                  )}
+                </div>
+                <div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    className={`${
+                      touched.email && errors.email
+                        ? "ring-2 ring-red-400 focus:bg-red-200"
+                        : "focus:ring-2 focus:ring-[#F4B350]"
+                    } w-full px-4 py-3 rounded-lg border border-gray-600  md:border-gray-300 focus:outline-none focus:ring-2`}
+                    required
+                    value={values.email}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  {touched.email && errors.email && (
+                    <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.email}</p>
+                  )}
+                </div>
+                <div id="password-container" className="relative w-full">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    className={`${
+                      touched.password && errors.password
+                        ? "ring-2 ring-red-400 focus:bg-red-200"
+                        : "focus:ring-2 focus:ring-[#F4B350]"
+                    } w-full px-4 py-3 rounded-lg border border-gray-600 md:border-gray-300 focus:outline-none focus:ring-2`}
+                    required
+                    value={values.password}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  <span id="toggle-password" className="absolute right-3 top-1/2 -translate-y-1/2 hover:cursor-pointer">
+                    {showPassword ? (
+                      <VisibilityOffIcon
+                        fontSize="small"
+                        onClick={() => togglePasswordHandler(false)}
+                        className="text-gray-400 hover:text-gray-800 transition duration-500"
+                        sx={{}}
+                      />
+                    ) : (
+                      <VisibilityIcon
+                        fontSize="small"
+                        onClick={() => togglePasswordHandler(true)}
+                        className="text-gray-400 hover:text-gray-800 transition duration-500"
+                        sx={{}}
+                      />
+                    )}
+                  </span>
+                </div>
+                {touched.password && errors.password && (
+                  <p className="text-red-500 text-xs sm:text-sm mt-1 ml-1">{errors.password}</p>
+                )}
+                <div id="password-container" className="relative w-full">
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    className={`${
+                      touched.confirmPassword && errors.confirmPassword
+                        ? "ring-2 ring-red-400 focus:bg-red-200"
+                        : "focus:ring-2 focus:ring-[#F4B350]"
+                    } w-full px-4 py-3 rounded-lg border border-gray-600  md:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F4B350]`}
+                    required
+                    value={values.confirmPassword}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  <span
+                    id="toggle-confirm-password"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 hover:cursor-pointer"
+                  >
+                    {showConfirmPassword ? (
+                      <VisibilityOffIcon
+                        fontSize="small"
+                        onClick={() => toggleConfirmPasswordHandler(false)}
+                        className="text-gray-400 hover:text-gray-800 transition duration-500"
+                        sx={{}}
+                      />
+                    ) : (
+                      <VisibilityIcon
+                        fontSize="small"
+                        onClick={() => toggleConfirmPasswordHandler(true)}
+                        className="text-gray-400 hover:text-gray-800 transition duration-500"
+                        sx={{}}
+                      />
+                    )}
+                  </span>
+                </div>
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <p className="text-red-500  text-xs sm:text-sm mt-1 ml-1">{errors.confirmPassword}</p>
+                )}
+                <button
+                  type="submit"
+                  disabled={!(isValid && dirty)}
+                  className={`w-full py-3 rounded-lg  font-semibold   ${
+                    !(isValid && dirty)
+                      ? "bg-[#F5F5F5] text-gray-400 cursor-not-allowed border border-gray-300"
+                      : "bg-[#d6c3b1] text-gray-600 sm:hover:text-gray-900 sm:hover:cursor-pointer sm:hover:bg-[#b8a48a] transition"
+                  }  shadow`}
+                >
+                  Register
+                </button>
+              </form>
+              <div className="text-center mt-6 text-sm text-gray-600">
+                Already have an account?
+                <Link to="/login" className="ml-1 text-[#b8a48a] font-semibold hover:underline">
+                  Go login
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div
+            id="right"
+            className="hidden  w-full md:block md:w-[50%] 2xl:w-[60%] flex justify-center items-center md:bg-[url('https://images.unsplash.com/photo-1646399590439-17aef0ed773f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] md:bg-cover md:bg-center aspect-[4/3]"
+          ></div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default RegisterComponent;

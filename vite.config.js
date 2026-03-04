@@ -2,13 +2,12 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    port: 3000,
-    open: true,
-    host: true,
+    port: 3500,
+    open: true, // open in browser when server starts 
+    host: true, // host true to access localhost from network devices
   },
   resolve: {
     alias: {

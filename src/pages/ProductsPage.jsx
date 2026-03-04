@@ -1,12 +1,13 @@
 import React from "react";
 import ProductsComponent from "../components/ProductsComponent";
-import { FilteredProductsProvider } from "../contexts/filterProductsContext";
+import { ToastContainer } from "react-toastify";
 
 const ProductsPage = () => {
   return (
-    <FilteredProductsProvider>
+    <>
       <ProductsComponent />
-    </FilteredProductsProvider>
+      <ToastContainer position="top-right" autoClose={2000} closeOnClick />
+    </>
   );
 };
 

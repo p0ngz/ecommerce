@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Typography from "@mui/material/Typography";
@@ -10,6 +10,9 @@ import SidebarMenu from "./sidebarProducts/SidebarMenu";
 import CardProduct from "./CardProduct";
 import TypeProducts from "./TypeProducts";
 import { capitalizeHandler } from "../utility/capitalizeHandler";
+import { useProductStore } from "../store/product/productStore";
+import { useShallow } from "zustand/shallow";
+import { useFilteredProducts } from "../utility/context/filterProductsContext";
 
 const filterProduct = [
   {
@@ -45,71 +48,69 @@ const filterProduct = [
     label: "DATE, OLD-NEW",
   },
 ];
-const productData = [
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro.jpg?v=1714967262&width=600",
-    discount: 40,
-    rating: 5,
-    titleProduct: "Apollop Coin Necklace",
-    type: "necklace",
-    description:
-      "1 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
-    price: 100,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-3.jpg?v=1714967344&width=600",
-    discount: 0,
-    rating: 4,
-    titleProduct: "Butterfly Ring",
-    type: "rings",
-    description:
-      "2 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
-    price: 65,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-5.jpg?v=1714968850&width=600%22",
-    discount: 20,
-    rating: 4.5,
-    titleProduct: "Cuban Link Chain Bracelet",
-    type: "bracelets",
-    description:
-      "3 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+// const productData = [
+//   {
+//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro.jpg?v=1714967262&width=600",
+//     discount: 40,
+//     rating: 5,
+//     titleProduct: "Apollop Coin Necklace",
+//     type: "necklace",
+//     description:
+//       "1 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+//     price: 100,
+//   },
+//   {
+//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-3.jpg?v=1714967344&width=600",
+//     discount: 0,
+//     rating: 4,
+//     titleProduct: "Butterfly Ring",
+//     type: "rings",
+//     description:
+//       "2 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+//     price: 65,
+//   },
+//   {
+//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-5.jpg?v=1714968850&width=600%22",
+//     discount: 20,
+//     rating: 4.5,
+//     titleProduct: "Cuban Link Chain Bracelet",
+//     type: "bracelets",
+//     description:
+//       "3 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
 
-    price: 90,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
-    discount: 0,
-    rating: 3,
-    titleProduct: "Dainty Chain Bracelet",
-    type: "bracelets",
-    description:
-      "4 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
+//     price: 90,
+//   },
+//   {
+//     imgSrc: "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-12.jpg?v=1714968933&width=600",
+//     discount: 0,
+//     rating: 3,
+//     titleProduct: "Dainty Chain Bracelet",
+//     type: "bracelets",
+//     description:
+//       "4 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec estimperdiet, a malesuada sem rutrum",
 
-    price: 80,
-  },
-  {
-    imgSrc:
-      "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59_18c1dec3-e10e-466f-9f6d-0960696ecbbf.jpg?v=1714980909&width=600",
-    discount: 0,
-    rating: 4.5,
-    titleProduct: "Pearl Earring",
-    type: "earring",
-    description:
-      "5 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum",
-    price: 78,
-  },
-];
+//     price: 80,
+//   },
+//   {
+//     imgSrc:
+//       "https://wpbingo-adena.myshopify.com/cdn/shop/files/pro-59_18c1dec3-e10e-466f-9f6d-0960696ecbbf.jpg?v=1714980909&width=600",
+//     discount: 0,
+//     rating: 4.5,
+//     titleProduct: "Pearl Earring",
+//     type: "earring",
+//     description:
+//       "5 Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum",
+//     price: 78,
+//   },
+// ];
 const TypeProductsComponent = () => {
+  const { productData, isLoading, filteredProductsHandler } = useFilteredProducts();
+
   const { typeProduct } = useParams();
   const navigate = useNavigate();
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const [type, setType] = useState("");
-
+  const productTypeRef = useRef(null);
   const receiveStatusFromSidebar = (status) => {
     setSidebarToggle(status);
   };
@@ -124,10 +125,24 @@ const TypeProductsComponent = () => {
     const type = capitalizeHandler(typeProduct);
     setType(type);
   }, [typeProduct]);
+  useEffect(() => {
+    if (typeProduct) {
+      filteredProductsHandler("collection", typeProduct);
+    }
+    return () => {
+      filteredProductsHandler("collection", "");
+    };
+  }, [typeProduct, filteredProductsHandler]);
+  useEffect(() => {
+    if (productTypeRef.current) {
+      productTypeRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
   return (
     <div
       id="products-type-page"
       className="relative px-5 py-10 md:mt-15 xl:mt-25 w-full min-h-[70vh]"
+      ref={productTypeRef}
     >
       <h2 id="products-title" className="text-center mb-3 text-3xl lg:text-5xl">
         Products
@@ -199,10 +214,7 @@ const TypeProductsComponent = () => {
         </Breadcrumbs>
       </div>
       <div id="type-products-container">
-        <TypeProducts
-          pageType={"products"}
-          currentPage={type}
-        />
+        <TypeProducts pageType={"products"} currentPage={type} />
       </div>
       <div
         id="filter-container"
@@ -244,42 +256,39 @@ const TypeProductsComponent = () => {
           </TextField>
         </div>
       </div>
-      <div
-        id="main-container"
-        className="mt-5 lg:grid lg:gap-5 lg:grid-cols-10"
-      >
+      <div id="main-container" className="mt-5 lg:grid lg:gap-5 lg:grid-cols-10">
         <div id="sidebar-container" className="hidden lg:block lg:col-span-2">
           <SidebarMenu />
         </div>
-        <div
-          id="products-container"
-          className="flex flex-col items-center lg:col-span-8"
-        >
-          {productData &&
-            productData.map((product, index) => {
-              return (
-                <CardProduct
-                  key={index}
-                  imgSrc={product.imgSrc}
-                  discount={product.discount}
-                  rating={product.rating}
-                  titleProduct={product.titleProduct}
-                  price={product.price}
-                  type={product.type}
-                  isProductsPage={true}
-                  description={product.description}
-                  onClick={() =>
-                    navigateToProductHandler(product.type, product.titleProduct)
-                  }
-                />
-              );
-            })}
+        <div id="products-container" className="flex flex-col items-center lg:col-span-8">
+          {isLoading ? (
+            <div className="w-full flex justify-center items-center py-20">
+              <span className="text-gray-400 text-sm animate-pulse">Loading products...</span>
+            </div>
+          ) : productData && productData.length > 0 ? (
+            productData.map((product, index) => (
+              <CardProduct
+                key={product?._id || index}
+                productId={product?._id}
+                productImg={product.productImg}
+                discount={product?.discount}
+                rating={product?.rating}
+                productName={product?.productName}
+                description={product?.description}
+                price={product?.price}
+                type={product?.typeProduct}
+                variants={product?.variants}
+                isProductsPage={true}
+              />
+            ))
+          ) : (
+            <div className="w-full flex justify-center items-center py-20">
+              <span className="text-gray-400 text-sm">No products found.</span>
+            </div>
+          )}
         </div>
       </div>
-      <SidebarProductsComponent
-        toggleSidebar={sidebarToggle}
-        sendStatusToParent={receiveStatusFromSidebar}
-      />
+      <SidebarProductsComponent toggleSidebar={sidebarToggle} sendStatusToParent={receiveStatusFromSidebar} />
     </div>
   );
 };

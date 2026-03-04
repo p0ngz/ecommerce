@@ -1,23 +1,28 @@
-import React from "react";
-import { useShipping } from "../../contexts/shippingContext";
-const QuantityColumn = ({ id }) => {
+import { useMemo } from "react";
+import { useShipping } from "../../utility/context/shippingContext";
+const QuantityColumn = ({ cartListId, customStyle = "" }) => {
   const { shippingData, increaseQuantity, decreaseQuantity } = useShipping();
-  const quantityItem = shippingData.find((item) => item.id === id);
-  const productQuantity = quantityItem ? quantityItem.quantity : 0;
+  const quantityItem = useMemo(() => {
+    return shippingData.find((item) => item._id === cartListId);
+  }, [shippingData, cartListId]);
+  const productQuantity = useMemo(() => {
+    return quantityItem ? quantityItem.quantity : 0;
+  }, [quantityItem?.quantity]);
 
   return (
     <div
       id="quantity-column"
-      className="w-full h-[20%] border border-gray-400 flex justify-center items-center"
+      className={` ${
+        customStyle ? customStyle : "w-full h-[20%] rounded-none"
+      } border border-gray-400 flex justify-center items-center`}
     >
       <div
         id="decrease-product"
         className={`w-1/3 h-full flex justify-center items-center hover:cursor-pointer ${
           productQuantity <= 0 ? "pointer-events-none opacity-50" : ""
         }`}
-        onClick={() => decreaseQuantity(id)}
+        onClick={() => decreaseQuantity(cartListId)}
         disabled={productQuantity <= 0}
-
       >
         <p className="number md:text-xl lg:text-2xl xl:text-3xl">-</p>
       </div>
@@ -30,7 +35,7 @@ const QuantityColumn = ({ id }) => {
       <div
         id="increase-product"
         className="w-1/3 flex justify-center items-center hover:cursor-pointer "
-        onClick={() => increaseQuantity(id)}
+        onClick={() => increaseQuantity(cartListId)}
       >
         <p className="number md:text-xl lg:text-2xl xl:text-3xl">+</p>
       </div>

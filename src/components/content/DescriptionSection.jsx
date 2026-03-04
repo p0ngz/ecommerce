@@ -55,19 +55,19 @@ const DescriptionSection = () => {
     setCurrent((c) => (c === descriptions.length - 1 ? 0 : c + 1));
 
   return (
-    <div className="px-10 py-20 w-full h-[70%] bg-[#F6F3EF]">
+    <div className="px-5 sm:px-10 py-15 sm:py-20 w-full min-h-[70%] bg-[#F6F3EF]">
       <div
         id="description-container"
-        className="mb-5 w-full h-[70%] flex items-center justify-center"
+        className="mb-5 w-full min-h-[70%] flex items-center justify-center"
       >
         <div
           id="description"
-          className="p-0 w-full min-h-[160px] flex items-center justify-center gap-10 overflow-hidden"
+          className="p-0 w-full h-full flex items-center justify-center gap-10 overflow-hidden"
         >
           <div className="relative w-full lg:w-[75%] xl:w-[75%] 2xl:w-[50%] mx-auto min-h-[160px] max-h-full flex items-center justify-center overflow-hidden">
             <button
               onClick={prev}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 px-2 py-1 bg-white/80 rounded-full shadow hover:cursor-pointer"
+              className="absolute left-0 sm:left-0 top-1/2 -translate-y-1/2 z-10 px-2 py-1 bg-white/80 rounded-full shadow hover:cursor-pointer"
             >
               &#8592;
             </button>
@@ -86,10 +86,10 @@ const DescriptionSection = () => {
                 //   else if (info.offset.x > 50) prev();
                 // }}
               >
-                <p className="mb-6 text-md sm:text-xl md:text-2xl text-center leading-[1.5]">
+                <p className="mb-6 min-w-full h-auto text-xs sm:text-xl md:text-2xl text-center leading-[1.5]">
                   {descriptions[current].text}
                 </p>
-                <span className="text-gray-400 text-md sm:text-xl md:text-2xl text-md uppercase">
+                <span className="text-gray-400 text-md sm:text-xl md:text-2xl text-md uppercase text-center">
                   {descriptions[current].author}
                 </span>
               </motion.div>
